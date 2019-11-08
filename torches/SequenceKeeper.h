@@ -10,7 +10,7 @@ public:
 	SequenceKeeper(int range);	// range 3 - 10, also initializes the sequence
 	~SequenceKeeper();
 	std::vector<T>& GetSequence() const;	// return m_Sequence
-	void GenerateSequence();	// randomize a new set of sequence
+	void SetSequenceAt(int index, T data);	// set m_Sequence[index] = data, used with GenerateSequence() in Monster
 private:
 	int range;	// m_Sequence size
 	std::vector<T> m_Sequence;
