@@ -22,16 +22,20 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Screen.cpp" />
+    <ClCompile Include="SequenceKeeper.cpp" />
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="Monster.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="SequenceKeeper.h" />
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>

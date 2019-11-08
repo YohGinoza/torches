@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
-
+#include <bitset>
 class Sprite
 {
 public:	
@@ -10,5 +10,6 @@ public:
 	~Sprite();
 	std::pair<int, int> m_Dimension;
 	std::vector<std::string> m_Image;
+	//std::vector<std::bitset<8>> m_ImageData;
 };
 
