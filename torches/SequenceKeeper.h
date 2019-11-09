@@ -11,8 +11,9 @@ public:
 	~SequenceKeeper();
 	std::vector<T>& GetSequence() const;	// return m_Sequence
 	void SetSequenceAt(int index, T data);	// set m_Sequence[index] = data, used with GenerateSequence() in Monster
+	int GetRange();
 private:
-	int range;	// m_Sequence size
+	int m_Range;	// m_Sequence size
 	std::vector<T> m_Sequence;
 };
 
