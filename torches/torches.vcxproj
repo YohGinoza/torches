@@ -24,6 +24,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Phase.cpp" />
+    <ClCompile Include="PhaseCombat.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Screen.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Phase.h" />
+    <ClInclude Include="PhaseCombat.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
