@@ -26,6 +26,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Lighter.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="Phase.cpp" />
     <ClCompile Include="PhaseMaze.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -44,6 +45,7 @@
     <ClInclude Include="Healer.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Lighter.h" />
+    <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Phase.h" />
     <ClInclude Include="PhaseMaze.h" />
