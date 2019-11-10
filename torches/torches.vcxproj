@@ -21,7 +21,9 @@
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Phase.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SequenceKeeper.cpp" />
@@ -32,7 +34,9 @@
     <ClInclude Include="BeastNu.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="GameObject.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Phase.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Screen.h" />
@@ -40,6 +44,7 @@
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="BitMapSprites\sprite_inputIndicator.txt" />
     <Text Include="BitMapSprites\sprite_u1.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

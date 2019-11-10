@@ -8,6 +8,10 @@ Entity::Entity()
 	this->m_Position = std::make_pair(0, 0);
 }
 
+Entity::~Entity()
+{
+}
+
 Entity::Entity(Sprite* sprite) {
 	this->m_Sprite = sprite;
 	this->m_Position = std::make_pair(0, 0);
@@ -18,20 +22,14 @@ Entity::Entity(Sprite* sprite, std::pair<int, int> spawnLocation) {
 	this->m_Position = spawnLocation;
 }
 
-Entity::~Entity()
-{
+int Entity::GetHp() const {
+	return Hp;
 }
 
-std::pair<int,int> Entity::GetPosition() const{
-	return this->m_Position;
+int Entity::GetAttackDamage() const {
+	return AttackDamage;
 }
 
-void Entity::Translate(int x, int y) {
-	this->m_Position.first += x;
-	this->m_Position.second += y;
-}
-
-void Entity::SetPosition(int x, int y) {
-	this->m_Position.first = x;
-	this->m_Position.second = y;
+bool Entity::GetAliveStatus() const {
+	return isAlive;
 }

@@ -1,19 +1,21 @@
 #pragma once
-#include <map>
+#include "GameObject.h"
 #include "Sprite.h"
 
-class Entity
+class Entity : public GameObject
 {
 public:
 	Entity();
 	Entity(Sprite* sprite);
 	Entity(Sprite* sprite, std::pair<int, int> spawnLocation);
 	~Entity();
-	std::pair<int, int> GetPosition() const;
 	Sprite* m_Sprite;
-	void Translate(int x, int y);
-	void SetPosition(int x, int y);	
-private:	
-	std::pair<int, int> m_Position;
+	int GetHp() const;
+	int GetAttackDamage() const;
+	bool GetAliveStatus() const;
+protected:
+	int Hp;
+	int AttackDamage;
+	bool isAlive;
 };
 

@@ -2,7 +2,7 @@
 #include <windows.h>   // WinApi header
 #include <iostream>
 #include <string>
-
+#include <time.h>
 #include "Entity.h"
 #include "Renderer.h"
 #include "Sprite.h"
