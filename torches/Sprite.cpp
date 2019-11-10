@@ -4,7 +4,8 @@
 
 Sprite::Sprite()
 {
-	
+	this->m_BitOff = ' ';
+	this->m_BitOn = '#';
 }
 
 Sprite::Sprite(const std::string& path) {
@@ -29,4 +30,20 @@ Sprite::Sprite(const std::string& path) {
 
 Sprite::~Sprite()
 {
+}
+
+void Sprite::SetBitOnChar(char c) {
+	this->m_BitOn = c;
+}
+
+char Sprite::GetBitOnChar() const {
+	return this->m_BitOn;
+}
+
+void Sprite::SetBitOffChar(char c) {
+	this->m_BitOff = c;
+}
+
+char Sprite::GetBitOffChar() const {
+	return this->m_BitOff;
 }

@@ -22,22 +22,25 @@ Renderer* Renderer::GetInstance() {
 	return s_Instance;
 }
 void Renderer::Draw(Screen& screen, Entity* entity) {
-	if (entity->GetPosition().first + entity->m_Sprite->m_Dimension.first > screen.GetScreenWidth() ||
-		entity->GetPosition().second + entity->m_Sprite->m_Dimension.second > screen.GetScreenHeight() ||
-		entity->GetPosition().first < 0 ||
-		entity->GetPosition().second < 0) {
-		std::cout << "Entity out of bound";
+	if (entity->GetPosition().first + entity->m_Sprite->m_Dimension.first < 0 ||
+		entity->GetPosition().second + entity->m_Sprite->m_Dimension.second < 0 ||
+		entity->GetPosition().first > screen.GetScreenWidth() ||
+		entity->GetPosition().second > screen.GetScreenHeight()) {
 		return;
 	}
 	int row = 0;
 	int column = 0;
 	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++, row++) {
-		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++, column++) {		
+		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++, column++) {
+			if (i < 0 || j < 0 || i > screen.GetScreenWidth() - 1 || j > screen.GetScreenHeight() - 1) {
+				continue;
+			}
+
 			if (entity->m_Sprite->m_Image[row][column] == '1') {
-				screen.SetData(i, j, '#');
+				screen.SetData(i, j, entity->m_Sprite->GetBitOnChar());
 			}
 			else {
-				screen.SetData(i, j, ' ');
+				screen.SetData(i, j, entity->m_Sprite->GetBitOffChar());
 			}
 		}
 		column = 0;
