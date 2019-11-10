@@ -32,19 +32,7 @@
     <ClCompile Include="EntityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SequenceKeeper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BeastAlpha.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BeastNu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Phase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,9 +65,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BeastNu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Phase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
