@@ -44,6 +44,9 @@
     <ClCompile Include="BeastNu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Phase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sprite.h">
@@ -74,6 +77,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BeastNu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Phase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

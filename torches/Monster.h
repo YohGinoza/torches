@@ -14,7 +14,7 @@ public:
 	int GetAttackDamage() const;
 	bool GetAliveStatus() const;
 	SequenceKeeper<T> m_SequenceKeeper;
-	virtual void GenerateSequence() = 0 override;	// randomize a new set of sequence
+	virtual void GenerateSequence() = 0;// override;	// randomize a new set of sequence
 protected:
 	int Hp;
 	int AttackDamage;
