@@ -22,7 +22,9 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Healer.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Lighter.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Phase.cpp" />
     <ClCompile Include="PhaseMaze.cpp" />
@@ -39,7 +41,9 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Healer.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Lighter.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Phase.h" />
     <ClInclude Include="PhaseMaze.h" />

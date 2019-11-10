@@ -21,3 +21,7 @@ Player::~Player()
 Player* Player::GetInstance() {
 	return s_Instance;
 }
+
+void Player::Heal(int value) {
+	this->Hp += value;
+}
