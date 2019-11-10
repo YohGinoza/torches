@@ -19,12 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BeastAlpha.cpp" />
-    <ClCompile Include="BeastNu.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SequenceKeeper.cpp" />
