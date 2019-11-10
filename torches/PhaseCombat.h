@@ -13,6 +13,6 @@ public:
 	static PhaseCombat* GetInstance();
 	void DrawSequence(Screen& screen); // draws monster's sequence on screen
 private:
-	static PhaseCombat* s_Instance();
+	static PhaseCombat* s_Instance;
 };
 
