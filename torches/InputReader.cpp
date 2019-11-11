@@ -4,6 +4,7 @@ std::mutex mRead;
 
 void InputReader::operator()() {
 	mRead.lock();
+
 	char c;
 	do {
 		c = _getch();
@@ -15,5 +16,8 @@ void InputReader::operator()() {
 		}
 	} while (c != '\033');
 	InputBuffer::instance()->push(c);
+
+
 	mRead.unlock();
+
 }
