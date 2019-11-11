@@ -7,6 +7,31 @@
 #include "Renderer.h"
 #include "Sprite.h"
 #include "Screen.h"
+#include "InputBuffer.h"
+#include "InputReader.h"
+#include "InputWriter.h"
+
+// example function for real-time input
+// esc to exit
+/*
+void testInput()
+{
+	InputReader reader;
+	InputWriter writer;
+
+	std::thread readerThread = std::thread(reader);
+	std::thread writerThread = std::thread(writer);
+
+	if (readerThread.joinable()) {
+		readerThread.join();
+	}
+	if (writerThread.joinable()) {
+		writerThread.join();
+	}
+
+	InputBuffer::instance()->destroy();
+}
+*/
 
 int main()
 {
