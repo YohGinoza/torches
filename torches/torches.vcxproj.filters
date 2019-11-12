@@ -44,6 +44,7 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="PhaseMaze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -72,6 +73,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
+=======
+    <ClCompile Include="Monster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BeastAlpha.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BeastNu.cpp">
+>>>>>>> 5cdb40c2a38ad0fde8e0f4b15213c30aac8b45d9
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
