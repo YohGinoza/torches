@@ -82,6 +82,9 @@ void InputBuffer::updateInput()
 		else if (c == 80) {
 			input[c - 42] = true;
 		}
+		else if (c == '\033') {
+			input[40] = true;
+		}
 	}
 }
 
