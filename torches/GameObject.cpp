@@ -4,6 +4,7 @@
 
 GameObject::GameObject()
 {
+	this->m_Position = std::make_pair(0, 0);
 }
 
 
