@@ -3,47 +3,36 @@
 #include <vector>
 #include <iostream>
 
+#include "Phase.h"
+#include "PhaseMaze.h"
+
+class PhaseMaze;
+
 namespace Game 
 {
-	void(*gameUpdate)();
+	void(*gameUpdate)(float dt);
 
 	InputReader reader;
 	std::thread readerThread;
 	InputBuffer* input;
 
+	PhaseMaze* Maze;
+
 	int state;
 	int* CurrentState;
 	int* NextState;
 
-	void test_MazeUpdate() 
+	float dt;
+
+	void MazeUpdate(float dt) 
 	{
-		std::cout << "maze_phase\n";
+		Maze->OnUpdate(dt);
+	}
 
-		if (input->getKey(KeyCode::KEY_N)) 
-		{
-			setState(GameState::PHASE_COMBAT);
-		}
-
-		if (input->getKey(KeyCode::KEY_ESC))
-		{
-			setState(GameState::QUIT);
-		}
-	};
-
-	void test_CombatUpdate() 
+	void CombatUpdate(float dt) 
 	{
-		std::cout << "combat_phase\n";
-
-		if (input->getKey(KeyCode::KEY_N))
-		{
-			setState(GameState::PHASE_MAZE);
-		}
-
-		if (input->getKey(KeyCode::KEY_ESC))
-		{
-			setState(GameState::QUIT);
-		}
-	};
+		//Combat->OnUpdate(dt);
+	}
 
 	void Init() 
 	{
@@ -53,10 +42,15 @@ namespace Game
 		*CurrentState = GameState::PHASE_MAZE;
 		*NextState = GameState::PHASE_MAZE;
 
-		gameUpdate = test_MazeUpdate;
+		gameUpdate = MazeUpdate;
 
 		input = InputBuffer::instance();
 		readerThread = std::thread(reader);
+
+		Maze = PhaseMaze::GetInstance();
+
+		//pls change this when we have dt
+		dt = 0;
 	}
 
 	void Loop()
@@ -68,16 +62,13 @@ namespace Game
 				if (*NextState == GameState::PHASE_MAZE)
 				{
 					*CurrentState = GameState::PHASE_MAZE;
-					gameUpdate = test_MazeUpdate;
 
-					//gameUpdate = Maze.gameUpdate();
+					gameUpdate = MazeUpdate;
 				}
 				else if (*NextState == GameState::PHASE_COMBAT)
 				{
 					*CurrentState = GameState::PHASE_COMBAT;
-					gameUpdate = test_CombatUpdate;
-
-					//gameUpdate = Combat.gameUpdate();
+					gameUpdate = CombatUpdate;
 				}
 				else if (*NextState == GameState::QUIT)
 				{
@@ -96,7 +87,7 @@ namespace Game
 	{
 		input->updateInput();
 
-		gameUpdate();
+		gameUpdate(dt);
 
 		debug_input();
 
