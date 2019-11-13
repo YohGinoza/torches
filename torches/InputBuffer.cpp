@@ -2,7 +2,13 @@
 
 InputBuffer* InputBuffer::instance_ = nullptr;
 
-InputBuffer::InputBuffer() {}
+InputBuffer::InputBuffer() {
+	clearArray();
+
+	for (int i = 0; i < 5; i++) {
+		push('\0');
+	}
+}
 
 InputBuffer* InputBuffer::instance() {
 	if (instance_ == nullptr) {
@@ -18,9 +24,12 @@ void InputBuffer::push(char c) {
 
 char InputBuffer::pull() {
 	// std::cout << "Pulling." << std::endl;
-	char tmp = instance()->buffer.front();
-	buffer.pop_front();
-	return tmp;
+	if (!getEmpty()) {
+		char tmp = instance()->buffer.front();
+		buffer.pop_front();
+
+		return tmp;
+	}
 }
 
 bool InputBuffer::getEmpty() {
@@ -31,4 +40,55 @@ void InputBuffer::destroy() {
 	if (instance_ != nullptr) {
 		delete instance_;
 	}
+}
+
+void InputBuffer::clearList() {
+	buffer.clear();
+}
+
+void InputBuffer::clearArray() 
+{
+	for (int i = 0; i < KEYCODE_NUM; i++)
+	{
+		input[i] = false;
+	}
+}
+
+void InputBuffer::updateInput() 
+{ 
+	while(!getEmpty())
+	{
+		int c = pull();
+
+		if (c >= 'a' && c <= 'z') 
+		{
+			input[c - 87] = true;
+		}
+		else if(c >= '0' && c <= '9')
+		{
+			input[c - 48] = true;
+		}
+		else if (c == 72) 
+		{
+			input[c - 33] = true;
+		}
+		else if (c == 75) 
+		{
+			input[c -38] = true;
+		}
+		else if (c == 77) {
+			input[c - 41] = true;
+		}
+		else if (c == 80) {
+			input[c - 42] = true;
+		}
+		else if (c == '\033') {
+			input[40] = true;
+		}
+	}
+}
+
+bool InputBuffer::getKey(int keycode) 
+{
+	return input[keycode];
 }
