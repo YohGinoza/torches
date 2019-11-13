@@ -11,7 +11,6 @@ namespace Game
 	std::thread readerThread;
 	InputBuffer* input;
 
-
 	int state;
 	int* CurrentState;
 	int* NextState;
