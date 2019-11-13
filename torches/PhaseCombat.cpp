@@ -4,16 +4,27 @@ PhaseCombat* PhaseCombat::s_Instance = 0;
 
 PhaseCombat::PhaseCombat()
 {
+
 }
 
+PhaseCombat::PhaseCombat(Monster<char>* enemy)
+{
+
+}
 
 PhaseCombat::~PhaseCombat()
 {
+
 }
 
 void PhaseCombat::OnUpdate(float dt)
 {
-
+	//generate sequence
+	enemy->m_SequenceKeeper;
+	//cout sequence
+	//getInput
+	//compare
+	//calculate damage
 }
 
 PhaseCombat* PhaseCombat::GetInstance()
@@ -27,6 +38,7 @@ PhaseCombat* PhaseCombat::GetInstance()
 
 void PhaseCombat::DrawSequence(Screen& screen) // draws monster's sequence on screen
 {
-
+	screen.ClearScreen();
+	
 }
 
