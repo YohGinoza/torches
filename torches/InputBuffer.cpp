@@ -52,6 +52,8 @@ void InputBuffer::clearArray()
 	{
 		input[i] = false;
 	}
+
+	Keypress = false;
 }
 
 void InputBuffer::updateInput() 
@@ -96,9 +98,6 @@ void InputBuffer::updateInput()
 		}
 		else if (c == '\033') {
 			input[40] = true;
-		}
-		else {
-			Keypress = false;
 		}
 	}
 }
