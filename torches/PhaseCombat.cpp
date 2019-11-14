@@ -1,16 +1,17 @@
 #include "PhaseCombat.h"
 #include "Game.h"
+#include "BeastNu.h"
 
 PhaseCombat* PhaseCombat::s_Instance = 0;
 
 PhaseCombat::PhaseCombat()
 {
-
+	c_enemy = new BeastNu();
 }
 
 PhaseCombat::PhaseCombat(Monster* enemy)
 {
-
+	this->c_enemy = enemy;
 }
 
 
@@ -21,15 +22,27 @@ PhaseCombat::~PhaseCombat()
 void PhaseCombat::OnUpdate(float dt)
 {
 	//get input
-	if (Game::getInput()->getKey(0) != NULL)
+	if (Game::getInput()->getKey(KeyCode::KEY_0))
 	{
 		//if correct continue
-		if (c_enemy->m_SequenceKeeper.GetSequence()[0] == Game::getInput()->getKey(0))
-		{
-			std::cout << "Damage" << std::endl;
-		}
+			//calculate damage
+			//remove that key from buffer
+		std::cout << "Damage" << std::endl;
 	}
-	//if incorrect stop
+	else
+	{
+		//if incorrect stop
+			//calculate damage
+		//std::cout << "hhhhhhhhhhhhh";
+		//delete c_enemy;
+		//Game::setState(Game::GameState::PHASE_MAZE());
+	}
+
+		//delete enemy
+
+		//go back 
+
+
 	//calculate the damage
 }
 
