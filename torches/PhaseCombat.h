@@ -17,5 +17,7 @@ public:
 private:
 	static PhaseCombat* s_Instance;
 	Monster* c_enemy;
+
+	int index;
 };
 

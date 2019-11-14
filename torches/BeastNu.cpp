@@ -1,4 +1,5 @@
 #include "BeastNu.h"
+#include <iostream>
 
 BeastNu::BeastNu()
 {
@@ -18,6 +19,8 @@ void BeastNu::GenerateSequence() {
 	for (int i = 0; i < m_SequenceKeeper.GetRange(); i++) {
 		int randNum = (rand() % 9) + 1;
 		m_SequenceKeeper.SetSequenceAt(i, randNum);
+
+		std::cout << randNum << std::endl;
 	}
 
 }
