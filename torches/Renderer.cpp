@@ -28,47 +28,46 @@ void Renderer::Draw(Screen& screen, Entity* entity) {
 		entity->GetPosition().second > screen.GetScreenHeight()) {
 		return;
 	}
-	int row = 0;
-	int column = 0;
-	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++, row++) {
-		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++, column++) {
+	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++) {
+		unsigned int onBit = 1;
+		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++) {			
 			if (i < 0 || j < 0 || i > screen.GetScreenWidth() - 1 || j > screen.GetScreenHeight() - 1) {
 				continue;
 			}
 
-			if (entity->m_Sprite->m_Image[row][column] == '1') {
+			if (entity->m_Sprite->m_ImageData[i] & onBit) {
 				screen.SetData(i, j, entity->m_Sprite->GetBitOnChar());
 			}
 			else {
 				screen.SetData(i, j, entity->m_Sprite->GetBitOffChar());
 			}
+			onBit <<= 1;
 		}
-		column = 0;
 	}
 	ShowOutput(screen);
 }
 
 void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite) {
-	if (position.first + sprite->m_Dimension.first > screen.GetScreenWidth() ||
-		position.second + sprite->m_Dimension.second > screen.GetScreenHeight() ||
-		position.first < 0 ||
-		position.second < 0) {
-		std::cout << "Entity out of bound";
+	if (position.first > screen.GetScreenWidth() ||
+		position.second > screen.GetScreenHeight() ||
+		position.first + sprite->m_Dimension.first < 0 ||
+		position.second + sprite->m_Dimension.second < 0) {
 		return;
 	}
-
-	int row = 0;
-	int column = 0;
-	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++, row++) {
-		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++, column++) {
-			if (sprite->m_Image[row][column] == '0') {
-				screen.SetData(i, j, ' ');				
+	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++) {
+		unsigned int onBit = 1;
+		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
+			if (i < 0 || j < 0 || i > screen.GetScreenWidth() - 1 || j > screen.GetScreenHeight() - 1) {
+				continue;
+			}
+			if (sprite->m_ImageData[i] & onBit) {
+				screen.SetData(i, j, sprite->GetBitOnChar());
 			}
 			else {
-				screen.SetData(i, j, 'o');
+				screen.SetData(i, j, sprite->GetBitOffChar());				
 			}
+			onBit <<= 1;
 		}
-		column = 0;
 	}
 	ShowOutput(screen);
 }
