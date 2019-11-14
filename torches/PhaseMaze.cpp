@@ -55,6 +55,8 @@ PhaseMaze::PhaseMaze()
 	map[player_posY][player_posX] = '@';
 
 	map[room_height / 2][room_width / 2] = 'T';
+
+	debug_draw = false;
 }
 
 void PhaseMaze::Draw_Debug() 
@@ -84,6 +86,13 @@ PhaseMaze::~PhaseMaze()
 
 void PhaseMaze::OnUpdate(float dt) 
 {
+	if (!debug_draw) {
+		std::cout << player_posX << " " << player_posY << std::endl;
+		UpdateDetectRange();
+		Draw_Debug();
+		debug_draw = true;
+	}
+
 	if (Game::getInput()->KeyPress())
 	{
 		system("cls");

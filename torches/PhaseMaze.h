@@ -34,6 +34,7 @@ private:
 	int player_posY;
 	char** map;
 	bool** map_detect;
+	bool debug_draw;
 
 	bool m_TriggerMinimap;	// turn minimap on/off
 };
