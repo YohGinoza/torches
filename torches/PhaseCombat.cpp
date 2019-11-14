@@ -22,11 +22,12 @@ PhaseCombat::~PhaseCombat()
 void PhaseCombat::OnUpdate(float dt)
 {
 	//get input
-	if (Game::getInput()->getKey(KeyCode::KEY_0))
+	if (Game::getInput()->getKey(c_enemy->m_SequenceKeeper.GetSequence().front))
 	{
 		//if correct continue
 			//calculate damage
 			//remove that key from buffer
+		c_enemy->m_SequenceKeeper.GetSequence().pop();
 		std::cout << "Damage" << std::endl;
 	}
 	else
@@ -38,12 +39,22 @@ void PhaseCombat::OnUpdate(float dt)
 		//Game::setState(Game::GameState::PHASE_MAZE());
 	}
 
+	//if time run out or finish the enemy sequence
+	// if() //run out of time
+	//{
+		if (c_enemy->m_SequenceKeeper.GetSequence().size() != 0)
+		{
+			//calculate remaining sequence damage
+		}
+		//Game::setState(Game::GameState::PHASE_MAZE());
+		delete c_enemy;
+	//}
 		//delete enemy
 
 		//go back 
 
 
-	//calculate the damage
+
 }
 
 PhaseCombat* PhaseCombat::GetInstance()

@@ -5,7 +5,7 @@ SequenceKeeper::SequenceKeeper()
 {
 	this->m_Range = (rand() % 8) + 3;
 	for (int i = 0; i < this->m_Range; i++) {
-		m_Sequence.push_back('0');
+		m_Sequence.push('0');
 	}
 }
 
@@ -18,12 +18,12 @@ SequenceKeeper::~SequenceKeeper()
 {
 }
 
-std::vector<char> SequenceKeeper::GetSequence() const{
+std::queue<char> SequenceKeeper::GetSequence(){
 	return m_Sequence;
 }
 
 void SequenceKeeper::SetSequenceAt(int index, char data) {
-	m_Sequence[index] = data;
+	//m_Sequence[index] = data;
 }
 
 int SequenceKeeper::GetRange() {

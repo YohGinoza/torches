@@ -1,2 +1,8 @@
-﻿  PhaseCombat.cpp
-  torches.vcxproj -> D:\CDT 280\Game Project\Torches\torches\x64\Debug\torches.exe
+﻿  InputBuffer.cpp
+  PhaseCombat.cpp
+d:\cdt 280\game project\torches\torches\phasecombat.cpp(25): error C3867: 'std::queue<char,std::deque<_Ty,std::allocator<_Ty>>>::front': non-standard syntax; use '&' to create a pointer to member
+          with
+          [
+              _Ty=char
+          ]
+  Generating Code...
