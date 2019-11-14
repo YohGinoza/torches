@@ -4,6 +4,7 @@
 #include "Screen.h"
 #include "Room.h"
 #include "Game.h"
+#include "Player.h"
 
 #define room_width 25
 #define room_height 21
@@ -29,6 +30,8 @@ private:
 	static PhaseMaze* s_Instance;
 	std::vector<int*> m_MapInfo;
 	std::vector<int*> m_RoomInfo;
+
+	Player* player;
 
 	int player_posX;
 	int player_posY;

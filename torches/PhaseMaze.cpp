@@ -49,14 +49,17 @@ PhaseMaze::PhaseMaze()
 		map_detect[i][room_width - 1] = true;
 	}
 
-	player_posX = 2;
-	player_posY = (room_height / 2);
-
-	map[player_posY][player_posX] = '@';
-
 	map[room_height / 2][room_width / 2] = 'T';
 
 	debug_draw = false;
+
+	player = Player::GetInstance();
+
+	player->SetPosition(2, room_height / 2);
+
+	std::cout << player->GetPosition().first << " " << player->GetPosition().second << std::endl;
+	
+	map[player->GetPosition().second][player->GetPosition().first] = '@';
 }
 
 void PhaseMaze::Draw_Debug() 
@@ -86,8 +89,10 @@ PhaseMaze::~PhaseMaze()
 
 void PhaseMaze::OnUpdate(float dt) 
 {
+	player_posX = player->GetPosition().first;
+	player_posY = player->GetPosition().second;
+
 	if (!debug_draw) {
-		std::cout << player_posX << " " << player_posY << std::endl;
 		UpdateDetectRange();
 		Draw_Debug();
 		debug_draw = true;
@@ -103,6 +108,7 @@ void PhaseMaze::OnUpdate(float dt)
 			{
 				map[player_posY][player_posX] = '.';
 
+				player->Translate(-1, 0);
 				player_posX -= 1;
 				map[player_posY][player_posX] = '@';
 			}
@@ -112,7 +118,8 @@ void PhaseMaze::OnUpdate(float dt)
 			if ((player_posX < room_width - 2) && (map[player_posY][player_posX + 1] == '.'))
 			{
 				map[player_posY][player_posX] = '.';
-
+				
+				player->Translate(1, 0);
 				player_posX += 1;
 				map[player_posY][player_posX] = '@';
 			}
@@ -123,6 +130,7 @@ void PhaseMaze::OnUpdate(float dt)
 			{
 				map[player_posY][player_posX] = '.';
 
+				player->Translate(0, -1);
 				player_posY -= 1;
 				map[player_posY][player_posX] = '@';
 			}
@@ -133,6 +141,7 @@ void PhaseMaze::OnUpdate(float dt)
 			{
 				map[player_posY][player_posX] = '.';
 
+				player->Translate(0, 1);
 				player_posY += 1;
 				map[player_posY][player_posX] = '@';
 			}
@@ -184,7 +193,7 @@ void PhaseMaze::ClearDetectRange()
 		}
 	}
 
-	map_detect[player_posY][player_posX] = true;
+	map_detect[player->GetPosition().second][player->GetPosition().first] = true;
 
 	for (int i = 0; i < room_width; i++)
 	{
