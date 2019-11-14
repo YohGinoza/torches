@@ -90,7 +90,7 @@ namespace Game
 	{
 		input->updateInput();
 
-		gameUpdate(dt);
+		//gameUpdate(dt);
 
 		debug_input();
 
@@ -169,6 +169,10 @@ namespace Game
 
 		if (input->getKey(KEY_ESC)) {
 			std::cout << "ESC\n";
+		}
+
+		if (input->KeyPress()) {
+			std::cout << "yay\n";
 		}
 	}
 

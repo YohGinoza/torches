@@ -52,6 +52,8 @@ void InputBuffer::clearArray()
 	{
 		input[i] = false;
 	}
+
+	Keypress = false;
 }
 
 void InputBuffer::updateInput() 
@@ -63,24 +65,36 @@ void InputBuffer::updateInput()
 		if (c >= 'a' && c <= 'z') 
 		{
 			input[c - 87] = true;
+
+			Keypress = true;
 		}
 		else if(c >= '0' && c <= '9')
 		{
 			input[c - 48] = true;
+
+			Keypress = true;
 		}
 		else if (c == 72) 
 		{
 			input[c - 33] = true;
+
+			Keypress = true;
 		}
 		else if (c == 75) 
 		{
 			input[c -38] = true;
+
+			Keypress = true;
 		}
 		else if (c == 77) {
 			input[c - 41] = true;
+
+			Keypress = true;
 		}
 		else if (c == 80) {
 			input[c - 42] = true;
+
+			Keypress = true;
 		}
 		else if (c == '\033') {
 			input[40] = true;
@@ -91,4 +105,9 @@ void InputBuffer::updateInput()
 bool InputBuffer::getKey(int keycode) 
 {
 	return input[keycode];
+}
+
+bool InputBuffer::KeyPress() 
+{
+	return Keypress;
 }

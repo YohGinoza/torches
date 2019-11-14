@@ -62,6 +62,7 @@ private:
 	std::list<char> buffer;
 
 	bool input[KEYCODE_NUM];
+	bool Keypress;
 public:
 	static InputBuffer* instance();
 	void push(char c);
@@ -73,5 +74,6 @@ public:
 	void updateInput();
 
 	bool getKey(int keycode);
+	bool KeyPress();
 };
 #endif
