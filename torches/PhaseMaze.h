@@ -5,6 +5,9 @@
 #include "Room.h"
 #include "Game.h"
 
+#define room_width 50
+#define room_width 50
+
 class PhaseMaze :
 	public Phase
 {
