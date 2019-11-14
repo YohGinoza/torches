@@ -87,9 +87,9 @@ namespace Game
 	{
 		input->updateInput();
 
-		//gameUpdate(dt);
+		gameUpdate(dt);
 
-		debug_input();
+		//debug_input();
 
 		input->clearArray();
 	}
