@@ -12,6 +12,8 @@
 
 int main()
 {
+	srand(time(NULL));
+
 	Game::Init();
 
 	Game::Loop();

@@ -53,12 +53,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Healer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Lighter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MapGenerator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -74,10 +68,7 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BeastAlpha.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BeastNu.cpp">
+    <ClCompile Include="PhaseCombat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Monster.cpp">
@@ -109,12 +100,6 @@
     <ClInclude Include="SequenceKeeper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BeastAlpha.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BeastNu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Phase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -133,12 +118,6 @@
     <ClInclude Include="Item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Healer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lighter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MapGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -152,6 +131,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PhaseCombat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

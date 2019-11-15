@@ -5,6 +5,7 @@
 
 #include "Phase.h"
 #include "PhaseMaze.h"
+#include "PhaseCombat.h"
 
 class PhaseMaze;
 
@@ -17,6 +18,7 @@ namespace Game
 	InputBuffer* input;
 
 	PhaseMaze* Maze;
+	PhaseCombat* Combat;
 
 	int state;
 	int* CurrentState;
@@ -31,7 +33,7 @@ namespace Game
 
 	void CombatUpdate(float dt) 
 	{
-		//Combat->OnUpdate(dt);
+		Combat->OnUpdate(dt);
 	}
 
 	void Init() 
@@ -39,15 +41,17 @@ namespace Game
 		CurrentState = new int;
 		NextState = new int;
 
-		*CurrentState = GameState::PHASE_MAZE;
-		*NextState = GameState::PHASE_MAZE;
+		*CurrentState = GameState::PHASE_COMBAT;
+		*NextState = GameState::PHASE_COMBAT;
 
-		gameUpdate = MazeUpdate;
+		gameUpdate = CombatUpdate;
 
 		input = InputBuffer::instance();
 		readerThread = std::thread(reader);
 
+
 		Maze = PhaseMaze::GetInstance();
+		Combat = PhaseCombat::GetInstance();
 
 		//pls change this when we have dt
 		dt = 0;
@@ -87,9 +91,9 @@ namespace Game
 	{
 		input->updateInput();
 
-		//gameUpdate(dt);
+		gameUpdate(dt);
 
-		debug_input();
+		//debug_input();
 
 		input->clearArray();
 	}
