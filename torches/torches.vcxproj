@@ -19,18 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BeastAlpha.cpp" />
-    <ClCompile Include="BeastNu.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="Healer.cpp" />
     <ClCompile Include="InputBuffer.cpp" />
     <ClCompile Include="InputReader.cpp" />
     <ClCompile Include="InputWriter.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="Lighter.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="Monster.cpp" />
@@ -45,18 +41,14 @@
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BeastAlpha.h" />
-    <ClInclude Include="BeastNu.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Healer.h" />
     <ClInclude Include="InputBuffer.h" />
     <ClInclude Include="InputReader.h" />
     <ClInclude Include="InputWriter.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="Lighter.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Phase.h" />
