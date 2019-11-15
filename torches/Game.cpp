@@ -49,6 +49,7 @@ namespace Game
 		input = InputBuffer::instance();
 		readerThread = std::thread(reader);
 
+
 		Maze = PhaseMaze::GetInstance();
 		Combat = PhaseCombat::GetInstance();
 
@@ -90,9 +91,9 @@ namespace Game
 	{
 		input->updateInput();
 
-		//gameUpdate(dt);
+		gameUpdate(dt);
 
-		debug_input();
+		//debug_input();
 
 		input->clearArray();
 	}
