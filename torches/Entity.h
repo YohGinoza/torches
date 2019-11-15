@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Sprite.h"
+#include <stdlib.h>
 
 class Entity : public GameObject
 {
@@ -13,6 +14,7 @@ public:
 	int GetHp() const;
 	int GetAttackDamage() const;
 	bool GetAliveStatus() const;
+	void reduceHp(int);
 protected:
 	int Hp;
 	int AttackDamage;

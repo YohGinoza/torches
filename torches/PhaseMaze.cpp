@@ -1,5 +1,4 @@
 #include "PhaseMaze.h"
-#include "Game.h"
 
 PhaseMaze* PhaseMaze::s_Instance = nullptr;
 
@@ -57,7 +56,7 @@ PhaseMaze::PhaseMaze()
 
 	player->SetPosition(2, room_height / 2);
 
-	std::cout << player->GetPosition().first << " " << player->GetPosition().second << std::endl;
+	//std::cout << player->GetPosition().first << " " << player->GetPosition().second << std::endl;
 	
 	map[player->GetPosition().second][player->GetPosition().first] = '@';
 }

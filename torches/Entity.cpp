@@ -33,3 +33,12 @@ int Entity::GetAttackDamage() const {
 bool Entity::GetAliveStatus() const {
 	return isAlive;
 }
+
+void Entity::reduceHp(int damage)
+{
+	this->Hp -= damage;
+	if (Hp < 0)
+	{
+		Hp = 0;
+	}
+}

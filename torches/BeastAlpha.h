@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Monster.h"
-#include <stdlib.h>
 
 class BeastAlpha :
 	public Monster

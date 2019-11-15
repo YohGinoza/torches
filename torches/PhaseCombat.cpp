@@ -1,13 +1,10 @@
 #include "PhaseCombat.h"
-#include "Game.h"
-#include "BeastNu.h"
-#include "BeastAlpha.h"
 
 PhaseCombat* PhaseCombat::s_Instance = 0;
 
 PhaseCombat::PhaseCombat()
 {
-	c_enemy = new BeastNu();
+	c_enemy = new BeastAlpha();
 	c_enemy->GenerateSequence();
 
 	index = 0;
@@ -32,12 +29,12 @@ void PhaseCombat::OnUpdate(float dt)
 
 		if (Game::getInput()->getKey(c_enemy->m_SequenceKeeper.GetSequence(index)))
 		{
-			//if correct continue
-				//calculate damage
-				//remove that key from buffer
-			//c_enemy->m_SequenceKeeper.GetSequence().pop();
+			//if correct
+			//calculate damage
+			c_enemy->reduceHp(Player::GetInstance()->GetAttackDamage());
 			std::cout << "Damage" << std::endl;
 
+			//remove that key from buffer
 			if (index < c_enemy->m_SequenceKeeper.GetRange() - 1) 
 			{
 				index++;
@@ -45,11 +42,10 @@ void PhaseCombat::OnUpdate(float dt)
 		}
 		else
 		{
-			//if incorrect stop
-				//calculate damage
+			//if incorrect
+			//calculate damage
+			Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage());
 			std::cout << "hhhhhhhhhhhhh" << std::endl;
-			//delete c_enemy;
-			//Game::setState(Game::GameState::PHASE_MAZE());
 		}
 	}
 
@@ -92,5 +88,10 @@ PhaseCombat* PhaseCombat::GetInstance(Monster* enemy)
 void PhaseCombat::DrawSequence(Screen& screen) // draws monster's sequence on screen
 {
 
+}
+
+void PhaseCombat::setMonster(Monster* enemy)
+{
+	c_enemy = enemy;
 }
 

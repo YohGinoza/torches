@@ -1,12 +1,7 @@
 #pragma once
-#include <vector>
 #include "Phase.h"
-#include "Screen.h"
-#include "Room.h"
-#include "Game.h"
-#include "Player.h"
 
-#define room_width 25
+#define room_width 50
 #define room_height 21
 
 class PhaseMaze :
