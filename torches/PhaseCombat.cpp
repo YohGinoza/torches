@@ -1,6 +1,7 @@
 #include "PhaseCombat.h"
 #include "Game.h"
 #include "BeastNu.h"
+#include "Player.h"
 
 PhaseCombat* PhaseCombat::s_Instance = 0;
 
@@ -26,6 +27,7 @@ void PhaseCombat::OnUpdate(float dt)
 	{
 		//if correct continue
 			//calculate damage
+		
 			//remove that key from buffer
 		c_enemy->m_SequenceKeeper.GetSequence().pop();
 		std::cout << "Damage" << std::endl;
@@ -33,8 +35,8 @@ void PhaseCombat::OnUpdate(float dt)
 	else
 	{
 		//if incorrect stop
-			//calculate damage
-		//std::cout << "hhhhhhhhhhhhh";
+		//calculate damage
+
 		//delete c_enemy;
 		//Game::setState(Game::GameState::PHASE_MAZE());
 	}
