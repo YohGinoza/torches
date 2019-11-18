@@ -6,6 +6,7 @@ Time::Time()
 {
 	deltaTime = 0.0f;
 	oldTime = 0.0f;
+	time_req = clock();
 
 	if (s_Instance == nullptr) {
 		s_Instance = new Time();
@@ -22,8 +23,8 @@ Time* Time::GetInstance() {
 }
 
 void Time::OnUpdate() {
-	deltaTime = clock() - oldTime;
-	oldTime = clock();
+	deltaTime = time_req - oldTime;
+	oldTime = time_req;
 }
 
 float Time::GetDeltaTime() {

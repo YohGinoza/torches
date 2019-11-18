@@ -6,6 +6,7 @@ class Time
 private:
 	float deltaTime;
 	float oldTime;
+	clock_t time_req;
 	static Time* s_Instance;
 public:
 	Time();
