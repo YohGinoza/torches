@@ -1,5 +1,3 @@
-﻿  Game.cpp
-  Time.cpp
-d:\cdt 280\game project\torches\torches\time.cpp(26): warning C4244: '=': conversion from 'clock_t' to 'float', possible loss of data
-  Generating Code...
-  torches.vcxproj -> D:\CDT 280\Game Project\Torches\torches\x64\Debug\torches.exe
+﻿  Renderer.cpp
+d:\cdt280\torches\torches\renderer.cpp(59): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+  torches.vcxproj -> D:\CDT280\torches\torches\x64\Debug\torches.exe
