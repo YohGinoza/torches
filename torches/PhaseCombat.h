@@ -13,7 +13,6 @@ public:
 	~PhaseCombat();	
 	virtual void OnUpdate(float dt) override;
 	static PhaseCombat* GetInstance();
-	static PhaseCombat* GetInstance(Monster* m);
 	void DrawSequence(Screen& screen); // draws monster's sequence on screen
 	void InitCombat(int, float);
 private:

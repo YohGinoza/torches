@@ -41,10 +41,10 @@ namespace Game
 		CurrentState = new int;
 		NextState = new int;
 
-		*CurrentState = GameState::PHASE_MAZE;
-		*NextState = GameState::PHASE_MAZE;
+		*CurrentState = GameState::PHASE_COMBAT;
+		*NextState = GameState::PHASE_COMBAT;
 
-		gameUpdate = MazeUpdate;
+		gameUpdate = CombatUpdate;
 
 		input = InputBuffer::instance();
 		readerThread = std::thread(reader);

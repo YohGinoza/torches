@@ -4,6 +4,7 @@ PhaseCombat* PhaseCombat::s_Instance = 0;
 
 PhaseCombat::PhaseCombat()
 {
+	c_enemy = new BeastNu();
 	index = 0;
 }
 
@@ -16,7 +17,6 @@ void PhaseCombat::OnUpdate(float dt)
 {
 	//get input
 	if (Game::getInput()->KeyPress()) {
-
 		if (Game::getInput()->getKey(c_enemy->m_SequenceKeeper.GetSequence(index)))
 		{
 			//if correct
