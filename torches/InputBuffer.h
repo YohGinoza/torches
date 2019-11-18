@@ -73,6 +73,7 @@ public:
 	void clearArray();
 	void updateInput();
 
+
 	bool getKey(int keycode);
 	bool KeyPress();
 };
