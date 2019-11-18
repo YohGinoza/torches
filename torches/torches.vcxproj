@@ -39,6 +39,7 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SequenceKeeper.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
@@ -61,6 +62,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="SequenceKeeper.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Time.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="BitMapSprites\sprite_inputIndicator.txt" />
