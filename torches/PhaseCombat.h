@@ -1,6 +1,7 @@
 #pragma once
 #include "Phase.h"
 #include "Monster.h"
+#include "Sprite.h"
 
 #define COMBAT_TIME_LIMIT 5
 

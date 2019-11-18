@@ -4,14 +4,12 @@ PhaseCombat* PhaseCombat::s_Instance = 0;
 
 PhaseCombat::PhaseCombat()
 {
-	c_enemy = new BeastNu(10, 5);
-	c_enemy->GenerateSequence();
-
 	index = 0;
 }
 
 PhaseCombat::~PhaseCombat()
 {
+
 }
 
 void PhaseCombat::OnUpdate(float dt)
@@ -44,6 +42,7 @@ void PhaseCombat::OnUpdate(float dt)
 		Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
 		Game::setState(Game::GameState::PHASE_MAZE());
 		delete c_enemy;
+		index = 0;
 	}
 
 		//delete enemy
@@ -56,6 +55,7 @@ void PhaseCombat::OnUpdate(float dt)
 		//calculate remaining sequence damage
 		Game::setState(Game::PHASE_MAZE);
 		delete c_enemy;
+		index = 0;
 	}
 
 }
@@ -71,7 +71,7 @@ PhaseCombat* PhaseCombat::GetInstance()
 
 void PhaseCombat::DrawSequence(Screen& screen) // draws monster's sequence on screen
 {
-
+	
 }
 
 void PhaseCombat::InitCombat(int e_type, float dt)
