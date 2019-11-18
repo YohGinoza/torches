@@ -12,5 +12,8 @@ public:
 	~Room();
 private:
 	int m_RoomId;
+	int width;
+	int height;
+	int door;
 };
 
