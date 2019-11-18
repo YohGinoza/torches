@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputBuffer.cpp" />
@@ -39,10 +38,10 @@
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="SequenceKeeper.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputBuffer.h" />
@@ -61,6 +60,7 @@
     <ClInclude Include="Screen.h" />
     <ClInclude Include="SequenceKeeper.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Time.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="BitMapSprites\sprite_inputIndicator.txt" />
