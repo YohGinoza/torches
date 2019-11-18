@@ -42,7 +42,7 @@ namespace Game
 		NextState = new int;
 
 		*CurrentState = GameState::PHASE_MAZE;
-		*NextState = GameState::PHASE_MAZE;
+		*NextState = GameState::PHASE_COMBAT;
 
 		gameUpdate = MazeUpdate;
 

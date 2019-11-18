@@ -1,23 +1,7 @@
-﻿  BeastAlpha.cpp
-  BeastNu.cpp
-  Entity.cpp
-  Game.cpp
-  GameObject.cpp
-  Healer.cpp
-  InputBuffer.cpp
-  InputReader.cpp
-  InputWriter.cpp
-  Item.cpp
-  Lighter.cpp
-  Main.cpp
-d:\cdt 280\game project\torches\torches\main.cpp(15): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  Game.cpp
   Monster.cpp
   Phase.cpp
   PhaseCombat.cpp
+d:\cdt 280\game project\torches\torches\phasecombat.cpp(49): error C2064: term does not evaluate to a function taking 0 arguments
   PhaseMaze.cpp
-  Player.cpp
-  Renderer.cpp
-  Room.cpp
   Generating Code...
-d:\cdt 280\game project\torches\torches\inputbuffer.cpp(33): warning C4715: 'InputBuffer::pull': not all control paths return a value
-  torches.vcxproj -> D:\CDT 280\Game Project\Torches\torches\x64\Debug\torches.exe

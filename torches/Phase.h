@@ -4,8 +4,6 @@
 #include "Monster.h"
 #include "Screen.h"
 #include "Game.h"
-#include "BeastNu.h"
-#include "BeastAlpha.h"
 #include "Player.h"
 #include "Room.h"
 
