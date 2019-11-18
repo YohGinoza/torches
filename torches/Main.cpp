@@ -6,7 +6,6 @@
 #include "Entity.h"
 #include "Renderer.h"
 #include "Sprite.h"
-#include "Screen.h"
 
 #include "Game.h"
 

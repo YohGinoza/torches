@@ -1,7 +1,6 @@
 #pragma once
 #include "Phase.h"
 #include "Monster.h"
-#include "Sprite.h"
 
 #define COMBAT_TIME_LIMIT 5
 
@@ -14,7 +13,7 @@ public:
 	virtual void OnUpdate(float dt) override;
 	static PhaseCombat* GetInstance();
 	static PhaseCombat* GetInstance(Monster* m);
-	void DrawSequence(Screen& screen); // draws monster's sequence on screen
+	void DrawCombatPhase(Screen& screen); // draws monster's sequence on screen
 	void InitCombat(int, float);
 private:
 	static PhaseCombat* s_Instance;
