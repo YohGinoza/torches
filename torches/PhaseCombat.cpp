@@ -40,7 +40,7 @@ void PhaseCombat::OnUpdate(float dt)
 	if(COMBAT_TIME_LIMIT < startTime - dt) //run out of time
 	{
 		Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
-		Game::setState(Game::GameState::PHASE_MAZE());
+//		Game::setState(Game::PHASE_MAZE());
 		delete c_enemy;
 		index = 0;
 	}
@@ -71,7 +71,7 @@ PhaseCombat* PhaseCombat::GetInstance()
 
 void PhaseCombat::DrawSequence(Screen& screen) // draws monster's sequence on screen
 {
-	
+
 }
 
 void PhaseCombat::InitCombat(int e_type, float dt)
