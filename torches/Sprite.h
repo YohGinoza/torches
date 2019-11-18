@@ -28,6 +28,8 @@ public:
 	~SpriteManager();
 	Sprite* GetSprite(std::string& name);
 	bool PushBack(Sprite* sprite);
+	static SpriteManager* GetInstance();
 private:
+	static SpriteManager* s_Instance;
 	std::vector<Sprite*> m_SpriteBucket;
 };

@@ -79,8 +79,16 @@ bool SpriteManager::PushBack(Sprite* sprite) {
 	return true;
 }
 
-SpriteManager::SpriteManager() {
+SpriteManager* SpriteManager::s_Instance = nullptr;
 
+SpriteManager::SpriteManager() {
+	if (s_Instance == nullptr) {
+		s_Instance = new SpriteManager();
+	}
+	else {
+		delete this;
+		return;
+	}
 }
 
 SpriteManager::~SpriteManager() {
@@ -89,4 +97,8 @@ SpriteManager::~SpriteManager() {
 			delete this->m_SpriteBucket[i];
 		}
 	}
+}
+
+SpriteManager* SpriteManager::GetInstance() {
+	return s_Instance;
 }
