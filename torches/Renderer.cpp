@@ -28,23 +28,22 @@ void Renderer::Draw(Screen& screen, Entity* entity) {
 		entity->GetPosition().second > screen.GetScreenHeight()) {
 		return;
 	}
-	std::cout << entity->m_Sprite->m_Dimension.first << " " << entity->GetPosition().second + entity->m_Sprite->m_Dimension.second << std::endl;
-	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++) {
-		unsigned long long onBit = 1;
-		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++) {			
-			if (i < 0 || j < 0 || i > screen.GetScreenWidth() - 1 || j > screen.GetScreenHeight() - 1) {
+	int spriteRow = 0;
+	unsigned long long onBit = 1;
+	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++, spriteRow++) {
+		onBit <<= entity->m_Sprite->m_Dimension.first;
+		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++) {	
+			if (i < 0 || j < 0 || i > screen.GetScreenHeight() - 1 || j > screen.GetScreenWidth() - 1) {				
+				onBit >>= 1;
 				continue;
 			}
 			
-			if (entity->m_Sprite->m_ImageData[i] & onBit) {
+			if (entity->m_Sprite->m_ImageData[spriteRow] & onBit) {
 				screen.SetData(i, j, entity->m_Sprite->GetBitOnChar());
-				screen.SetData(i, j, 'x');
-			}
-			else {
-				screen.SetData(i, j, entity->m_Sprite->GetBitOffChar());
-			}
-			onBit <<= 1;
+			}			
+			onBit >>= 1;
 		}
+		onBit = 1;
 	}
 }
 
@@ -55,25 +54,29 @@ void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite
 		position.second + sprite->m_Dimension.second < 0) {
 		return;
 	}	
-	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++) {
-		unsigned long long onBit = 1;
+	int spriteRow = 0;
+	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++, spriteRow++) {
+		unsigned long long onBit = 1 << sprite->m_Dimension.first;
 		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
+			//debug
+			screen.SetData(i, j, sprite->GetBitOnChar());
+			onBit >>= 1;
+			continue;
+			//end of debug
 			if (i < 0 || j < 0 || i > screen.GetScreenWidth() - 1 || j > screen.GetScreenHeight() - 1) {
+				onBit >>= 1;
 				continue;
 			}
-			if (sprite->m_ImageData[i] & onBit) {
+			if (sprite->m_ImageData[spriteRow] & onBit) {
 				screen.SetData(i, j, sprite->GetBitOnChar());
-			}
-			else {
-				screen.SetData(i, j, sprite->GetBitOffChar());				
-			}
-			onBit <<= 1;
+			}			
+			onBit >>= 1;
 		}
 	}
 }
 
 void Renderer::ShowOutput(Screen& screen) {
-	std::string buffer;
+	std::string buffer;	
 	for (int i = 0; i < screen.GetScreenHeight(); i++) {
 		buffer += screen.GetScanline(i);
 		buffer += '|';

@@ -24,13 +24,9 @@ Sprite::Sprite(const std::string& name, const std::string& path) {
 			buffer.clear();
 			std::getline(dataFile, buffer);
 			tmp_width = buffer.size();
-			std::cout << buffer << std::endl;
-			std::cout << "==" <<  tmp_width << std::endl;
-			std::cout << std::bitset<64>(buffer).to_string() << std::endl;
 			this->m_ImageData.push_back(std::bitset<64>(buffer).to_ullong());
 		}		
 		this->m_Dimension = std::make_pair(tmp_width, this->m_ImageData.size());
-		std::cout << tmp_width << " " << this->m_ImageData.size() << std::endl;
 	}
 }
 
@@ -62,4 +58,35 @@ char Sprite::GetBitOffChar() const {
 
 std::string Sprite::GetName() const {
 	return this->m_Name;
+}
+
+Sprite* SpriteManager::GetSprite(std::string& name) {
+	for (int i = 0; i < this->m_SpriteBucket.size(); i++) {
+		if (this->m_SpriteBucket[i]->GetName() == name) {
+			return this->m_SpriteBucket[i];
+		}
+	}
+	return nullptr;
+}
+
+bool SpriteManager::PushBack(Sprite* sprite) {
+	for (int i = 0; i < this->m_SpriteBucket.size(); i++) {
+		if (this->m_SpriteBucket[i]->GetName() == sprite->GetName()) {
+			return false;
+		}
+	}
+	this->m_SpriteBucket.push_back(sprite);
+	return true;
+}
+
+SpriteManager::SpriteManager() {
+
+}
+
+SpriteManager::~SpriteManager() {
+	for (int i = 0; i < this->m_SpriteBucket.size(); i++) {
+		if (this->m_SpriteBucket[i] != nullptr) {
+			delete this->m_SpriteBucket[i];
+		}
+	}
 }

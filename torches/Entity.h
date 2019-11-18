@@ -18,4 +18,3 @@ protected:
 	int AttackDamage;
 	bool isAlive;
 };
-

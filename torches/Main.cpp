@@ -12,7 +12,7 @@
 
 int main()
 {	
-	Screen* screen = new Screen(100,75);
+	Screen* screen = new Screen(150,60);
 	Renderer r();
 	Sprite* s = new Sprite("s1", "BitMapSprites/sprite_u1.txt");
 	Sprite* s2 = new Sprite("s2", "BitMapSprites/BeastAlpha.txt");
@@ -24,11 +24,30 @@ int main()
 	Entity* e4 = new Entity(s4, std::make_pair(0, 0));
 	system("pause");	
 	//system("cls");
-	s4->Print();
-	std::cout << "====\n";
+
+	while (1) {		
+		char input;
+		std::cin >> input;
+		system("cls");
+		if (input == '4') {
+			e2->Translate(-1, 0);
+		}
+		else if (input == '6') {
+			e2->Translate(1, 0);
+		}
+		else if (input == '2') {
+			e2->Translate(0, 1);
+		}
+		else if (input == '8') {
+			e2->Translate(0, -1);
+		}
+		Renderer::GetInstance()->Draw(*screen, e2);
+		Renderer::GetInstance()->ShowOutput(*screen);
+		screen->ClearScreen();
+	}	
 	Renderer::GetInstance()->Draw(*screen, e);
-	//Renderer::GetInstance()->Draw(*screen, e2);
-	//Renderer::GetInstance()->Draw(*screen, e3);
+	
+	Renderer::GetInstance()->Draw(*screen, e3);
 	Renderer::GetInstance()->Draw(*screen, e4);
 	Renderer::GetInstance()->ShowOutput(*screen);
 	system("pause");

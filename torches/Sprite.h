@@ -4,12 +4,11 @@
 #include <bitset>
 class Sprite
 {
-public:	
+public:
 	Sprite();
 	Sprite(const std::string& name, const std::string& path);
 	~Sprite();
 	std::pair<int, int> m_Dimension;
-	//std::vector<std::string> m_Image;
 	std::vector<unsigned long long> m_ImageData;
 	void SetBitOnChar(char c);
 	char GetBitOnChar() const;
@@ -23,3 +22,12 @@ protected:
 	char m_BitOff;
 };
 
+class SpriteManager {
+public:
+	SpriteManager();
+	~SpriteManager();
+	Sprite* GetSprite(std::string& name);
+	bool PushBack(Sprite* sprite);
+private:
+	std::vector<Sprite*> m_SpriteBucket;
+};

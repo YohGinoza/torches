@@ -1,7 +1,6 @@
 #include "PhaseCombat.h"
 #include "Game.h"
-#include "BeastNu.h"
-#include "BeastAlpha.h"
+#include "Monster.h"
 
 PhaseCombat* PhaseCombat::s_Instance = 0;
 
