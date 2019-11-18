@@ -1,5 +1,5 @@
 ﻿  Game.cpp
+  PhaseCombat.cpp
   Time.cpp
-d:\cdt 280\game project\torches\torches\time.cpp(26): warning C4244: '=': conversion from 'clock_t' to 'float', possible loss of data
   Generating Code...
   torches.vcxproj -> D:\CDT 280\Game Project\Torches\torches\x64\Debug\torches.exe
