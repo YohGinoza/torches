@@ -15,7 +15,7 @@ public:
 	void SetBitOffChar(char c);
 	char GetBitOffChar() const;
 	std::string GetName() const;
-	void Print();
+	void Print();	
 protected:
 	std::string m_Name;
 	char m_BitOn;
@@ -26,10 +26,11 @@ class SpriteManager {
 public:
 	SpriteManager();
 	~SpriteManager();
-	Sprite* GetSprite(std::string& name);
-	bool PushBack(Sprite* sprite);
+	Sprite* GetSprite(std::string spriteName);
+	bool PushBack(Sprite* sprite);	
 	static SpriteManager* GetInstance();
+	void LoadInputSprite();
 private:
-	static SpriteManager* s_Instance;
-	std::vector<Sprite*> m_SpriteBucket;
+	static SpriteManager* s_Instance;	
+	static std::vector<Sprite*> m_SpriteBucket;
 };
