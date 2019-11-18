@@ -3,6 +3,7 @@
 #include "InputBuffer.h"
 #include "InputReader.h"
 #include "InputWriter.h"
+#include "Game.h"
 
 
 namespace Game 
@@ -27,4 +28,6 @@ namespace Game
 	void debug_input();
 
 	InputBuffer* getInput();
+
+	Screen gameScreen(150, 60);
 }

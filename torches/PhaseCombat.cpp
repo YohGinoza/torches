@@ -39,12 +39,12 @@ void PhaseCombat::OnUpdate(float dt)
 	}
 
 	//if time run out or finish the enemy sequence
-	if(COMBAT_TIME_LIMIT < startTime - dt) //run out of time
-	{
-		Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
-		Game::setState(Game::GameState::PHASE_MAZE());
-		delete c_enemy;
-	}
+	//if(COMBAT_TIME_LIMIT < startTime - dt) //run out of time
+	//{
+	//	Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
+	//	Game::setState(Game::GameState::PHASE_MAZE());
+	//	delete c_enemy;
+	//}
 
 		//delete enemy
 
@@ -58,6 +58,7 @@ void PhaseCombat::OnUpdate(float dt)
 		delete c_enemy;
 	}
 
+	DrawCombatPhase(Game::gameScreen);
 }
 
 PhaseCombat* PhaseCombat::GetInstance()
@@ -69,9 +70,9 @@ PhaseCombat* PhaseCombat::GetInstance()
 	return s_Instance;
 }
 
-void PhaseCombat::DrawSequence(Screen& screen) // draws monster's sequence on screen
+void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
-
+	
 }
 
 void PhaseCombat::InitCombat(int e_type, float dt)
