@@ -28,15 +28,17 @@ void Renderer::Draw(Screen& screen, Entity* entity) {
 		entity->GetPosition().second > screen.GetScreenHeight()) {
 		return;
 	}
+	std::cout << entity->m_Sprite->m_Dimension.first << " " << entity->GetPosition().second + entity->m_Sprite->m_Dimension.second << std::endl;
 	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++) {
-		unsigned int onBit = 1;
+		unsigned long long onBit = 1;
 		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++) {			
 			if (i < 0 || j < 0 || i > screen.GetScreenWidth() - 1 || j > screen.GetScreenHeight() - 1) {
 				continue;
 			}
-
+			
 			if (entity->m_Sprite->m_ImageData[i] & onBit) {
 				screen.SetData(i, j, entity->m_Sprite->GetBitOnChar());
+				screen.SetData(i, j, 'x');
 			}
 			else {
 				screen.SetData(i, j, entity->m_Sprite->GetBitOffChar());
@@ -44,7 +46,6 @@ void Renderer::Draw(Screen& screen, Entity* entity) {
 			onBit <<= 1;
 		}
 	}
-	ShowOutput(screen);
 }
 
 void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite) {
@@ -53,9 +54,9 @@ void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite
 		position.first + sprite->m_Dimension.first < 0 ||
 		position.second + sprite->m_Dimension.second < 0) {
 		return;
-	}
+	}	
 	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++) {
-		unsigned int onBit = 1;
+		unsigned long long onBit = 1;
 		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
 			if (i < 0 || j < 0 || i > screen.GetScreenWidth() - 1 || j > screen.GetScreenHeight() - 1) {
 				continue;
@@ -69,13 +70,13 @@ void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite
 			onBit <<= 1;
 		}
 	}
-	ShowOutput(screen);
 }
 
 void Renderer::ShowOutput(Screen& screen) {
 	std::string buffer;
 	for (int i = 0; i < screen.GetScreenHeight(); i++) {
 		buffer += screen.GetScanline(i);
+		buffer += '|';
 		buffer += '\n';
 	}
 	std::cout << buffer;

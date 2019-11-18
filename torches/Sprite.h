@@ -10,12 +10,13 @@ public:
 	~Sprite();
 	std::pair<int, int> m_Dimension;
 	//std::vector<std::string> m_Image;
-	std::vector<unsigned int> m_ImageData;
+	std::vector<unsigned long long> m_ImageData;
 	void SetBitOnChar(char c);
 	char GetBitOnChar() const;
 	void SetBitOffChar(char c);
 	char GetBitOffChar() const;
 	std::string GetName() const;
+	void Print();
 protected:
 	std::string m_Name;
 	char m_BitOn;

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="BeastAlpha.cpp" />
     <ClCompile Include="BeastNu.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="Sprite.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="BeastAlpha.h" />
     <ClInclude Include="BeastNu.h" />
     <ClInclude Include="Entity.h" />
@@ -71,6 +73,9 @@
     <ClInclude Include="Sprite.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="BitMapSprites\BeastAlpha.txt" />
+    <Text Include="BitMapSprites\BeastNu.txt" />
+    <Text Include="BitMapSprites\phelop.txt" />
     <Text Include="BitMapSprites\sprite_inputIndicator.txt" />
     <Text Include="BitMapSprites\sprite_u1.txt" />
   </ItemGroup>
