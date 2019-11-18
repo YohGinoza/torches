@@ -4,7 +4,7 @@
 #include <iostream>
 #include <list>
 
-#define KEYCODE_NUM 40
+#define KEYCODE_NUM 41
 
 enum KeyCode {
 	KEY_0,
@@ -48,7 +48,9 @@ enum KeyCode {
 	KEY_RIGHT,
 	KEY_LEFT,
 	KEY_DOWN,
-	KEY_UP
+	KEY_UP,
+	
+	KEY_ESC
 };
 
 
@@ -60,6 +62,7 @@ private:
 	std::list<char> buffer;
 
 	bool input[KEYCODE_NUM];
+	bool Keypress;
 public:
 	static InputBuffer* instance();
 	void push(char c);
@@ -70,6 +73,8 @@ public:
 	void clearArray();
 	void updateInput();
 
+
 	bool getKey(int keycode);
+	bool KeyPress();
 };
 #endif

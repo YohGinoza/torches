@@ -1,4 +1,5 @@
 #include "BeastAlpha.h"
+#include "InputBuffer.h"
 
 
 BeastAlpha::BeastAlpha()
@@ -20,13 +21,13 @@ void BeastAlpha::GenerateSequence() {
 	for (int i = 0; i < m_SequenceKeeper.GetRange(); i++) {
 		int randChar = rand() % 4;
 		switch (randChar) {
-		case 0: m_SequenceKeeper.SetSequenceAt(i, 'u');
+		case 0: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_UP);
 			break;
-		case 1: m_SequenceKeeper.SetSequenceAt(i, 'd');
+		case 1: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_DOWN);
 			break;
-		case 2: m_SequenceKeeper.SetSequenceAt(i, 'l');
+		case 2: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_LEFT);
 			break;
-		case 3: m_SequenceKeeper.SetSequenceAt(i, 'r');
+		case 3: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_RIGHT);
 			break;
 		}
 	}
