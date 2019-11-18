@@ -1,4 +1,6 @@
 #pragma once
+#include <stdlib.h>
+
 #include "Entity.h"
 #include "SequenceKeeper.h"
 
@@ -11,4 +13,25 @@ public:
 	~Monster();	
 	SequenceKeeper m_SequenceKeeper;
 	virtual void GenerateSequence() = 0;	// randomize a new set of sequence
+};
+
+
+class BeastAlpha :
+	public Monster
+{
+public:
+	BeastAlpha();
+	BeastAlpha(int hp, int atk);
+	~BeastAlpha();
+	virtual void GenerateSequence() override;	// randomize a new set of sequence : sequence is 'u' 'd' 'l' 'r'
+};
+
+class BeastNu :
+	public Monster
+{
+public:
+	BeastNu();
+	BeastNu(int hp, int atk);
+	~BeastNu();
+	virtual void GenerateSequence() override;	// randomize a new set of sequence : sequence is 1-9
 };
