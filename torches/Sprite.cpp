@@ -91,6 +91,7 @@ Sprite* SpriteManager::GetSprite(std::string spriteName) {
 			return this->m_SpriteBucket[i];
 		}
 	}
+	std::cout << "Cannot find sprite name: " << spriteName << std::endl;
 	return nullptr;
 }
 

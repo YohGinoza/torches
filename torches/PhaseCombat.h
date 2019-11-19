@@ -3,7 +3,7 @@
 #include "Monster.h"
 
 #define COMBAT_TIME_LIMIT 5
-#define SPRITE_SPECIAL_OFFSET 8
+#define SPRITE_SPECIAL_OFFSET 10
 
 class PhaseCombat :
 	public Phase

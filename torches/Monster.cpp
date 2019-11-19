@@ -24,6 +24,9 @@ void Monster::GenerateSequence() {
 
 BeastAlpha::BeastAlpha()
 {
+	this->Hp = 10;
+	this->AttackDamage = 10;
+	this->isAlive = true;
 }
 
 
@@ -55,6 +58,9 @@ void BeastAlpha::GenerateSequence() {
 
 BeastNu::BeastNu()
 {
+	this->Hp = 10;
+	this->AttackDamage = 10;
+	this->isAlive = true;
 }
 
 BeastNu::BeastNu(int hp, int atk) {

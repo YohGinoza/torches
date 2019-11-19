@@ -72,8 +72,36 @@ void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite
 	}
 }
 
+void Renderer::DrawReverse(Screen& screen, std::pair<int, int> position, Sprite* sprite) {
+	if (position.first > screen.GetScreenWidth() ||
+		position.second > screen.GetScreenHeight() ||
+		position.first + sprite->m_Dimension.first < 0 ||
+		position.second + sprite->m_Dimension.second < 0) {
+		return;
+	}
+	int spriteRow = 0;
+	unsigned long long onBit = 1;
+	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++, spriteRow++) {
+		onBit <<= (sprite->m_Dimension.first - 1);
+		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
+			if (i < 0 || j < 0 || i > screen.GetScreenHeight() - 1 || j > screen.GetScreenWidth() - 1) {
+				onBit >>= 1;
+				continue;
+			}
+			if (sprite->m_ImageData[spriteRow] & onBit) {
+				screen.SetData(i, j, sprite->GetBitOffChar());
+			}
+			else {				
+				screen.SetData(i, j, sprite->GetBitOnChar());
+			}
+			onBit >>= 1;
+		}
+		onBit = 1;
+	}
+}
+
 void Renderer::ShowOutput(Screen& screen) {
-	std::string buffer;	
+	std::string buffer;		
 	for (int i = 0; i < screen.GetScreenHeight(); i++) {
 		buffer += screen.GetScanline(i);
 		buffer += '|';

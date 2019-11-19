@@ -12,6 +12,7 @@ public:
 	static Renderer* GetInstance();
 	void Draw(Screen& screen, Entity* entity);
 	void Draw(Screen& screen, std::pair<int,int> position, Sprite* sprite);
+	void DrawReverse(Screen& screen, std::pair<int, int> position, Sprite* sprite);
 	void ShowOutput(Screen& screen);
 private:
 	static Renderer* s_Instance;	

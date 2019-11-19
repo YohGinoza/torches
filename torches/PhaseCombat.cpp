@@ -73,17 +73,23 @@ PhaseCombat* PhaseCombat::GetInstance()
 
 void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
-	std::cout << "yay";
-	std::cout << this->c_enemy->m_Sprite->m_Dimension.first << " " << this->c_enemy->m_Sprite->m_Dimension.second << std::endl;
-	//Renderer::GetInstance()->Draw(screen, this->c_enemy);
-	int translateToCenter = SPRITE_SPECIAL_OFFSET * this->c_enemy->m_SequenceKeeper.GetRange() * 0.5f;
-	int firstOffsetX = translateToCenter + (screen.GetScreenWidth() * 0.5f);
-	std::pair<int, int> offset(firstOffsetX, screen.GetScreenHeight() - SPRITE_SPECIAL_OFFSET - 1);
-	for (int i = 0; i < this->c_enemy->m_SequenceKeeper.GetRange(); i++) {
-		std::string spriteName = "sprite_input_" + std::to_string(this->c_enemy->m_SequenceKeeper.GetSequence(i));
-		Renderer::GetInstance()->Draw(screen, offset, SpriteManager::GetInstance()->GetSprite(spriteName));
-		offset.first += SPRITE_SPECIAL_OFFSET;
-	}
+	if (this->c_enemy != nullptr) {
+		this->c_enemy->SetPosition((-this->c_enemy->m_Sprite->m_Dimension.first*0.5) + (screen.GetScreenWidth()*0.5), 0);
+		Renderer::GetInstance()->Draw(screen, this->c_enemy);
+		int translateToCenter = -SPRITE_SPECIAL_OFFSET * this->c_enemy->m_SequenceKeeper.GetRange() * 0.5f;
+		int firstOffsetX = translateToCenter + (screen.GetScreenWidth() * 0.5f);
+		std::pair<int, int> offset(firstOffsetX, screen.GetScreenHeight() - SPRITE_SPECIAL_OFFSET - 1);
+		for (int i = 0; i < this->c_enemy->m_SequenceKeeper.GetRange(); i++) {
+			std::string spriteName = "sprite_input_" + std::to_string(this->c_enemy->m_SequenceKeeper.GetSequence(i));
+			if (i < this->index) {
+				Renderer::GetInstance()->DrawReverse(screen, offset, SpriteManager::GetInstance()->GetSprite(spriteName));
+			}
+			else {
+				Renderer::GetInstance()->Draw(screen, offset, SpriteManager::GetInstance()->GetSprite(spriteName));				
+			}
+			offset.first += SPRITE_SPECIAL_OFFSET;
+		}
+	}	
 }
 
 void PhaseCombat::InitCombat(int e_type, float dt)
@@ -92,12 +98,13 @@ void PhaseCombat::InitCombat(int e_type, float dt)
 	{
 		c_enemy = new BeastNu();
 		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu");
+		std::cout << this->c_enemy->m_Sprite->m_Dimension.first << " " << this->c_enemy->m_Sprite->m_Dimension.second << std::endl;
 	}
 	else
 	{
 		c_enemy = new BeastAlpha();
 		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha");
-	}
+	}	
 	startTime = dt;
 }
 
