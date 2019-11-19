@@ -13,7 +13,9 @@ PhaseCombat::PhaseCombat()
 
 PhaseCombat::~PhaseCombat()
 {
-
+	if (this->c_enemy != nullptr) {
+		delete c_enemy;
+	}
 }
 
 void PhaseCombat::OnUpdate(float dt, Screen& screen)
@@ -56,7 +58,9 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 	{
 		Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
 		Game::setState(Game::PHASE_MAZE);
-		delete c_enemy;
+		if (this->c_enemy != nullptr) {
+			delete c_enemy;
+		}
 	}
 	std::cout << "dt: " << dt << "Start: " << timeCounter << std::endl;
 		//delete enemy
@@ -85,7 +89,7 @@ PhaseCombat* PhaseCombat::GetInstance()
 
 void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
-	if (this->c_enemy->GetAliveStatus()) {
+	if (this->c_enemy != nullptr && this->c_enemy->GetAliveStatus()) {
 		this->c_enemy->SetPosition((-this->c_enemy->m_Sprite->m_Dimension.first*0.5) + (screen.GetScreenWidth()*0.5), 0);
 		Renderer::GetInstance()->Draw(screen, this->c_enemy);
 		int translateToCenter = -SPRITE_SPECIAL_OFFSET * this->c_enemy->m_SequenceKeeper.GetRange() * 0.5f;

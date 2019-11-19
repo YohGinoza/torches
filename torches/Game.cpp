@@ -119,7 +119,6 @@ namespace Game
 		gameUpdate(Time::GetInstance()->GetDeltaTime());
 
 		//debug_input();
-
 		if (*CurrentState == PHASE_COMBAT)
 		{
 			system("cls");
