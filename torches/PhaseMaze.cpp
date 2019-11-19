@@ -90,6 +90,56 @@ void PhaseMaze::Draw_Debug()
 	}
 }
 
+void PhaseMaze::Draw_Minimap() 
+{
+	for (int i = 0; i < MAP_HEIGHT; i++)
+	{
+		for (int y = 0; y < 3; y++)
+		{
+			for (int j = 0; j < MAP_WIDTH; j++)
+			{
+				for (int x = 0; x < 3; x++)
+				{
+					if (m_Rooms[i][j]->getTorches() || ((i == currRoomY) && (j== currRoomX)))
+					{
+						if ((i != 0 && y == 0 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_N)) ||
+							(i != MAP_HEIGHT - 1 && y == 2 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_S)))
+						{
+							std::cout << "| ";
+						}
+						else if ((j != 0 && x == 0 && y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_W)) ||
+							(j != MAP_WIDTH - 1 && x == 2 & y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_E)))
+						{
+							std::cout << "- ";
+						}
+						else if (x == 1 && y == 1)
+						{
+							if(((i == currRoomY) && (j == currRoomX))) {
+								std::cout << "@ ";
+							}
+							else if (m_Rooms[i][j]->getRoomType() == TYPE_TORCHES)
+							{
+								std::cout << "T ";
+							}
+							else
+							{
+								std::cout << "  ";
+							}
+						}
+						else {
+							std::cout << "  ";
+						}
+					}
+					else {
+						std::cout << "  ";
+					}
+				}
+			}
+			std::cout << std::endl;
+		}
+	}
+}
+
 void PhaseMaze::DrawMaze(Screen& screen) {
 	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
@@ -129,66 +179,88 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 
 		UpdateDraw = false;
 
-		MoveMon();
+		if (!Game::getInput()->getKey(KeyCode::KEY_M)) 
+		{
+			MoveMon();
+		}
 
 		PlayerInput();
 
 		std::cout << player_posX << " " << player_posY << std::endl;
 
 		UpdateDetectRange();
-		Draw_Debug();
+
+		if (m_TriggerMinimap) {
+			Draw_Minimap();
+		}
+		else {
+
+			Draw_Debug();
+		}
 	}
 }
 
 void PhaseMaze::PlayerInput()
 {
-	if (Game::getInput()->getKey(KeyCode::KEY_A))
-	{
-		if (/*(player_posX > 1) && */(map[player_posY][player_posX - 1] == '.'))
+	if (!m_TriggerMinimap) {
+		if (Game::getInput()->getKey(KeyCode::KEY_A))
 		{
-			map[player_posY][player_posX] = '.';
+			if (/*(player_posX > 1) && */(map[player_posY][player_posX - 1] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
 
-			player->Translate(-1, 0);
-			player_posX -= 1;
-			map[player_posY][player_posX] = '@';
+				player->Translate(-1, 0);
+				player_posX -= 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_D))
+		{
+			if (/*(player_posX < ROOM_WIDTH - 2) && */(map[player_posY][player_posX + 1] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
+
+				player->Translate(1, 0);
+				player_posX += 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_W))
+		{
+			if (/*(player_posY > 1) && */(map[player_posY - 1][player_posX] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
+
+				player->Translate(0, -1);
+				player_posY -= 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_S))
+		{
+			if (/*(player_posY < ROOM_HEIGHT - 2) && */(map[player_posY + 1][player_posX] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
+
+				player->Translate(0, 1);
+				player_posY += 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_T))
+		{
+			m_Rooms[currRoomY][currRoomX]->LitTorches(true);
 		}
 	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_D))
+	
+	if (Game::getInput()->getKey(KeyCode::KEY_M)) 
 	{
-		if (/*(player_posX < ROOM_WIDTH - 2) && */(map[player_posY][player_posX + 1] == '.'))
-		{
-			map[player_posY][player_posX] = '.';
-
-			player->Translate(1, 0);
-			player_posX += 1;
-			map[player_posY][player_posX] = '@';
+		if (!m_TriggerMinimap) {
+			m_TriggerMinimap = true;
 		}
-	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_W))
-	{
-		if (/*(player_posY > 1) && */(map[player_posY - 1][player_posX] == '.'))
-		{
-			map[player_posY][player_posX] = '.';
-
-			player->Translate(0, -1);
-			player_posY -= 1;
-			map[player_posY][player_posX] = '@';
+		else {
+			m_TriggerMinimap = false;
 		}
-	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_S))
-	{
-		if (/*(player_posY < ROOM_HEIGHT - 2) && */(map[player_posY + 1][player_posX] == '.'))
-		{
-			map[player_posY][player_posX] = '.';
-
-			player->Translate(0, 1);
-			player_posY += 1;
-			map[player_posY][player_posX] = '@';
-		}
-	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_T))
-	{
-		m_Rooms[currRoomY][currRoomX]->LitTorches(true);
 	}
 
 	if (player_posY == 0) 

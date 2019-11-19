@@ -29,6 +29,7 @@ public:
 	void ClearDetectRange();
 	void DrawMaze(Screen& screen);
 	void Draw_Debug();
+	void Draw_Minimap();
 
 	void resetRoom();
 private:
