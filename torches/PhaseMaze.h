@@ -1,11 +1,11 @@
 #pragma once
 #include "Phase.h"
+#include "MapGenerator.h"
 
 #define ROOM_WIDTH 50
 #define ROOM_HEIGHT 21
 
-#define ROOM_NUMX 5
-#define ROOM_NUMY 5
+#define MON_PER_ROOM 10
 
 class PhaseMaze :
 	public Phase
@@ -32,8 +32,8 @@ public:
 
 	void resetRoom();
 private:
-	
-	Room* m_Rooms[ROOM_NUMY][ROOM_NUMX];
+	MapGenerator* mapGen;
+	Room* m_Rooms[MAP_HEIGHT][MAP_WIDTH];
 	static PhaseMaze* s_Instance;
 	std::vector<int*> m_MapInfo;
 	std::vector<int*> m_RoomInfo;
@@ -47,6 +47,7 @@ private:
 	char** map;
 	bool** map_detect;
 	bool debug_draw;
+	bool UpdateDraw;
 
 	bool m_TriggerMinimap;	// turn minimap on/off
 };

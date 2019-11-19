@@ -30,13 +30,29 @@ PhaseMaze::PhaseMaze()
 		}
 	}
 
+	mapGen = new MapGenerator();
+	mapGen->GenerateMap();
+
 	//Generate Room
-	for (int i = 0; i < ROOM_NUMY; i++) {
-		for (int j = 0; j < ROOM_NUMX; j++)
+	for (int i = 0; i < MAP_HEIGHT; i++) {
+		for (int j = 0; j < MAP_HEIGHT; j++)
 		{
-			m_Rooms[i][j] = new Room();
+			if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_T)
+			{
+				m_Rooms[i][j] = new Room(TYPE_TORCHES, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+			}
+			else if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_C) 
+			{
+				m_Rooms[i][j] = new Room(TYPE_CHEST, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+			}
+			else 
+			{
+				m_Rooms[i][j] = new Room(TYPE_EMPTY, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+			}
 		}
 	}
+
+	mapGen->PrintMap();
 
 	currRoomX = 0;
 	currRoomY = 0;
@@ -107,9 +123,11 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		debug_draw = true;
 	}
 
-	if (Game::getInput()->KeyPress())
+	if (Game::getInput()->KeyPress() || UpdateDraw)
 	{
 		system("cls");
+
+		UpdateDraw = false;
 
 		MoveMon();
 
@@ -172,6 +190,51 @@ void PhaseMaze::PlayerInput()
 	{
 		m_Rooms[currRoomY][currRoomX]->LitTorches(true);
 	}
+
+	if (player_posY == 0) 
+	{
+		UpdateDraw = true;
+		map[player_posY][player_posX] = '.';
+		player->SetPosition(ROOM_WIDTH / 2, ROOM_HEIGHT - 2);
+
+		map[player->GetPosition().second][player->GetPosition().first] = '@';
+
+		currRoomY -= 1;
+		resetRoom();
+	}
+	else if (player_posY == ROOM_HEIGHT - 1) 
+	{
+		UpdateDraw = true;
+		map[player_posY][player_posX] = '.';
+		player->SetPosition(ROOM_WIDTH / 2, 2);
+
+		map[player->GetPosition().second][player->GetPosition().first] = '@';
+
+		currRoomY += 1;
+		resetRoom();
+	}
+	else if (player_posX == 0) 
+	{
+		UpdateDraw = true;
+		map[player_posY][player_posX] = '.';
+		player->SetPosition(ROOM_WIDTH - 2, ROOM_HEIGHT / 2);
+
+		map[player->GetPosition().second][player->GetPosition().first] = '@';
+
+		currRoomX -= 1;
+		resetRoom();
+	}
+	else if (player_posX == ROOM_WIDTH - 1) 
+	{
+		UpdateDraw = true;
+		map[player_posY][player_posX] = '.';
+		player->SetPosition(2, ROOM_HEIGHT / 2);
+
+		map[player->GetPosition().second][player->GetPosition().first] = '@';
+
+		currRoomX += 1;
+		resetRoom();
+	}
 }
 
 void PhaseMaze::UpdateDetectRange() 
@@ -182,7 +245,7 @@ void PhaseMaze::UpdateDetectRange()
 	{
 		for (int j = player_posX - 2; j < player_posX + 3; j++)
 		{
-			if ((i > 0) && (i < ROOM_HEIGHT - 1) && (j > 0) && (j < ROOM_WIDTH -1)) {
+			if ((i >= 0) && (i <= ROOM_HEIGHT - 1) && (j >= 0) && (j <= ROOM_WIDTH -1)) {
 
 				map_detect[i][j] = true;
 			}
@@ -191,12 +254,12 @@ void PhaseMaze::UpdateDetectRange()
 
 	for (int i = player_posX - 1; i < player_posX + 2; i++)
 	{
-		if ((player_posY - 2 > 0) && (player_posY - 2 < ROOM_HEIGHT - 1) && (i > 0) && (i < ROOM_WIDTH - 1))
+		if ((player_posY - 2 >= 0) && (player_posY - 2 <= ROOM_HEIGHT - 1) && (i >= 0) && (i <= ROOM_WIDTH - 1))
 		{
 			map_detect[player_posY - 2][i] = true;
 		}
 
-		if ((player_posY + 2 > 0) && (player_posY + 2 < ROOM_HEIGHT - 1) && (i > 0) && (i < ROOM_WIDTH - 1))
+		if ((player_posY + 2 >= 0) && (player_posY + 2 <= ROOM_HEIGHT - 1) && (i >= 0) && (i <= ROOM_WIDTH - 1))
 		{
 			map_detect[player_posY + 2][i] = true;
 		}
@@ -215,7 +278,7 @@ void PhaseMaze::ClearDetectRange()
 
 	map_detect[player->GetPosition().second][player->GetPosition().first] = true;
 
-	if (!m_Rooms[currRoomY][currRoomY]->getTorches()) {
+	if (!m_Rooms[currRoomY][currRoomX]->getTorches()) {
 		for (int i = 0; i < ROOM_WIDTH; i++)
 		{
 			map_detect[0][i] = true;
@@ -226,6 +289,35 @@ void PhaseMaze::ClearDetectRange()
 		{
 			map_detect[i][0] = true;
 			map_detect[i][ROOM_WIDTH - 1] = true;
+		}
+
+		if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_N)
+		{
+			map_detect[0][ROOM_WIDTH / 2] = false;
+			map_detect[0][(ROOM_WIDTH / 2) + 1] = false;
+			map_detect[0][(ROOM_WIDTH / 2) - 1] = false;
+		}
+
+		if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_S)
+		{
+
+			map_detect[ROOM_HEIGHT - 1][ROOM_WIDTH / 2] = false;
+			map_detect[ROOM_HEIGHT - 1][(ROOM_WIDTH / 2) + 1] = false;
+			map_detect[ROOM_HEIGHT - 1][(ROOM_WIDTH / 2) - 1] = false;
+		}
+
+		if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_E)
+		{
+			map_detect[ROOM_HEIGHT / 2][ROOM_WIDTH - 1] = false;
+			map_detect[(ROOM_HEIGHT / 2) + 1][ROOM_WIDTH - 1] = false;
+			map_detect[(ROOM_HEIGHT / 2) - 1][ROOM_WIDTH - 1] = false;
+		}
+
+		if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_W)
+		{
+			map_detect[ROOM_HEIGHT / 2][0] = false;
+			map_detect[(ROOM_HEIGHT / 2) + 1][0] = false;
+			map_detect[(ROOM_HEIGHT / 2) - 1][0] = false;
 		}
 	}
 	else
@@ -241,24 +333,60 @@ void PhaseMaze::ClearDetectRange()
 }
 
 void PhaseMaze::resetRoom() {
+	
+	for (int i = 0; i < ROOM_HEIGHT; i++)
+	{
+		for (int j = 0; j < ROOM_WIDTH; j++)
+		{
+			map[i][j] = '.';
+			map_detect[i][j] = false;
+		}
+	}
+
+	map[player->GetPosition().second][player->GetPosition().first] = '@';
 
 	for (int i = 0; i < ROOM_WIDTH; i++)
 	{
 		map[0][i] = '#';
 		map[ROOM_HEIGHT - 1][i] = '#';
-
-		map_detect[0][i] = true;
-		map_detect[ROOM_HEIGHT - 1][i] = true;
 	}
 
 	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
 		map[i][0] = '#';
 		map[i][ROOM_WIDTH - 1] = '#';
-
-		map_detect[i][0] = true;
-		map_detect[i][ROOM_WIDTH - 1] = true;
 	}
+
+	if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_N)
+	{
+		map[0][ROOM_WIDTH / 2] = '.';
+		map[0][(ROOM_WIDTH / 2) + 1] = '.';
+		map[0][(ROOM_WIDTH / 2) - 1] = '.';
+	}
+
+	if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_S)
+	{
+		map[ROOM_HEIGHT - 1][ROOM_WIDTH / 2] = '.';
+		map[ROOM_HEIGHT - 1][(ROOM_WIDTH / 2) + 1] = '.';
+		map[ROOM_HEIGHT - 1][(ROOM_WIDTH / 2) - 1] = '.';
+	}
+
+	if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_E)
+	{
+		map[ROOM_HEIGHT / 2][ROOM_WIDTH - 1] = '.';
+		map[(ROOM_HEIGHT / 2) + 1][ROOM_WIDTH - 1] = '.';
+		map[(ROOM_HEIGHT / 2) - 1][ROOM_WIDTH - 1] = '.';
+	}
+
+	if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(currRoomX, currRoomY))] & NODE_PATH_W)
+	{
+
+		map[ROOM_HEIGHT / 2][0] = '.';
+		map[(ROOM_HEIGHT / 2) + 1][0] = '.';
+		map[(ROOM_HEIGHT / 2) - 1][0] = '.';
+	}
+
+	ClearDetectRange();
 
 	if (m_Rooms[currRoomY][currRoomX]->haveMon())
 	{

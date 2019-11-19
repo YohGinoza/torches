@@ -14,7 +14,7 @@ class Room : public Entity
 {
 public:
 	Room();
-	Room(unsigned char door, int roomType, int numMon);
+	Room(int roomType, int numMon);
 	int getRoomType();
 	bool haveMon();
 	bool getTorches();

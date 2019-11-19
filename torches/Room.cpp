@@ -15,19 +15,18 @@ Room::Room()
 	
 }
 
-Room::Room(unsigned char door, int roomType, int numMon)
+Room::Room(int roomType, int numMon)
 {
-	this->door = door;
 	this->roomType = roomType;
 	this->torchesLit = false;
-	this->spawnMon = spawnMon;
+	this->spawnMon = false;
 
 	if (numMon > 0) {
-		spawnMon = 0;
+		spawnMon = true;
 
 		for (int i = 0; i < numMon; i++)
 		{
-			monster[i] = new GameObject();
+			monster.push_back(new GameObject());
 		}
 	}
 

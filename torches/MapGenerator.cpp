@@ -1,30 +1,5 @@
 #include "MapGenerator.h"
 
-#define MAP_WIDTH 5
-#define MAP_HEIGHT 5
-
-#define TORCH_COUNT 10
-#define CHEST_COUNT 5
-
-enum
-{
-	NODE_PATH_N = 0x01,
-	NODE_PATH_E = 0x02,
-	NODE_PATH_S = 0x04,
-	NODE_PATH_W = 0x08,
-	NODE_VISITED = 0x10,
-	NODE_TYPE_C = 0x20,
-	NODE_TYPE_T = 0x40
-};
-
-enum
-{
-	DIR_N = 0,
-	DIR_E,
-	DIR_S,
-	DIR_W
-};
-
 MapGenerator::MapGenerator()
 {
 	m_MapInfo = new unsigned char[MAP_WIDTH * MAP_HEIGHT];
@@ -197,6 +172,10 @@ int MapGenerator::GetIndex(MapPosition pos)
 	{
 		return -1;
 	}
+}
+
+unsigned char* MapGenerator::getMapInfo() {
+	return m_MapInfo;
 }
 
 void MapGenerator::PrintMap()
