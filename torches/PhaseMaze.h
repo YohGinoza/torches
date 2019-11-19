@@ -21,6 +21,7 @@ public:
 	bool MinimapOn() const; // return m_TriggerMinimap
 
 	void PlayerInput();
+	void CheckAround();
 
 	void SpawnMon();
 	void MoveMon();

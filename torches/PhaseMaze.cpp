@@ -173,6 +173,8 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		debug_draw = true;
 	}
 
+	CheckAround();
+
 	if (Game::getInput()->KeyPress() || UpdateDraw)
 	{
 		system("cls");
@@ -306,6 +308,35 @@ void PhaseMaze::PlayerInput()
 
 		currRoomX += 1;
 		resetRoom();
+	}
+
+	
+	
+}
+
+void PhaseMaze::CheckAround() {
+	if (((player_posX > 0) && (player_posX < ROOM_WIDTH - 2)) && ((player_posY > 0) && (player_posY < ROOM_HEIGHT - 2)))
+	{
+		if ((map[player_posY][player_posX + 1] == 'C') || (map[player_posY][player_posX - 1] == 'C')
+			|| map[player_posY + 1][player_posX] == 'C' || (map[player_posY - 1][player_posX] == 'C'))
+		{
+			if (Game::getInput()->getKey(KEY_J)) 
+			{
+					
+			}
+
+		}else if (map[player_posY][player_posX + 1] == 'M') {
+			
+		}
+		else if (map[player_posY][player_posX - 1] == 'M') {
+
+		}
+		else if (map[player_posY + 1][player_posX] == 'M') {
+
+		}
+		else if (map[player_posY - 1][player_posX] == 'M') {
+
+		}
 	}
 }
 
