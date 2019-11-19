@@ -27,11 +27,11 @@ namespace Game
 	int* CurrentState;
 	int* NextState;
 
-	float dt;
+	float dt = Time::GetInstance()->GetDeltaTime();
 
 	Screen* gameScreen = new Screen(150, 60);
 
-	Time t();
+	Time t;
 
 	void MazeUpdate(float dt) 
 	{
@@ -40,7 +40,7 @@ namespace Game
 
 	void CombatUpdate(float dt) 
 	{
-		Combat->OnUpdate(dt, *gameScreen);
+		Combat->OnUpdate(Time::GetInstance()->GetDeltaTime(), *gameScreen);
 	}
 
 	void Init() 
@@ -70,12 +70,13 @@ namespace Game
 		Combat = PhaseCombat::GetInstance();
 
 		//pls change this when we have dt
-		dt = 0;				
+		dt = Time::GetInstance()->GetDeltaTime();				
 		PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
 	}
 
 	void Loop()
 	{
+		Time::GetInstance()->OnUpdate();
 		while (*CurrentState != GameState::QUIT)
 		{
 			if (*NextState != *CurrentState)
@@ -111,7 +112,7 @@ namespace Game
 
 		gameScreen->ClearScreen();
 
-		gameUpdate(dt);
+		gameUpdate(Time::GetInstance()->GetDeltaTime());
 
 		//debug_input();
 

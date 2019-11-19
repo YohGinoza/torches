@@ -13,6 +13,7 @@ PhaseCombat::PhaseCombat()
 
 PhaseCombat::~PhaseCombat()
 {
+
 }
 
 void PhaseCombat::OnUpdate(float dt, Screen& screen)
@@ -40,13 +41,14 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 	}
 
 	//if time run out or finish the enemy sequence
-	//if(COMBAT_TIME_LIMIT < startTime - dt) //run out of time
-	//{
-	//	Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
-	//	Game::setState(Game::GameState::PHASE_MAZE());
-	//	delete c_enemy;
-	//}
-
+	timeCounter += dt;
+	if(COMBAT_TIME_LIMIT < timeCounter) //run out of time
+	{
+		Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
+		Game::setState(Game::PHASE_MAZE);
+		delete c_enemy;
+	}
+	std::cout << "dt: " << dt << "Start: " << timeCounter << std::endl;
 		//delete enemy
 
 		//go back 
@@ -107,6 +109,5 @@ void PhaseCombat::InitCombat(int e_type, float dt)
 		c_enemy = new BeastAlpha();
 		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha");
 	}	
-	startTime = dt;
 }
 
