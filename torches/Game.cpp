@@ -6,6 +6,9 @@
 #include "Phase.h"
 #include "PhaseMaze.h"
 #include "PhaseCombat.h"
+#include "Game.h"
+#include "Time.h"
+#include "Renderer.h"
 
 class PhaseMaze;
 
@@ -24,23 +27,36 @@ namespace Game
 	int* CurrentState;
 	int* NextState;
 
-	float dt;
+	float dt = Time::GetInstance()->GetDeltaTime();
+
+	Screen* gameScreen = new Screen(150, 60);
+
+	Time t;
 
 	void MazeUpdate(float dt) 
 	{
-		Maze->OnUpdate(dt);
+		Maze->OnUpdate(dt, *gameScreen);
 	}
 
 	void CombatUpdate(float dt) 
 	{
-		Combat->OnUpdate(dt);
+		Combat->OnUpdate(Time::GetInstance()->GetDeltaTime(), *gameScreen);
 	}
 
 	void Init() 
 	{
+
+		Renderer r();
+		SpriteManager sm();
+
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha", "BitMapSprites/BeastAlpha.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastNu", "BitMapSprites/BeastNu.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("s3", "BitMapSprites/BeastNu.txt"));
+		SpriteManager::GetInstance()->LoadInputSprites();
+
 		CurrentState = new int;
 		NextState = new int;
-
+		
 		*CurrentState = GameState::PHASE_COMBAT;
 		*NextState = GameState::PHASE_COMBAT;
 
@@ -54,11 +70,13 @@ namespace Game
 		Combat = PhaseCombat::GetInstance();
 
 		//pls change this when we have dt
-		dt = 0;
+		dt = Time::GetInstance()->GetDeltaTime();				
+		PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
 	}
 
 	void Loop()
 	{
+		Time::GetInstance()->OnUpdate();
 		while (*CurrentState != GameState::QUIT)
 		{
 			if (*NextState != *CurrentState)
@@ -71,6 +89,7 @@ namespace Game
 				}
 				else if (*NextState == GameState::PHASE_COMBAT)
 				{
+					PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
 					*CurrentState = GameState::PHASE_COMBAT;
 					gameUpdate = CombatUpdate;
 				}
@@ -91,9 +110,14 @@ namespace Game
 	{
 		input->updateInput();
 
-		gameUpdate(dt);
+		gameScreen->ClearScreen();
+
+		gameUpdate(Time::GetInstance()->GetDeltaTime());
 
 		//debug_input();
+
+		system("cls");	
+		Renderer::GetInstance()->ShowOutput(*gameScreen);
 
 		input->clearArray();
 	}
