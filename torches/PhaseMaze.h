@@ -2,10 +2,10 @@
 #include "Phase.h"
 #include "MapGenerator.h"
 
-#define ROOM_WIDTH 50
-#define ROOM_HEIGHT 21
+#define ROOM_WIDTH 15
+#define ROOM_HEIGHT 15
 
-#define MON_PER_ROOM 10
+#define MON_PER_ROOM 7
 
 class PhaseMaze :
 	public Phase
@@ -22,6 +22,7 @@ public:
 
 	void PlayerInput();
 	void CheckAround();
+	void CheckTorches();
 
 	void SpawnMon();
 	void MoveMon();

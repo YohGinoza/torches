@@ -1,4 +1,5 @@
 #include "PhaseMaze.h"
+#include "PhaseCombat.h"
 
 PhaseMaze* PhaseMaze::s_Instance = nullptr;
 
@@ -39,7 +40,14 @@ PhaseMaze::PhaseMaze()
 		{
 			if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_T)
 			{
-				m_Rooms[i][j] = new Room(TYPE_TORCHES, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+				if ((i == 0) && (j == 0)) 
+				{
+					m_Rooms[i][j] = new Room(TYPE_TORCHES, 0);
+				}
+				else 
+				{
+					m_Rooms[i][j] = new Room(TYPE_TORCHES, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+				}
 			}
 			else if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_C) 
 			{
@@ -49,6 +57,23 @@ PhaseMaze::PhaseMaze()
 			{
 				m_Rooms[i][j] = new Room(TYPE_EMPTY, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
 			}
+		}
+	}
+	
+	bool setWintorches = false;
+
+	while (!setWintorches) 
+	{
+		int randRoomX = rand() % MAP_WIDTH;
+		int randRoomY = rand() % MAP_HEIGHT;
+
+		if (m_Rooms[randRoomY][randRoomX]->getRoomType() == TYPE_TORCHES)
+		{
+			setWintorches = true;
+
+			m_Rooms[randRoomY][randRoomX]->setWinningTorches();
+
+			std::cout << "Winning toches = " << randRoomX << " " << randRoomY << std::endl;
 		}
 	}
 
@@ -174,6 +199,7 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 	}
 
 	CheckAround();
+	CheckTorches();
 
 	if (Game::getInput()->KeyPress() || UpdateDraw)
 	{
@@ -322,20 +348,36 @@ void PhaseMaze::CheckAround() {
 		{
 			if (Game::getInput()->getKey(KEY_J)) 
 			{
-					
+				player->Heal(30);
+
+				m_Rooms[currRoomY][currRoomX]->setRoomType(TYPE_EMPTY);
+				map[ROOM_HEIGHT / 2][ROOM_WIDTH / 2] = '.';
 			}
 
-		}else if (map[player_posY][player_posX + 1] == 'M') {
-			
 		}
-		else if (map[player_posY][player_posX - 1] == 'M') {
+	}
 
-		}
-		else if (map[player_posY + 1][player_posX] == 'M') {
+	for (int i = 0; i < m_Rooms[currRoomY][currRoomX]->getMon().size(); i++) {
+		
+		if (m_Rooms[currRoomY][currRoomX]->getMon().at(i) != nullptr) 
+		{
+			int mon_posX = m_Rooms[currRoomY][currRoomX]->getMon().at(i)->GetPosition().first;
+			int mon_posY = m_Rooms[currRoomY][currRoomX]->getMon().at(i)->GetPosition().second;
 
-		}
-		else if (map[player_posY - 1][player_posX] == 'M') {
+			if (((mon_posX > 0) && (mon_posX <= ROOM_WIDTH - 2)) && ((mon_posY > 0) && (mon_posY <= ROOM_HEIGHT - 2)))
+			{
+				if ((map[mon_posY][mon_posX + 1] == '@') || (map[mon_posY][mon_posX - 1] == '@')
+					|| map[mon_posY + 1][mon_posX] == '@' || (map[mon_posY - 1][mon_posX] == '@'))
+				{
+					map[mon_posY][mon_posX] = '.';
+					m_Rooms[currRoomY][currRoomX]->setMonNull(i);
+					debug_draw = false;
 
+					Game::setState(Game::GameState::PHASE_COMBAT);
+					
+					system("cls");
+				}
+			}
 		}
 	}
 }
@@ -365,6 +407,32 @@ void PhaseMaze::UpdateDetectRange()
 		if ((player_posY + 2 >= 0) && (player_posY + 2 <= ROOM_HEIGHT - 1) && (i >= 0) && (i <= ROOM_WIDTH - 1))
 		{
 			map_detect[player_posY + 2][i] = true;
+		}
+	}
+}
+
+void PhaseMaze::CheckTorches() {
+	
+	if (m_Rooms[currRoomY][currRoomX]->getRoomType() == TYPE_TORCHES) 
+	{
+		bool lit = true;
+
+		for (int i = 0; i < m_Rooms[currRoomY][currRoomX]->getMon().size(); i++)
+		{
+			if (m_Rooms[currRoomY][currRoomX]->getMon().at(i) != nullptr) 
+			{
+				lit = false;
+			}
+		}
+
+		if (lit) 
+		{
+			m_Rooms[currRoomY][currRoomX]->LitTorches(true);
+
+			if (m_Rooms[currRoomY][currRoomX]->getWin()) 
+			{
+				Game::setState(Game::GameState::QUIT);
+			}
 		}
 	}
 }
@@ -501,7 +569,11 @@ void PhaseMaze::resetRoom() {
 		GameObject* tmp;
 		tmp = m_Rooms[currRoomY][currRoomX]->getMon().at(i);
 
-		map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
+		if (tmp != nullptr) 
+		{
+
+			map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
+		}
 
 	}
 
@@ -524,25 +596,29 @@ void PhaseMaze::SpawnMon()
 {
 	for (int i = 0; i < m_Rooms[currRoomY][currRoomX]->getMon().size(); i++)
 	{
-		bool randCheck = false;
-		int randposX, randposY;
-
-		while (!randCheck)
+		if (m_Rooms[currRoomY][currRoomX]->getMon().at(i) != nullptr) 
 		{
-			randposX = rand() % ROOM_WIDTH;
-			randposY = rand() % ROOM_HEIGHT;
 
-			if (map[randposY][randposX] != '.') {
-				randCheck = false;
-			}
-			else
+			bool randCheck = false;
+			int randposX, randposY;
+
+			while (!randCheck)
 			{
-				randCheck = true;
-				break;
-			}
-		}
+				randposX = rand() % ROOM_WIDTH;
+				randposY = rand() % ROOM_HEIGHT;
 
-		m_Rooms[currRoomY][currRoomX]->getMon().at(i)->SetPosition(randposX, randposY);
+				if (map[randposY][randposX] != '.') {
+					randCheck = false;
+				}
+				else
+				{
+					randCheck = true;
+					break;
+				}
+			}
+
+			m_Rooms[currRoomY][currRoomX]->getMon().at(i)->SetPosition(randposX, randposY);
+		}
 	}
 }
 
@@ -552,48 +628,53 @@ void PhaseMaze::MoveMon()
 		for (int i = 0; i < m_Rooms[currRoomY][currRoomX]->getMon().size(); i++)
 		{
 			GameObject* tmp = m_Rooms[currRoomY][currRoomX]->getMon().at(i);
-			int randMove = rand() % 4;
 
-			switch (randMove)
+			if (tmp != nullptr) 
 			{
-			case 0:
-				if ((tmp->GetPosition().first > 1) && (map[tmp->GetPosition().second][tmp->GetPosition().first - 1] == '.'))
-				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
 
-					tmp->Translate(-1, 0);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-				}
-				break;
-			case 1:
-				if ((tmp->GetPosition().first < ROOM_HEIGHT - 2) && (map[tmp->GetPosition().second][tmp->GetPosition().first + 1] == '.'))
-				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
+				int randMove = rand() % 4;
 
-					tmp->Translate(1, 0);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-				}
-				break;
-			case 2:
-				if ((tmp->GetPosition().second > 1) && (map[tmp->GetPosition().second - 1][tmp->GetPosition().first] == '.'))
+				switch (randMove)
 				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
+				case 0:
+					if ((tmp->GetPosition().first > 1) && (map[tmp->GetPosition().second][tmp->GetPosition().first - 1] == '.'))
+					{
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
 
-					tmp->Translate(0, -1);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-				}
-				break;
-			case 3:
-				if ((tmp->GetPosition().second < ROOM_HEIGHT - 2) && (map[tmp->GetPosition().second + 1][tmp->GetPosition().first] == '.'))
-				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
+						tmp->Translate(-1, 0);
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
+					}
+					break;
+				case 1:
+					if ((tmp->GetPosition().first < ROOM_HEIGHT - 2) && (map[tmp->GetPosition().second][tmp->GetPosition().first + 1] == '.'))
+					{
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
 
-					tmp->Translate(0, 1);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
+						tmp->Translate(1, 0);
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
+					}
+					break;
+				case 2:
+					if ((tmp->GetPosition().second > 1) && (map[tmp->GetPosition().second - 1][tmp->GetPosition().first] == '.'))
+					{
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
+
+						tmp->Translate(0, -1);
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
+					}
+					break;
+				case 3:
+					if ((tmp->GetPosition().second < ROOM_HEIGHT - 2) && (map[tmp->GetPosition().second + 1][tmp->GetPosition().first] == '.'))
+					{
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
+
+						tmp->Translate(0, 1);
+						map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
+					}
+					break;
+				default:
+					break;
 				}
-				break;
-			default:
-				break;
 			}
 		}
 	}
