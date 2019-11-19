@@ -40,3 +40,7 @@ void Entity::reduceHp(int damage)
 		Hp = 0;
 	}
 }
+
+void Entity::SetAliveStatus(bool isAlive) {
+	this->isAlive = isAlive;
+}

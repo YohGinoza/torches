@@ -115,7 +115,7 @@ namespace Game
 
 		//debug_input();
 
-		system("cls");		
+		system("cls");	
 		Renderer::GetInstance()->ShowOutput(*gameScreen);
 
 		input->clearArray();

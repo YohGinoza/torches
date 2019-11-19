@@ -14,6 +14,7 @@ public:
 	int GetHp() const;
 	int GetAttackDamage() const;
 	bool GetAliveStatus() const;
+	void SetAliveStatus(bool isAlive);
 	void reduceHp(int);
 protected:
 	int Hp;

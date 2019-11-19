@@ -56,10 +56,10 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 	{
 		//calculate remaining sequence damage
 		Game::setState(Game::PHASE_MAZE);
-		delete c_enemy;
+		this->c_enemy->SetAliveStatus(false);;
 	}
 
-	DrawCombatPhase(screen);
+	DrawCombatPhase(screen);	
 }
 
 PhaseCombat* PhaseCombat::GetInstance()
@@ -73,7 +73,7 @@ PhaseCombat* PhaseCombat::GetInstance()
 
 void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
-	if (this->c_enemy != nullptr) {
+	if (this->c_enemy->GetAliveStatus()) {
 		this->c_enemy->SetPosition((-this->c_enemy->m_Sprite->m_Dimension.first*0.5) + (screen.GetScreenWidth()*0.5), 0);
 		Renderer::GetInstance()->Draw(screen, this->c_enemy);
 		int translateToCenter = -SPRITE_SPECIAL_OFFSET * this->c_enemy->m_SequenceKeeper.GetRange() * 0.5f;
@@ -94,11 +94,13 @@ void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on
 
 void PhaseCombat::InitCombat(int e_type, float dt)
 {
+	if (!this->c_enemy->GetAliveStatus()) {
+		delete this->c_enemy;
+	}
 	if (e_type == BeastType::BeastNum)
 	{
 		c_enemy = new BeastNu();
 		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu");
-		std::cout << this->c_enemy->m_Sprite->m_Dimension.first << " " << this->c_enemy->m_Sprite->m_Dimension.second << std::endl;
 	}
 	else
 	{
