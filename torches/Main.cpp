@@ -6,13 +6,12 @@
 #include "Entity.h"
 #include "Renderer.h"
 #include "Sprite.h"
-#include "Screen.h"
 
 #include "Game.h"
 
 int main()
-{
-	srand(time(NULL));
+{	
+	//srand(time(NULL));
 
 	Game::Init();
 
@@ -21,5 +20,6 @@ int main()
 	Game::Destroy();
 	
 	system("pause");
+	
 	return 0;
 }

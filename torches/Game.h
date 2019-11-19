@@ -3,6 +3,7 @@
 #include "InputBuffer.h"
 #include "InputReader.h"
 #include "InputWriter.h"
+#include "Screen.h"
 
 
 namespace Game 

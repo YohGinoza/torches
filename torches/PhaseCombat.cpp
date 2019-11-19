@@ -1,73 +1,65 @@
 #include "PhaseCombat.h"
-#include "Game.h"
-#include "Monster.h"
+#include "Renderer.h"
 
 PhaseCombat* PhaseCombat::s_Instance = 0;
 
 PhaseCombat::PhaseCombat()
 {
-	c_enemy = new BeastNu();
+	c_enemy = new BeastNu(10, 5);
 	c_enemy->GenerateSequence();
 
 	index = 0;
 }
 
-PhaseCombat::PhaseCombat(Monster* enemy)
-{
-	this->c_enemy = enemy;
-
-	index = 0;
-}
-
-
 PhaseCombat::~PhaseCombat()
 {
 }
 
-void PhaseCombat::OnUpdate(float dt)
+void PhaseCombat::OnUpdate(float dt, Screen& screen)
 {
 	//get input
 	if (Game::getInput()->KeyPress()) {
 
 		if (Game::getInput()->getKey(c_enemy->m_SequenceKeeper.GetSequence(index)))
 		{
-			//if correct continue
-				//calculate damage
-				//remove that key from buffer
-			//c_enemy->m_SequenceKeeper.GetSequence().pop();
-			std::cout << "Damage" << std::endl;
+			//if correct
+			//calculate damage
+			c_enemy->reduceHp(Player::GetInstance()->GetAttackDamage());
+			std::cout << c_enemy->m_SequenceKeeper.GetRange() << ", " << index << std::endl;
 
-			if (index < c_enemy->m_SequenceKeeper.GetRange() - 1) 
-			{
-				index++;
-			}
+			//go to next sequence
+			index++;
+
 		}
 		else
 		{
-			//if incorrect stop
-				//calculate damage
-			std::cout << "hhhhhhhhhhhhh" << std::endl;
-			//delete c_enemy;
-			//Game::setState(Game::GameState::PHASE_MAZE());
+			//if incorrect
+			//calculate damage
+			Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage());
 		}
 	}
 
 	//if time run out or finish the enemy sequence
-	// if() //run out of time
+	//if(COMBAT_TIME_LIMIT < startTime - dt) //run out of time
 	//{
-		/*if (c_enemy->m_SequenceKeeper.GetSequence().size() != 0)
-		{
-			//calculate remaining sequence damage
-		}*/
-		//Game::setState(Game::GameState::PHASE_MAZE());
-		//delete c_enemy;
+	//	Player::GetInstance()->reduceHp(c_enemy->GetAttackDamage() * c_enemy->m_SequenceKeeper.GetRange() - (index + 1));
+	//	Game::setState(Game::GameState::PHASE_MAZE());
+	//	delete c_enemy;
 	//}
+
 		//delete enemy
 
 		//go back 
 
+	//if finish sequence, go to maze phase
+	if (c_enemy->m_SequenceKeeper.GetRange() - 1 < index)
+	{
+		//calculate remaining sequence damage
+		Game::setState(Game::PHASE_MAZE);
+		delete c_enemy;
+	}
 
-
+	DrawCombatPhase(screen);
 }
 
 PhaseCombat* PhaseCombat::GetInstance()
@@ -79,17 +71,33 @@ PhaseCombat* PhaseCombat::GetInstance()
 	return s_Instance;
 }
 
-PhaseCombat* PhaseCombat::GetInstance(Monster* enemy)
+void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
-	if (s_Instance == 0)
-	{
-		s_Instance = new PhaseCombat(enemy);
+	std::cout << "yay";
+	std::cout << this->c_enemy->m_Sprite->m_Dimension.first << " " << this->c_enemy->m_Sprite->m_Dimension.second << std::endl;
+	//Renderer::GetInstance()->Draw(screen, this->c_enemy);
+	int translateToCenter = SPRITE_SPECIAL_OFFSET * this->c_enemy->m_SequenceKeeper.GetRange() * 0.5f;
+	int firstOffsetX = translateToCenter + (screen.GetScreenWidth() * 0.5f);
+	std::pair<int, int> offset(firstOffsetX, screen.GetScreenHeight() - SPRITE_SPECIAL_OFFSET - 1);
+	for (int i = 0; i < this->c_enemy->m_SequenceKeeper.GetRange(); i++) {
+		std::string spriteName = "sprite_input_" + std::to_string(this->c_enemy->m_SequenceKeeper.GetSequence(i));
+		Renderer::GetInstance()->Draw(screen, offset, SpriteManager::GetInstance()->GetSprite(spriteName));
+		offset.first += SPRITE_SPECIAL_OFFSET;
 	}
-	return s_Instance;
 }
 
-void PhaseCombat::DrawSequence(Screen& screen) // draws monster's sequence on screen
+void PhaseCombat::InitCombat(int e_type, float dt)
 {
-
+	if (e_type == BeastType::BeastNum)
+	{
+		c_enemy = new BeastNu();
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu");
+	}
+	else
+	{
+		c_enemy = new BeastAlpha();
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha");
+	}
+	startTime = dt;
 }
 

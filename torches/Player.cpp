@@ -4,11 +4,13 @@ Player* Player::s_Instance;
 
 Player::Player()
 {
+	Hp = 100;
 }
 
 
 Player::~Player()
 {
+
 }
 
 Player* Player::GetInstance() {

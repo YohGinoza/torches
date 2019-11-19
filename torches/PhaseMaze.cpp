@@ -1,5 +1,4 @@
 #include "PhaseMaze.h"
-#include "Game.h"
 
 PhaseMaze* PhaseMaze::s_Instance = nullptr;
 
@@ -13,53 +12,60 @@ PhaseMaze* PhaseMaze::GetInstance() {
 
 PhaseMaze::PhaseMaze()
 {
-	map = new char*[room_height];
-	map_detect = new bool*[room_height];
+	map = new char*[ROOM_HEIGHT];
+	map_detect = new bool*[ROOM_HEIGHT];
 
-	for (int i = 0; i < room_height; i++)
+	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
-		map[i] = new char[room_width];
-		map_detect[i] = new bool[room_width];
+		map[i] = new char[ROOM_WIDTH];
+		map_detect[i] = new bool[ROOM_WIDTH];
 	}
 
-	for (int i = 0; i < room_height; i++)
+	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
-		for (int j = 0; j < room_width; j++)
+		for (int j = 0; j < ROOM_WIDTH; j++)
 		{
 			map[i][j] = '.';
 			map_detect[i][j] = false;
 		}
 	}
 
-	//Generate Room
-	for (int i = 0; i < room_numY; i++) {
-		for (int j = 0; j < room_numX; j++) 
-		{
-			m_Rooms[i][j] = new Room();
-		}
+	for (int i = 0; i < ROOM_WIDTH; i++)
+	{
+		map[0][i] = '#';
+		map[ROOM_HEIGHT - 1][i] = '#';
+
+		map_detect[0][i] = true;
+		map_detect[ROOM_HEIGHT - 1][i] = true;
 	}
-	
-	currRoomX = 0;
-	currRoomY = 0;
+
+	for (int i = 0; i < ROOM_HEIGHT; i++)
+	{
+		map[i][0] = '#';
+		map[i][ROOM_WIDTH - 1] = '#';
+
+		map_detect[i][0] = true;
+		map_detect[i][ROOM_WIDTH - 1] = true;
+	}
+
+	map[ROOM_HEIGHT / 2][ROOM_WIDTH / 2] = 'T';
 
 	debug_draw = false;
 
 	player = Player::GetInstance();
 
-	player->SetPosition(2, room_height / 2);
+	player->SetPosition(2, ROOM_HEIGHT / 2);
 
-	resetRoom();
-
-	std::cout << player->GetPosition().first << " " << player->GetPosition().second << std::endl;
+	//std::cout << player->GetPosition().first << " " << player->GetPosition().second << std::endl;
 	
 	map[player->GetPosition().second][player->GetPosition().first] = '@';
 }
 
 void PhaseMaze::Draw_Debug() 
 {
-	for (int i = 0; i < room_height; i++)
+	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
-		for (int j = 0; j < room_width; j++) 
+		for (int j = 0; j < ROOM_WIDTH; j++) 
 		{
 			if (map_detect[i][j]) 
 			{
@@ -75,12 +81,29 @@ void PhaseMaze::Draw_Debug()
 	}
 }
 
+void PhaseMaze::DrawMaze(Screen& screen) {
+	for (int i = 0; i < ROOM_HEIGHT; i++)
+	{
+		for (int j = 0; j < ROOM_WIDTH; j++)
+		{
+			if (map_detect[i][j])
+			{
+				screen.SetData(i, j, map[i][j]);
+			}
+			else
+			{
+				screen.SetData(i, j, ' ');
+			}
+		}
+	}
+}
+
 
 PhaseMaze::~PhaseMaze()
 {
 }
 
-void PhaseMaze::OnUpdate(float dt) 
+void PhaseMaze::OnUpdate(float dt, Screen& screen) 
 {
 	player_posX = player->GetPosition().first;
 	player_posY = player->GetPosition().second;
@@ -95,67 +118,55 @@ void PhaseMaze::OnUpdate(float dt)
 	{
 		system("cls");
 
+		if (Game::getInput()->getKey(KeyCode::KEY_A)) 
+		{
+			if ((player_posX > 1) && (map[player_posY][player_posX - 1] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
 
-		MoveMon();
+				player->Translate(-1, 0);
+				player_posX -= 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_D))
+		{
+			if ((player_posX < ROOM_WIDTH - 2) && (map[player_posY][player_posX + 1] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
+				
+				player->Translate(1, 0);
+				player_posX += 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_W))
+		{
+			if ((player_posY > 1) && (map[player_posY - 1][player_posX] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
 
-		PlayerInput();
+				player->Translate(0, -1);
+				player_posY -= 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_S))
+		{
+			if ((player_posY < ROOM_HEIGHT - 2) && (map[player_posY + 1][player_posX] == '.'))
+			{
+				map[player_posY][player_posX] = '.';
+
+				player->Translate(0, 1);
+				player_posY += 1;
+				map[player_posY][player_posX] = '@';
+			}
+		}
 
 		std::cout << player_posX << " " << player_posY << std::endl;
 
 		UpdateDetectRange();
 		Draw_Debug();
-	}
-}
-
-void PhaseMaze::PlayerInput() 
-{
-	if (Game::getInput()->getKey(KeyCode::KEY_A))
-	{
-		if (/*(player_posX > 1) && */(map[player_posY][player_posX - 1] == '.'))
-		{
-			map[player_posY][player_posX] = '.';
-
-			player->Translate(-1, 0);
-			player_posX -= 1;
-			map[player_posY][player_posX] = '@';
-		}
-	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_D))
-	{
-		if (/*(player_posX < room_width - 2) && */(map[player_posY][player_posX + 1] == '.'))
-		{
-			map[player_posY][player_posX] = '.';
-
-			player->Translate(1, 0);
-			player_posX += 1;
-			map[player_posY][player_posX] = '@';
-		}
-	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_W))
-	{
-		if (/*(player_posY > 1) && */(map[player_posY - 1][player_posX] == '.'))
-		{
-			map[player_posY][player_posX] = '.';
-
-			player->Translate(0, -1);
-			player_posY -= 1;
-			map[player_posY][player_posX] = '@';
-		}
-	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_S))
-	{
-		if (/*(player_posY < room_height - 2) && */(map[player_posY + 1][player_posX] == '.'))
-		{
-			map[player_posY][player_posX] = '.';
-
-			player->Translate(0, 1);
-			player_posY += 1;
-			map[player_posY][player_posX] = '@';
-		}
-	}
-	else if (Game::getInput()->getKey(KeyCode::KEY_T)) 
-	{
-		m_Rooms[currRoomY][currRoomX]->LitTorches(true);
 	}
 }
 
@@ -167,7 +178,7 @@ void PhaseMaze::UpdateDetectRange()
 	{
 		for (int j = player_posX - 2; j < player_posX + 3; j++)
 		{
-			if ((i > 0) && (i < room_height - 1) && (j > 0) && (j < room_width -1)) {
+			if ((i > 0) && (i < ROOM_HEIGHT - 1) && (j > 0) && (j < ROOM_WIDTH -1)) {
 
 				map_detect[i][j] = true;
 			}
@@ -176,12 +187,12 @@ void PhaseMaze::UpdateDetectRange()
 
 	for (int i = player_posX - 1; i < player_posX + 2; i++)
 	{
-		if ((player_posY - 2 > 0) && (player_posY - 2 < room_height - 1) && (i > 0) && (i < room_width - 1))
+		if ((player_posY - 2 > 0) && (player_posY - 2 < ROOM_HEIGHT - 1) && (i > 0) && (i < ROOM_WIDTH - 1))
 		{
 			map_detect[player_posY - 2][i] = true;
 		}
 
-		if ((player_posY + 2 > 0) && (player_posY + 2 < room_height - 1) && (i > 0) && (i < room_width - 1))
+		if ((player_posY + 2 > 0) && (player_posY + 2 < ROOM_HEIGHT - 1) && (i > 0) && (i < ROOM_WIDTH - 1))
 		{
 			map_detect[player_posY + 2][i] = true;
 		}
@@ -190,9 +201,9 @@ void PhaseMaze::UpdateDetectRange()
 
 void PhaseMaze::ClearDetectRange() 
 {
-	for (int i = 0; i < room_height; i++)
+	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
-		for (int j = 0; j < room_width; j++)
+		for (int j = 0; j < ROOM_WIDTH; j++)
 		{
 			map_detect[i][j] = false;
 		}
@@ -200,155 +211,15 @@ void PhaseMaze::ClearDetectRange()
 
 	map_detect[player->GetPosition().second][player->GetPosition().first] = true;
 
-	if (!m_Rooms[currRoomY][currRoomY]->getTorches()) {
-		for (int i = 0; i < room_width; i++)
-		{
-			map_detect[0][i] = true;
-			map_detect[room_height - 1][i] = true;
-		}
-
-		for (int i = 0; i < room_height; i++)
-		{
-			map_detect[i][0] = true;
-			map_detect[i][room_width - 1] = true;
-		}
-	}
-	else 
+	for (int i = 0; i < ROOM_WIDTH; i++)
 	{
-		for (int i = 0; i < room_height; i++)
-		{
-			for (int j = 0; j < room_width; j++)
-			{
-				map_detect[i][j] = true;
-			}
-		}
-	}
-}
-
-void PhaseMaze::resetRoom() {
-
-	for (int i = 0; i < room_width; i++)
-	{
-		map[0][i] = '#';
-		map[room_height - 1][i] = '#';
-
 		map_detect[0][i] = true;
-		map_detect[room_height - 1][i] = true;
+		map_detect[ROOM_HEIGHT - 1][i] = true;
 	}
 
-	for (int i = 0; i < room_height; i++)
+	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
-		map[i][0] = '#';
-		map[i][room_width - 1] = '#';
-
 		map_detect[i][0] = true;
-		map_detect[i][room_width - 1] = true;
-	}
-
-	if (m_Rooms[currRoomY][currRoomX]->haveMon()) 
-	{
-		SpawnMon();
-	}
-
-	for (int i = 0; i < m_Rooms[currRoomY][currRoomX]->getMon().size(); i++) 
-	{
-		GameObject* tmp;
-		tmp = m_Rooms[currRoomY][currRoomX]->getMon().at(i);
-		
-		map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-		
-	}
-
-	switch (m_Rooms[currRoomY][currRoomX]->getRoomType())
-	{
-	case 0:
-		map[room_height / 2][room_width / 2] = 'T';
-		break;
-	case 1:
-		map[room_height / 2][room_width / 2] = 'C';
-		break;
-	case 2:
-		break;
-	default:
-		break;
-	}
-}
-
-void PhaseMaze::SpawnMon() 
-{
-	for (int i = 0; i < m_Rooms[currRoomY][currRoomX]->getMon().size(); i++)
-	{
-		bool randCheck = false;
-		int randposX, randposY;
-
-		while (!randCheck)
-		{
-			randposX = rand() % room_width;
-			randposY = rand() % room_height;
-
-			if (map[randposY][randposX] != '.') {
-				randCheck = false;
-			}
-			else
-			{
-				randCheck = true;
-				break;
-			}
-		}
-
-		m_Rooms[currRoomY][currRoomX]->getMon().at(i)->SetPosition(randposX, randposY);
-	}
-}
-
-void PhaseMaze::MoveMon() 
-{
-	if (m_Rooms[currRoomY][currRoomX]->haveMon()) {
-		for (int i = 0; i < m_Rooms[currRoomY][currRoomX]->getMon().size(); i++) 
-		{
-			GameObject* tmp = m_Rooms[currRoomY][currRoomX]->getMon().at(i);
-			int randMove = rand() % 4;
-
-			switch (randMove)
-			{
-			case 0:
-				if ((tmp->GetPosition().first > 1) && (map[tmp->GetPosition().second][tmp->GetPosition().first - 1] == '.'))
-				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
-
-					tmp->Translate(-1, 0);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-				}
-				break;
-			case 1:
-				if ((tmp->GetPosition().first < room_height - 2) && (map[tmp->GetPosition().second][tmp->GetPosition().first + 1] == '.'))
-				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
-
-					tmp->Translate(1, 0);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-				}
-				break;
-			case 2:
-				if ((tmp->GetPosition().second > 1) && (map[tmp->GetPosition().second - 1][tmp->GetPosition().first] == '.'))
-				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
-
-					tmp->Translate(0, -1);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-				}
-				break;
-			case 3:
-				if ((tmp->GetPosition().second < room_height - 2) && (map[tmp->GetPosition().second + 1][tmp->GetPosition().first] == '.'))
-				{
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = '.';
-
-					tmp->Translate(0, 1);
-					map[tmp->GetPosition().second][tmp->GetPosition().first] = 'M';
-				}
-				break;
-			default:
-				break;
-			}
-		}
+		map_detect[i][ROOM_WIDTH - 1] = true;
 	}
 }
