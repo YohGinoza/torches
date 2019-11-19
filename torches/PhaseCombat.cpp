@@ -18,6 +18,13 @@ PhaseCombat::~PhaseCombat()
 
 void PhaseCombat::OnUpdate(float dt, Screen& screen)
 {
+	if (Player::GetInstance()->GetHp() <= 0)
+	{
+		Game::setExit(Game::EXIT_DIE);
+		Game::setState(Game::GameState::QUIT);
+		return;
+	}
+
 	//get input
 	if (Game::getInput()->KeyPress()) {
 
@@ -32,7 +39,10 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 			index++;
 
 		}
-		else
+		else if (!Game::getInput()->getKey(KeyCode::KEY_W) && 
+			!Game::getInput()->getKey(KeyCode::KEY_D) && 
+			!Game::getInput()->getKey(KeyCode::KEY_A) && 
+			!Game::getInput()->getKey(KeyCode::KEY_S))
 		{
 			//if incorrect
 			//calculate damage
@@ -99,7 +109,7 @@ void PhaseCombat::InitCombat(int e_type, float dt)
 	timeCounter = 0.0f;
 	index = 0;
 
-	if (!this->c_enemy->GetAliveStatus()) {
+	if (this->c_enemy != nullptr && !this->c_enemy->GetAliveStatus()) {
 		delete this->c_enemy;
 	}
 	if (e_type == BeastType::BeastNum)

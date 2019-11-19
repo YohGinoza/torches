@@ -224,6 +224,7 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		PlayerInput();
 
 		std::cout << player_posX << " " << player_posY << std::endl;
+		std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;
 
 		UpdateDetectRange();
 

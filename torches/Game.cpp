@@ -53,7 +53,8 @@ namespace Game
 
 		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha", "BitMapSprites/BeastAlpha.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("beastNu", "BitMapSprites/BeastNu.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("s3", "BitMapSprites/BeastNu.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("youWin", "BitMapSprites/YouWin.txt"));
 		SpriteManager::GetInstance()->LoadInputSprites();
 
 		CurrentState = new int;
@@ -122,8 +123,9 @@ namespace Game
 		if (*CurrentState == PHASE_COMBAT)
 		{
 			system("cls");
-			Renderer::GetInstance()->ShowOutput(*gameScreen);
-		}
+			std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;
+			Renderer::GetInstance()->ShowOutput(*gameScreen);			
+		}		
 
 		input->clearArray();
 	}
@@ -133,11 +135,21 @@ namespace Game
 
 		if (*Exit_condition == EXIT_WIN) 
 		{
-			std::cout << "YOU WIN !!\n";
+			gameScreen->ClearScreen();
+			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
+			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
+			
+			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youWin"));
+			Renderer::GetInstance()->ShowOutput(*gameScreen);
 		}
 		else if (*Exit_condition == EXIT_DIE) 
 		{
-			std::cout << "YOU DIE !!\n";
+			gameScreen->ClearScreen();
+			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
+			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
+
+			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youDied"));
+			Renderer::GetInstance()->ShowOutput(*gameScreen);
 		}
 	}
 
