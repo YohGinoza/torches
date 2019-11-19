@@ -27,6 +27,8 @@ namespace Game
 	int* CurrentState;
 	int* NextState;
 
+	int* Exit_condition;
+
 	float dt = Time::GetInstance()->GetDeltaTime();
 
 	Screen* gameScreen = new Screen(150, 60);
@@ -56,6 +58,7 @@ namespace Game
 
 		CurrentState = new int;
 		NextState = new int;
+		Exit_condition = new int;
 		
 		*CurrentState = GameState::PHASE_MAZE;
 		*NextState = GameState::PHASE_MAZE;
@@ -125,6 +128,19 @@ namespace Game
 		input->clearArray();
 	}
 
+	void Exit() {
+		system("cls");
+
+		if (*Exit_condition == EXIT_WIN) 
+		{
+			std::cout << "YOU WIN !!\n";
+		}
+		else if (*Exit_condition == EXIT_DIE) 
+		{
+			std::cout << "YOU DIE !!\n";
+		}
+	}
+
 	void Destroy() 
 	{
 		if (readerThread.joinable()) {
@@ -147,6 +163,10 @@ namespace Game
 	void setState(int state) 
 	{
 		*NextState = state;
+	}
+
+	void setExit(int exit) {
+		*Exit_condition = exit;
 	}
 
 	void debug_input() {

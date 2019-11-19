@@ -14,11 +14,18 @@ namespace Game
 		QUIT
 	};
 
+	enum Exit {
+		EXIT_DIE = 0,
+		EXIT_WIN,
+	};
+
 	void Init();
 
 	void Update();
-
+	
 	void Loop();
+
+	void Exit();
 
 	void Destroy();
 
@@ -26,6 +33,8 @@ namespace Game
 	int getState();
 
 	void debug_input();
+
+	void setExit(int exit);
 
 	InputBuffer* getInput();
 }

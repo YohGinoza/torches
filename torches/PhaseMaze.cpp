@@ -201,6 +201,12 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		debug_draw = true;
 	}
 
+	if (player->GetHp() <= 0) 
+	{
+		Game::setExit(Game::EXIT_DIE);
+		Game::setState(Game::GameState::QUIT);
+	}
+
 	CheckAround();
 	CheckTorches();
 
@@ -434,6 +440,7 @@ void PhaseMaze::CheckTorches() {
 
 			if (m_Rooms[currRoomY][currRoomX]->getWin()) 
 			{
+				Game::setExit(Game::EXIT_WIN);
 				Game::setState(Game::GameState::QUIT);
 			}
 		}

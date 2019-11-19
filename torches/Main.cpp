@@ -17,6 +17,8 @@ int main()
 
 	Game::Loop();
 
+	Game::Exit();
+
 	Game::Destroy();
 	
 	system("pause");
