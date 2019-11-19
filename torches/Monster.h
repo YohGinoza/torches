@@ -5,7 +5,7 @@
 #include "SequenceKeeper.h"
 
 enum BeastType {
-	BeatsNum = 0,
+	BeastNum = 0,
 	BeastAl
 };
 

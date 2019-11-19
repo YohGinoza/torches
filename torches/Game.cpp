@@ -6,6 +6,9 @@
 #include "Phase.h"
 #include "PhaseMaze.h"
 #include "PhaseCombat.h"
+#include "Game.h"
+#include "Time.h"
+#include "Renderer.h"
 
 class PhaseMaze;
 
@@ -26,14 +29,18 @@ namespace Game
 
 	float dt;
 
+	Screen* gameScreen = new Screen(150, 60);
+
+	Time t();
+
 	void MazeUpdate(float dt) 
 	{
-		Maze->OnUpdate(dt);
+		Maze->OnUpdate(dt, *gameScreen);
 	}
 
 	void CombatUpdate(float dt) 
 	{
-		Combat->OnUpdate(dt);
+		Combat->OnUpdate(dt, *gameScreen);
 	}
 
 	void Init() 
@@ -55,6 +62,13 @@ namespace Game
 
 		//pls change this when we have dt
 		dt = 0;
+
+		Renderer r();
+		SpriteManager sm();
+
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha", "BitMapSprites/BeastAlpha.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("s3", "BitMapSprites/BeastNu.txt"));
+		SpriteManager::GetInstance()->LoadInputSprites();
 	}
 
 	void Loop()
@@ -94,6 +108,8 @@ namespace Game
 		gameUpdate(dt);
 
 		//debug_input();
+
+		Renderer::GetInstance()->ShowOutput(*gameScreen);
 
 		input->clearArray();
 	}

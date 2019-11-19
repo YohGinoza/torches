@@ -32,7 +32,7 @@ void Renderer::Draw(Screen& screen, Entity* entity) {
 	unsigned long long onBit = 1;
 	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++, spriteRow++) {
 		onBit <<= (entity->m_Sprite->m_Dimension.first - 1);
-		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++) {	
+		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++) {				
 			if (i < 0 || j < 0 || i > screen.GetScreenHeight() - 1 || j > screen.GetScreenWidth() - 1) {				
 				onBit >>= 1;
 				continue;

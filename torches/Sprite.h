@@ -29,7 +29,7 @@ public:
 	Sprite* GetSprite(std::string spriteName);
 	bool PushBack(Sprite* sprite);	
 	static SpriteManager* GetInstance();
-	void LoadInputSprite();
+	void LoadInputSprites();
 private:
 	static SpriteManager* s_Instance;	
 	static std::vector<Sprite*> m_SpriteBucket;

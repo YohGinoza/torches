@@ -100,21 +100,11 @@ bool SpriteManager::PushBack(Sprite* sprite) {
 }
 
 
-void SpriteManager::LoadInputSprite() {
-	//std::ifstream dataFile(path);
-	//int tmp_width = 0;
-	//if (!dataFile.is_open()) {
-	//	std::cout << "Cannot open file" << std::endl;
-	//}
-	//else {
-	//	std::cout << "Successfully opened " << path << std::endl;
-	//	std::string buffer;
-	//	while (!dataFile.eof()) {
-	//		buffer.clear();
-	//		std::getline(dataFile, buffer);
-	//		tmp_width = buffer.size();
-	//		this->m_ImageData.push_back(std::bitset<64>(buffer).to_ullong());
-	//	}
-	//	this->m_Dimension = std::make_pair(tmp_width, this->m_ImageData.size());
-	//}
+void SpriteManager::LoadInputSprites() {
+	for (int i = 0; i < 14; i++) {
+		std::string pathName("BitMapSprites/sprite_input_");
+		pathName += std::to_string(i);
+		pathName += ".txt";
+		this->m_SpriteBucket.push_back(new Sprite("sprite_input_" + std::to_string(i), pathName));		
+	}
 }

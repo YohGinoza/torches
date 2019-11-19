@@ -1,8 +1,8 @@
 #pragma once
 #include "Phase.h"
 
-#define room_width 50
-#define room_height 21
+#define ROOM_WIDTH 50
+#define ROOM_HEIGHT 21
 
 class PhaseMaze :
 	public Phase
@@ -10,7 +10,7 @@ class PhaseMaze :
 public:
 	PhaseMaze();
 	~PhaseMaze();
-	virtual void OnUpdate(float dt) override;
+	virtual void OnUpdate(float dt, Screen& screen) override;
 
 	void DrawRoom(Screen& screen, int roomId);
 	void DrawMinimap(Screen& screen);
@@ -19,7 +19,8 @@ public:
 
 	void UpdateDetectRange();
 	void ClearDetectRange();
-	void Draw_Debug();
+	void DrawMaze(Screen& screen);
+	void Draw_Debug();	
 private:
 	std::vector<Room*> m_Rooms;
 	static PhaseMaze* s_Instance;

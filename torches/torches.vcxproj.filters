@@ -137,12 +137,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="BitMapSprites\sprite_u1.txt">
-      <Filter>BitMapSprites</Filter>
-    </Text>
-    <Text Include="BitMapSprites\sprite_inputIndicator.txt">
-      <Filter>BitMapSprites</Filter>
-    </Text>
-  </ItemGroup>
 </Project>

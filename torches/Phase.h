@@ -12,6 +12,6 @@ class Phase
 	public:
 		Phase();
 		~Phase();
-		virtual void OnUpdate(float dt) = 0;
+		virtual void OnUpdate(float dt, Screen& screen) = 0;
 };
 

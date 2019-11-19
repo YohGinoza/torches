@@ -1,4 +1,5 @@
 #include "PhaseCombat.h"
+#include "Renderer.h"
 
 PhaseCombat* PhaseCombat::s_Instance = 0;
 
@@ -14,7 +15,7 @@ PhaseCombat::~PhaseCombat()
 {
 }
 
-void PhaseCombat::OnUpdate(float dt)
+void PhaseCombat::OnUpdate(float dt, Screen& screen)
 {
 	//get input
 	if (Game::getInput()->KeyPress()) {
@@ -58,7 +59,7 @@ void PhaseCombat::OnUpdate(float dt)
 		delete c_enemy;
 	}
 
-	DrawCombatPhase(Game::gameScreen);
+	DrawCombatPhase(screen);
 }
 
 PhaseCombat* PhaseCombat::GetInstance()
@@ -72,18 +73,30 @@ PhaseCombat* PhaseCombat::GetInstance()
 
 void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
-	
+	std::cout << "yay";
+	std::cout << this->c_enemy->m_Sprite->m_Dimension.first << " " << this->c_enemy->m_Sprite->m_Dimension.second << std::endl;
+	//Renderer::GetInstance()->Draw(screen, this->c_enemy);
+	int translateToCenter = SPRITE_SPECIAL_OFFSET * this->c_enemy->m_SequenceKeeper.GetRange() * 0.5f;
+	int firstOffsetX = translateToCenter + (screen.GetScreenWidth() * 0.5f);
+	std::pair<int, int> offset(firstOffsetX, screen.GetScreenHeight() - SPRITE_SPECIAL_OFFSET - 1);
+	for (int i = 0; i < this->c_enemy->m_SequenceKeeper.GetRange(); i++) {
+		std::string spriteName = "sprite_input_" + std::to_string(this->c_enemy->m_SequenceKeeper.GetSequence(i));
+		Renderer::GetInstance()->Draw(screen, offset, SpriteManager::GetInstance()->GetSprite(spriteName));
+		offset.first += SPRITE_SPECIAL_OFFSET;
+	}
 }
 
 void PhaseCombat::InitCombat(int e_type, float dt)
 {
-	if (e_type == BeastType::BeatsNum)
+	if (e_type == BeastType::BeastNum)
 	{
 		c_enemy = new BeastNu();
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu");
 	}
 	else
 	{
 		c_enemy = new BeastAlpha();
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha");
 	}
 	startTime = dt;
 }

@@ -62,10 +62,6 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Time.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="BitMapSprites\sprite_inputIndicator.txt" />
-    <Text Include="BitMapSprites\sprite_u1.txt" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{D46A300E-96D1-497D-A1E5-810A1A07D97F}</ProjectGuid>
