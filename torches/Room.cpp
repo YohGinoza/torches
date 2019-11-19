@@ -1,41 +1,80 @@
 #include "Room.h"
 #include <stdlib.h>
 
-
-
 Room::Room()
 {
-	this->m_RoomId = 0;
-	this->width = 73;
-	this->height = 57;
-	this->door = 1;
-	this->torch = false;
-	this->spawnMon = false;
-	for (int i = 0; i < monster.size(); i++){
-		monster[i] = nullptr;
+	this->door = door;
+	this->roomType = RoomType::TYPE_TORCHES;
+	this->torchesLit = false;
+	this->spawnMon = true;
+
+	for (int i = 0; i < 5; i++)
+	{
+		monster.push_back(new GameObject());
 	}
 	
 }
 
-Room::Room(int id, int width, int height, int door, bool torch, bool spawnMon, std::vector<Entity*> monsterBucket) {
-	this->m_RoomId = id;
-	this->width = width;
-	this->height = height;
-	this->door = door;
-	this->torch = torch;
-	this->spawnMon = spawnMon;
-	for (int i = 0; i < monsterBucket.size(); i++) {
-		monster[i] = monsterBucket[i];
+Room::Room(int roomType, int numMon)
+{
+	this->roomType = roomType;
+	this->torchesLit = false;
+	this->spawnMon = false;
+
+	if (numMon > 0) 
+	{
+		spawnMon = true;
+
+		for (int i = 0; i < numMon; i++)
+		{
+			monster.push_back(new GameObject());
+		}
 	}
 
 }
 
-bool Room::haveTorch() {
-	return this->torch;
+int Room::getRoomType() {
+	return this->roomType;
+}
+
+void Room::setRoomType(int type) {
+	this->roomType = type;
 }
 
 bool Room::haveMon() {
 	return this->spawnMon;
+}
+
+bool Room::getTorches() {
+	return torchesLit;
+}
+
+void Room::setWinningTorches() 
+{
+	winningTorches = true;
+}
+
+bool Room::getWin() 
+{
+	return winningTorches;
+}
+
+void Room::LitTorches(bool lit) {
+	torchesLit = lit;
+}
+
+void Room::setMonNull(int index) {
+	if (monster.at(index) != nullptr) 
+	{
+		delete monster.at(index);
+	}
+
+	monster.at(index) = nullptr;
+}
+
+std::vector<GameObject*> Room::getMon() 
+{
+	return monster;
 }
 
 Room::~Room()
