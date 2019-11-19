@@ -57,10 +57,10 @@ namespace Game
 		CurrentState = new int;
 		NextState = new int;
 		
-		*CurrentState = GameState::PHASE_COMBAT;
-		*NextState = GameState::PHASE_COMBAT;
+		*CurrentState = GameState::PHASE_MAZE;
+		*NextState = GameState::PHASE_MAZE;
 
-		gameUpdate = CombatUpdate;
+		gameUpdate = MazeUpdate;
 
 		input = InputBuffer::instance();
 		readerThread = std::thread(reader);
@@ -116,8 +116,11 @@ namespace Game
 
 		//debug_input();
 
-		system("cls");	
-		Renderer::GetInstance()->ShowOutput(*gameScreen);
+		if (*CurrentState == PHASE_COMBAT)
+		{
+			system("cls");
+			Renderer::GetInstance()->ShowOutput(*gameScreen);
+		}
 
 		input->clearArray();
 	}

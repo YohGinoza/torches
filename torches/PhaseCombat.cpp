@@ -96,17 +96,22 @@ void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on
 
 void PhaseCombat::InitCombat(int e_type, float dt)
 {
+	timeCounter = 0.0f;
+	index = 0;
+
 	if (!this->c_enemy->GetAliveStatus()) {
 		delete this->c_enemy;
 	}
 	if (e_type == BeastType::BeastNum)
 	{
 		c_enemy = new BeastNu();
+		c_enemy->GenerateSequence();
 		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu");
 	}
 	else
 	{
 		c_enemy = new BeastAlpha();
+		c_enemy->GenerateSequence();
 		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha");
 	}	
 }

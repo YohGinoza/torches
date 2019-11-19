@@ -38,24 +38,25 @@ PhaseMaze::PhaseMaze()
 	for (int i = 0; i < MAP_HEIGHT; i++) {
 		for (int j = 0; j < MAP_HEIGHT; j++)
 		{
-			if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_T)
+			if ((i == 0) && (j == 0)) 
 			{
-				if ((i == 0) && (j == 0)) 
-				{
-					m_Rooms[i][j] = new Room(TYPE_TORCHES, 0);
-				}
-				else 
+				m_Rooms[i][j] = new Room(TYPE_EMPTY, 0);
+			}
+			else {
+				
+				if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_T)
 				{
 					m_Rooms[i][j] = new Room(TYPE_TORCHES, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+					
 				}
-			}
-			else if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_C) 
-			{
-				m_Rooms[i][j] = new Room(TYPE_CHEST, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
-			}
-			else 
-			{
-				m_Rooms[i][j] = new Room(TYPE_EMPTY, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+				else if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_TYPE_C)
+				{
+					m_Rooms[i][j] = new Room(TYPE_CHEST, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+				}
+				else
+				{
+					m_Rooms[i][j] = new Room(TYPE_EMPTY, rand() % MON_PER_ROOM + MON_PER_ROOM / 2);
+				}
 			}
 		}
 	}
@@ -193,6 +194,8 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 	player_posY = player->GetPosition().second;
 
 	if (!debug_draw) {
+		system("cls");
+
 		UpdateDetectRange();
 		Draw_Debug();
 		debug_draw = true;
