@@ -102,10 +102,17 @@ bool SpriteManager::PushBack(Sprite* sprite) {
 
 
 void SpriteManager::LoadInputSprites() {
-	for (int i = 0; i < 14; i++) {
+	for (int i = 0; i < 10; i++) {
 		std::string pathName("BitMapSprites/sprite_input_");
 		pathName += std::to_string(i);
 		pathName += ".txt";
 		this->m_SpriteBucket.push_back(new Sprite("sprite_input_" + std::to_string(i), pathName));		
+	}
+
+	for (int i = 36; i < 40; i++) {
+		std::string pathName("BitMapSprites/sprite_input_");
+		pathName += std::to_string(i);
+		pathName += ".txt";
+		this->m_SpriteBucket.push_back(new Sprite("sprite_input_" + std::to_string(i), pathName));
 	}
 }

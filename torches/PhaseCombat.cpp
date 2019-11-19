@@ -5,7 +5,7 @@ PhaseCombat* PhaseCombat::s_Instance = 0;
 
 PhaseCombat::PhaseCombat()
 {
-	c_enemy = new BeastNu(10, 5);
+	c_enemy = new BeastAlpha(10, 5);
 	c_enemy->GenerateSequence();
 
 	index = 0;

@@ -17,7 +17,7 @@ enum KeyCode {
 	KEY_7,
 	KEY_8,
 	KEY_9,
-	
+
 	KEY_A,
 	KEY_B,
 	KEY_C,
