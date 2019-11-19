@@ -6,8 +6,11 @@
 #include "Game.h"
 #include "Player.h"
 
-#define room_width 25
-#define room_height 21
+#define room_width 15
+#define room_height 15
+
+#define room_numX 5
+#define room_numY 5
 
 class PhaseMaze :
 	public Phase
@@ -22,19 +25,28 @@ public:
 	static PhaseMaze* GetInstance();
 	bool MinimapOn() const; // return m_TriggerMinimap
 
+	void PlayerInput();
+	
+	void SpawnMon();
+	void MoveMon();
+
 	void UpdateDetectRange();
 	void ClearDetectRange();
 	void Draw_Debug();
+	void resetRoom();
 private:
-	std::vector<Room*> m_Rooms;
+	
+	Room* m_Rooms[room_numY][room_numX];
 	static PhaseMaze* s_Instance;
 	std::vector<int*> m_MapInfo;
-	std::vector<int*> m_RoomInfo;
 
 	Player* player;
 
 	int player_posX;
 	int player_posY;
+
+	int currRoomX, currRoomY;
+
 	char** map;
 	bool** map_detect;
 	bool debug_draw;

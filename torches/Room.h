@@ -4,21 +4,31 @@
 #include "Entity.h"
 #include "Item.h"
 
+enum RoomType {
+	TYPE_TORCHES = 0,
+	TYPE_CHEST,
+	TYPE_EMPTY
+};
+
 class Room : public Entity
 {
 public:
 	Room();
-	Room(int id, int width, int height, int door, bool torch, bool spawnMon, std::vector<Entity*> monsterBucket);
-	bool haveTorch();
+	Room(unsigned char door, int roomType, int numMon);
+	int getRoomType();
 	bool haveMon();
+	bool getTorches();
+	void LitTorches(bool lit);
+
+	std::vector<GameObject*> getMon();
 	~Room();
+
 private:
 	int m_RoomId;
-	int width;
-	int height;
-	int door;
-	bool torch;
+	unsigned char door;
+	int roomType;
 	bool spawnMon;
-	std::vector<Entity*> monster;
+	bool torchesLit;
+	std::vector<GameObject*> monster;
 };
 
