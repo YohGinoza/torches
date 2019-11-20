@@ -1,14 +1,14 @@
 #pragma once
-#include <time.h>
+#include <chrono>
 
 class Time
 {
 	private:
-		float deltaTime = 0.0f;
-		float oldTime = 0.0f;
-		clock_t time_req = clock();
+		float deltaTime;
+		std::chrono::high_resolution_clock timer;
+		std::chrono::time_point<std::chrono::high_resolution_clock> start;
+		std::chrono::time_point<std::chrono::high_resolution_clock> end;
 		static Time* s_Instance;
-		float test = 0;
 	public:
 		Time();
 		void OnUpdate();

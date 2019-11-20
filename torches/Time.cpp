@@ -5,7 +5,7 @@ Time* Time::s_Instance = nullptr;
 
 Time::Time()
 {
-
+	
 }
 
 Time* Time::GetInstance() {
@@ -16,9 +16,8 @@ Time* Time::GetInstance() {
 }
 
 void Time::OnUpdate() {
-	time_req = clock();
-	deltaTime = time_req - oldTime;
-	oldTime = time_req;
+	using ms = std::chrono::duration<float, std::milli>;
+	deltaTime = std::chrono::duration_cast<ms>(end - start).count();
 }
 
 Time::~Time()
