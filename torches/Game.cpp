@@ -14,7 +14,8 @@ class PhaseMaze;
 
 namespace Game 
 {
-	void(*gameUpdate)(float dt);
+	typedef void (*GameUpdate)(float);
+	GameUpdate gameUpdate;
 
 	InputReader reader;
 	std::thread readerThread;
@@ -35,15 +36,37 @@ namespace Game
 
 	Time t;
 
-	void MazeUpdate(float dt) 
+	void MazeUpdate(float dt)
 	{
 		Maze->OnUpdate(dt, *gameScreen);
 	}
+
+	class MazeUpdater
+	{
+	public:
+		GameUpdate GetUpdate()
+		{
+			return MazeUpdate;
+		}
+	};
 
 	void CombatUpdate(float dt) 
 	{
 		Combat->OnUpdate(Time::GetInstance()->GetDeltaTime(), *gameScreen);
 	}
+
+	class CombatUpdater
+	{
+	public:
+		GameUpdate GetUpdate()
+		{
+			return CombatUpdate;
+		}
+	};
+
+	template <class UpdatePolicy>
+	class GameUpdater : public UpdatePolicy
+	{ };
 
 	void Init() 
 	{
@@ -89,13 +112,16 @@ namespace Game
 				{
 					*CurrentState = GameState::PHASE_MAZE;
 
-					gameUpdate = MazeUpdate;
+					GameUpdater<MazeUpdater> mazeUpdate;
+					gameUpdate = mazeUpdate.GetUpdate();
 				}
 				else if (*NextState == GameState::PHASE_COMBAT)
 				{
 					PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
 					*CurrentState = GameState::PHASE_COMBAT;
-					gameUpdate = CombatUpdate;
+
+					GameUpdater<CombatUpdater> combatUpdate;
+					gameUpdate = combatUpdate.GetUpdate();
 				}
 				else if (*NextState == GameState::QUIT)
 				{
