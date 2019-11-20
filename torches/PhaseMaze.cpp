@@ -13,6 +13,7 @@ PhaseMaze* PhaseMaze::GetInstance() {
 
 PhaseMaze::PhaseMaze()
 {
+	this->endBattle = true;
 	map = new char*[ROOM_HEIGHT];
 	map_detect = new bool*[ROOM_HEIGHT];
 
@@ -190,6 +191,7 @@ PhaseMaze::~PhaseMaze()
 
 void PhaseMaze::OnUpdate(float dt, Screen& screen) 
 {
+	this->endBattle = true;
 	player_posX = player->GetPosition().first;
 	player_posY = player->GetPosition().second;
 
@@ -383,7 +385,8 @@ void PhaseMaze::CheckAround() {
 					m_Rooms[currRoomY][currRoomX]->setMonNull(i);
 					debug_draw = false;
 
-					Game::setState(Game::GameState::PHASE_COMBAT);
+					this->endBattle = false;
+					Game::setState(Game::GameState::PHASE_ANIMATION);
 					
 					system("cls");
 				}
@@ -439,8 +442,9 @@ void PhaseMaze::CheckTorches() {
 		{
 			m_Rooms[currRoomY][currRoomX]->LitTorches(true);
 
-			if (m_Rooms[currRoomY][currRoomX]->getWin()) 
+			if (m_Rooms[currRoomY][currRoomX]->getWin() && endBattle) 
 			{
+
 				Game::setExit(Game::EXIT_WIN);
 				Game::setState(Game::GameState::QUIT);
 			}

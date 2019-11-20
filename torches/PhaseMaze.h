@@ -51,6 +51,7 @@ private:
 	bool** map_detect;
 	bool debug_draw;
 	bool UpdateDraw;
+	bool endBattle;
 
 	bool m_TriggerMinimap;	// turn minimap on/off
 };

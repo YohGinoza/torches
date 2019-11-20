@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "Time.h"
 #include "Renderer.h"
+#include "Animation.h"
 
 class PhaseMaze;
 
@@ -32,6 +33,12 @@ namespace Game
 	float dt = Time::GetInstance()->GetDeltaTime();
 
 	Screen* gameScreen = new Screen(150, 60);
+	int randType = 0;
+	Animation* animationNu = nullptr;
+	Animation* animationAlpha = nullptr;
+	bool playAnimation = false;
+	bool alpha_anim = false;
+	bool num_anim = false;
 
 	Time t;
 
@@ -43,6 +50,32 @@ namespace Game
 	void CombatUpdate(float dt) 
 	{
 		Combat->OnUpdate(Time::GetInstance()->GetDeltaTime(), *gameScreen);
+	}
+
+	void AnimationUpdate(float dt) {	
+		if (alpha_anim) {
+			if (!animationAlpha->IsEnded() && playAnimation) {
+				animationAlpha->Play(*gameScreen);
+				Renderer::GetInstance()->ShowOutput(*gameScreen);				
+			}			
+			if (animationAlpha->IsEnded()) {
+				Game::setState(Game::PHASE_COMBAT);
+				playAnimation = false;
+				alpha_anim = false;
+			}					
+		}
+		else if (num_anim) {
+			if (!animationNu->IsEnded() && playAnimation) {
+				animationNu->Play(*gameScreen);
+				Renderer::GetInstance()->ShowOutput(*gameScreen);
+			}
+			if (animationNu->IsEnded()) {
+				Game::setState(Game::PHASE_COMBAT);
+				playAnimation = false;
+				num_anim = false;
+			}
+		}
+		
 	}
 
 	void Init() 
@@ -75,7 +108,7 @@ namespace Game
 
 		//pls change this when we have dt
 		dt = Time::GetInstance()->GetDeltaTime();				
-		PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
+		//PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
 	}
 
 	void Loop()
@@ -91,9 +124,37 @@ namespace Game
 
 					gameUpdate = MazeUpdate;
 				}
-				else if (*NextState == GameState::PHASE_COMBAT)
+				else if (*NextState == GameState::PHASE_ANIMATION)
 				{
-					PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
+					playAnimation = true;
+					randType = rand() % 2;
+					switch (randType) {
+					case 0:
+					{
+						if (animationNu != nullptr) {
+							delete animationNu;
+						}
+						animationNu = new Animation();
+						num_anim = true;
+					}
+						break;
+					case 1: 
+					{
+						if (animationAlpha != nullptr) {
+							delete animationAlpha;
+						}
+						animationAlpha = new Animation();
+						alpha_anim = true;
+					}						
+						break;
+					}
+					*CurrentState = GameState::PHASE_ANIMATION;
+
+					gameUpdate = AnimationUpdate;
+				}
+				else if (*NextState == GameState::PHASE_COMBAT)
+				{															
+					PhaseCombat::GetInstance()->InitCombat(randType, dt);
 					*CurrentState = GameState::PHASE_COMBAT;
 					gameUpdate = CombatUpdate;
 				}
@@ -118,13 +179,17 @@ namespace Game
 
 		gameUpdate(Time::GetInstance()->GetDeltaTime());
 
-		//debug_input();
+		//debug_input();		
 		if (*CurrentState == PHASE_COMBAT)
 		{
 			system("cls");
 			std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;
-			Renderer::GetInstance()->ShowOutput(*gameScreen);			
-		}		
+			Renderer::GetInstance()->ShowOutput(*gameScreen);
+		}
+		else if (*CurrentState == PHASE_ANIMATION) {
+
+			Renderer::GetInstance()->ShowOutput(*gameScreen);
+		}
 
 		input->clearArray();
 	}
@@ -159,6 +224,8 @@ namespace Game
 		}
 
 		InputBuffer::instance()->destroy();
+		delete animationAlpha;
+		delete animationNu;
 	}
 	
 	InputBuffer* getInput() 
