@@ -4,6 +4,11 @@
 #include "Entity.h"
 #include "SequenceKeeper.h"
 
+enum BeastType {
+	BeastNum = 0,
+	BeastAl
+};
+
 class Monster :
 	public Entity
 {
