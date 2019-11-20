@@ -321,6 +321,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomY -= 1;
 		resetRoom();
 	}
@@ -332,6 +333,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomY += 1;
 		resetRoom();
 	}
@@ -343,6 +345,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomX -= 1;
 		resetRoom();
 	}
@@ -354,6 +357,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomX += 1;
 		resetRoom();
 	}
@@ -397,6 +401,8 @@ void PhaseMaze::CheckAround() {
 
 					this->endBattle = false;
 					Game::setState(Game::GameState::PHASE_ANIMATION);
+					
+					detectRange++;
 					
 					system("cls");
 				}

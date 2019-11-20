@@ -6,6 +6,7 @@
 #define ROOM_HEIGHT 15
 
 #define MON_PER_ROOM 7
+#define DEFAULT_DETECT_RANGE 2
 
 class PhaseMaze :
 	public Phase
