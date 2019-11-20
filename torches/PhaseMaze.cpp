@@ -105,15 +105,15 @@ void PhaseMaze::Draw_Debug()
 		{
 			if (map_detect[i][j]) 
 			{
-				std::cout << map[i][j];
+				std::cout << map[i][j] << " ";
 			}
 			else 
 			{
-				std::cout << ' ';
+				std::cout << "  ";
 			}
 		}
 
-		std::cout << std::endl;
+		std::cout << std::endl << std::endl;
 	}
 }
 
