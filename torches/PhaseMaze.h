@@ -53,6 +53,8 @@ private:
 	bool UpdateDraw;
 	bool endBattle;
 
+	int detectRange;
+
 	bool m_TriggerMinimap;	// turn minimap on/off
 };
 
