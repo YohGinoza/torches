@@ -1,6 +1,4 @@
 #include "Entity.h"
-#include "EntityManager.h"
-
 
 Entity::Entity()
 {
@@ -41,4 +39,8 @@ void Entity::reduceHp(int damage)
 	{
 		Hp = 0;
 	}
+}
+
+void Entity::SetAliveStatus(bool isAlive) {
+	this->isAlive = isAlive;
 }

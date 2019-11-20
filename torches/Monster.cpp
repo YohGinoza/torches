@@ -18,12 +18,16 @@ Monster::Monster(int hp, int atk) {
 }
 
 void Monster::GenerateSequence() {
-
+	
 }
 
 
 BeastAlpha::BeastAlpha()
 {
+	this->Hp = 10;
+	this->AttackDamage = 10;
+	this->isAlive = true;
+	GenerateSequence();
 }
 
 
@@ -31,6 +35,7 @@ BeastAlpha::BeastAlpha(int hp, int atk) {
 	this->Hp = hp;
 	this->AttackDamage = atk;
 	this->isAlive = true;
+	GenerateSequence();
 }
 
 BeastAlpha::~BeastAlpha()
@@ -55,12 +60,17 @@ void BeastAlpha::GenerateSequence() {
 
 BeastNu::BeastNu()
 {
+	this->Hp = 10;
+	this->AttackDamage = 10;
+	this->isAlive = true;
+	GenerateSequence();
 }
 
 BeastNu::BeastNu(int hp, int atk) {
 	this->Hp = hp;
 	this->AttackDamage = atk;
 	this->isAlive = true;
+	GenerateSequence();
 }
 
 BeastNu::~BeastNu()
@@ -71,8 +81,6 @@ void BeastNu::GenerateSequence() {
 	for (int i = 0; i < m_SequenceKeeper.GetRange(); i++) {
 		int randNum = (rand() % 9) + 1;
 		m_SequenceKeeper.SetSequenceAt(i, randNum);
-
-		std::cout << randNum << std::endl;
 	}
 
 }
