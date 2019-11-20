@@ -114,7 +114,7 @@ void PhaseCombat::InitCombat(int e_type, float dt)
 	index = 0;
 
 	if (this->c_enemy != nullptr && !this->c_enemy->GetAliveStatus()) {
-		delete this->c_enemy;
+		//delete this->c_enemy;
 	}
 	if (e_type == BeastType::BeastNum)
 	{

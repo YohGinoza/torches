@@ -10,6 +10,7 @@ namespace Game
 {
 	enum GameState {
 		PHASE_MAZE = 0,
+		PHASE_ANIMATION,
 		PHASE_COMBAT,
 		QUIT
 	};
