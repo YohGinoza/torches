@@ -6,7 +6,8 @@
 
 enum BeastType {
 	BeastNum = 0,
-	BeastAl
+	BeastAl,
+	BeastM
 };
 
 class Monster :
@@ -39,4 +40,14 @@ public:
 	BeastNu(int hp, int atk);
 	~BeastNu();
 	virtual void GenerateSequence() override;	// randomize a new set of sequence : sequence is 1-9
+};
+
+class BeastMix :
+	public Monster
+{
+public:
+	BeastMix();
+	BeastMix(int hp, int atk);
+	~BeastMix();
+	virtual void GenerateSequence() override;
 };

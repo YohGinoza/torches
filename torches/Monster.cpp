@@ -27,7 +27,6 @@ BeastAlpha::BeastAlpha()
 	this->Hp = 10;
 	this->AttackDamage = 10;
 	this->isAlive = true;
-	GenerateSequence();
 }
 
 
@@ -35,7 +34,6 @@ BeastAlpha::BeastAlpha(int hp, int atk) {
 	this->Hp = hp;
 	this->AttackDamage = atk;
 	this->isAlive = true;
-	GenerateSequence();
 }
 
 BeastAlpha::~BeastAlpha()
@@ -63,14 +61,12 @@ BeastNu::BeastNu()
 	this->Hp = 10;
 	this->AttackDamage = 10;
 	this->isAlive = true;
-	GenerateSequence();
 }
 
 BeastNu::BeastNu(int hp, int atk) {
 	this->Hp = hp;
 	this->AttackDamage = atk;
 	this->isAlive = true;
-	GenerateSequence();
 }
 
 BeastNu::~BeastNu()
@@ -83,4 +79,40 @@ void BeastNu::GenerateSequence() {
 		m_SequenceKeeper.SetSequenceAt(i, randNum);
 	}
 
+}
+
+BeastMix::BeastMix()
+{
+	this->Hp = 10;
+	this->AttackDamage = 10;
+	this->isAlive = true;
+}
+
+
+BeastMix::BeastMix(int hp, int atk) {
+	this->Hp = hp;
+	this->AttackDamage = atk;
+	this->isAlive = true;
+}
+
+BeastMix::~BeastMix()
+{
+}
+
+void BeastMix::GenerateSequence() {
+	for (int i = 0; i < m_SequenceKeeper.GetRange(); i++) {
+		int randNum = (rand() % 13) + 1;
+		switch (randNum) {
+		case 10: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_UP);
+			break;
+		case 11: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_DOWN);
+			break;
+		case 12: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_LEFT);
+			break;
+		case 13: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_RIGHT);
+			break;
+		default: m_SequenceKeeper.SetSequenceAt(i, randNum);
+			break;
+		}
+	}
 }

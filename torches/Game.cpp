@@ -34,13 +34,15 @@ namespace Game
 
 	float dt = Time::GetInstance()->GetDeltaTime();
 
-	Screen* gameScreen = new Screen(150, 60);
+	Screen* gameScreen = new Screen(150, 45);
 	int randType = 0;
 	Animation* animationNu = nullptr;
 	Animation* animationAlpha = nullptr;
+	Animation* animationMix = nullptr;
 	bool playAnimation = false;
 	bool alpha_anim = false;
 	bool num_anim = false;
+	bool mix_anim = false;
 
 	Time t;
 
@@ -95,6 +97,17 @@ namespace Game
 				num_anim = false;
 			}
 		}
+		else if (mix_anim) {
+			if (!animationMix->IsEnded() && playAnimation) {
+				animationMix->Play(*gameScreen);
+				Renderer::GetInstance()->ShowOutput(*gameScreen);
+			}
+			if (animationMix->IsEnded()) {
+				Game::setState(Game::PHASE_COMBAT);
+				playAnimation = false;
+				mix_anim = false;
+			}
+		}
 	}
 
 	class AnimationUpdater {
@@ -117,6 +130,7 @@ namespace Game
 
 		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha", "BitMapSprites/BeastAlpha.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("beastNu", "BitMapSprites/BeastNu.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastMix", "BitMapSprites/pumpkin.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youWin", "BitMapSprites/YouWin.txt"));
 		SpriteManager::GetInstance()->LoadInputSprites();
@@ -160,7 +174,7 @@ namespace Game
 				else if (*NextState == GameState::PHASE_ANIMATION)
 				{
 					playAnimation = true;
-					randType = rand() % 2;
+					randType = rand() % 3;
 					switch (randType) {
 					case 0:
 					{
@@ -178,6 +192,15 @@ namespace Game
 						}
 						animationAlpha = new Animation();
 						alpha_anim = true;
+					}
+					break;
+					case 2:
+					{
+						if (animationMix != nullptr) {
+							delete animationMix;
+						}
+						animationMix = new Animation();
+						mix_anim = true;
 					}
 					break;
 					}
