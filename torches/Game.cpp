@@ -145,7 +145,7 @@ namespace Game
 
 	void Loop()
 	{
-		Time::GetInstance()->OnUpdate();
+		Time::GetInstance()->start = Time::GetInstance()->timer.now();
 		while (*CurrentState != GameState::QUIT)
 		{
 			if (*NextState != *CurrentState)
@@ -201,9 +201,11 @@ namespace Game
 					break;
 				}
 			}
-
+			Time::GetInstance()->end = Time::GetInstance()->timer.now();
 			//UpdateLoop
+			Time::GetInstance()->OnUpdate();
 			Update();
+
 		}
 	}
 
