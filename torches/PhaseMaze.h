@@ -6,6 +6,7 @@
 #define ROOM_HEIGHT 15
 
 #define MON_PER_ROOM 7
+#define DEFAULT_DETECT_RANGE 2
 
 class PhaseMaze :
 	public Phase
@@ -52,6 +53,8 @@ private:
 	bool debug_draw;
 	bool UpdateDraw;
 	bool endBattle;
+
+	int detectRange;
 
 	bool m_TriggerMinimap;	// turn minimap on/off
 };

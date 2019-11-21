@@ -84,6 +84,8 @@ PhaseMaze::PhaseMaze()
 	currRoomX = 0;
 	currRoomY = 0;
 
+	detectRange = 2;
+
 	debug_draw = false;
 
 	player = Player::GetInstance();
@@ -218,7 +220,7 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 
 		UpdateDraw = false;
 
-		if (!Game::getInput()->getKey(KeyCode::KEY_M)) 
+		if (!Game::getInput()->getKey(KeyCode::KEY_M) && !Game::getInput()->getKey(KeyCode::KEY_Y))
 		{
 			MoveMon();
 		}
@@ -238,6 +240,10 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 			Draw_Debug();
 		}
 	}
+
+
+
+	//DrawMaze(screen);
 }
 
 void PhaseMaze::PlayerInput()
@@ -291,6 +297,10 @@ void PhaseMaze::PlayerInput()
 		{
 			m_Rooms[currRoomY][currRoomX]->LitTorches(true);
 		}
+		else if (Game::getInput()->getKey(KeyCode::KEY_Y))
+		{
+			detectRange++;
+		}
 	}
 	
 	if (Game::getInput()->getKey(KeyCode::KEY_M)) 
@@ -311,6 +321,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomY -= 1;
 		resetRoom();
 	}
@@ -322,6 +333,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomY += 1;
 		resetRoom();
 	}
@@ -333,6 +345,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomX -= 1;
 		resetRoom();
 	}
@@ -344,6 +357,7 @@ void PhaseMaze::PlayerInput()
 
 		map[player->GetPosition().second][player->GetPosition().first] = '@';
 
+		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomX += 1;
 		resetRoom();
 	}
@@ -388,6 +402,8 @@ void PhaseMaze::CheckAround() {
 					this->endBattle = false;
 					Game::setState(Game::GameState::PHASE_ANIMATION);
 					
+					detectRange++;
+					
 					system("cls");
 				}
 			}
@@ -399,9 +415,9 @@ void PhaseMaze::UpdateDetectRange()
 {
 	ClearDetectRange();
 
-	for (int i = player_posY - 1; i < player_posY + 2; i++)
+	for (int i = player_posY - detectRange; i < player_posY + detectRange + 1; i++)
 	{
-		for (int j = player_posX - 2; j < player_posX + 3; j++)
+		for (int j = player_posX - detectRange; j < player_posX + detectRange + 1; j++)
 		{
 			if ((i >= 0) && (i <= ROOM_HEIGHT - 1) && (j >= 0) && (j <= ROOM_WIDTH -1)) {
 
@@ -410,16 +426,16 @@ void PhaseMaze::UpdateDetectRange()
 		}
 	}
 
-	for (int i = player_posX - 1; i < player_posX + 2; i++)
+	for (int i = player_posX - detectRange + 1; i < player_posX + detectRange; i++)
 	{
-		if ((player_posY - 2 >= 0) && (player_posY - 2 <= ROOM_HEIGHT - 1) && (i >= 0) && (i <= ROOM_WIDTH - 1))
+		if ((player_posY - detectRange - 1 >= 0) && (player_posY - detectRange - 1 <= ROOM_HEIGHT - 1) && (i >= 0) && (i <= ROOM_WIDTH - 1))
 		{
-			map_detect[player_posY - 2][i] = true;
+			map_detect[player_posY - detectRange - 1][i] = true;
 		}
 
-		if ((player_posY + 2 >= 0) && (player_posY + 2 <= ROOM_HEIGHT - 1) && (i >= 0) && (i <= ROOM_WIDTH - 1))
+		if ((player_posY + detectRange + 1 >= 0) && (player_posY + detectRange + 1 <= ROOM_HEIGHT - 1) && (i >= 0) && (i <= ROOM_WIDTH - 1))
 		{
-			map_detect[player_posY + 2][i] = true;
+			map_detect[player_posY + detectRange + 1][i] = true;
 		}
 	}
 }
