@@ -14,6 +14,7 @@ public:
 	void Draw(Screen& screen, std::pair<int,int> position, Sprite* sprite);
 	void DrawReverse(Screen& screen, std::pair<int, int> position, Sprite* sprite);
 	void ShowOutput(Screen& screen);
+	void DrawFull(Screen& screen, std::pair<int, int> position, Sprite* sprite);
 private:
 	static Renderer* s_Instance;	
 };

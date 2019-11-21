@@ -8,7 +8,7 @@ Sprite::Sprite()
 	this->m_BitOn = '#';	
 }
 
-Sprite::Sprite(const std::string& name, const std::string& path) {
+Sprite::Sprite(const std::string& name, const std::string& path, int spriteType) {
 	this->m_BitOff = ' ';
 	this->m_BitOn = '#';
 	this->m_Name = name;
@@ -19,20 +19,42 @@ Sprite::Sprite(const std::string& name, const std::string& path) {
 	}
 	else {
 		std::cout << "Successfully opened " << path << std::endl;
-		std::string buffer;
-		while (!dataFile.eof()) {
-			buffer.clear();
-			std::getline(dataFile, buffer);
-			tmp_width = buffer.size();
-			this->m_ImageData.push_back(std::bitset<64>(buffer).to_ullong());
-		}		
-		this->m_Dimension = std::make_pair(tmp_width, this->m_ImageData.size());
+		if (spriteType == SpriteType::Bit) {			
+			std::string buffer;
+			while (!dataFile.eof()) {
+				buffer.clear();
+				std::getline(dataFile, buffer);
+				if (buffer.size() > tmp_width) {
+					tmp_width = buffer.size();
+				}
+				this->m_ImageData.push_back(std::bitset<64>(buffer).to_ullong());
+			}
+			this->m_Dimension = std::make_pair(tmp_width, this->m_ImageData.size());
+		}
+		else if (spriteType == SpriteType::Default) {
+			std::string buffer;
+			while (!dataFile.eof()) {
+				buffer.clear();
+				std::getline(dataFile, buffer);
+				if (buffer.size() > tmp_width) {
+					tmp_width = buffer.size();
+				}
+				this->m_ImageData.push_back(std::bitset<64>(buffer).to_ullong());
+			}
+			this->m_Dimension = std::make_pair(tmp_width, this->m_ImageData.size());
+			
+		}
+		
 	}
 }
 
 void Sprite::Print() {
 	for (int i = 0; i < this->m_ImageData.size(); i++) {
 		std::cout << std::to_string(this->m_ImageData[i]) << std::endl;
+	}
+	std::cout << "====" << std::endl;
+	for (int i = 0; i < this->m_Image.size(); i++) {
+		std::cout << this->m_Image[i] << std::endl;
 	}
 }
 

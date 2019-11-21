@@ -22,6 +22,7 @@ Renderer* Renderer::GetInstance() {
 	return s_Instance;
 }
 void Renderer::Draw(Screen& screen, Entity* entity) {
+	// check if the sprite is out of bound
 	if (entity->GetPosition().first + entity->m_Sprite->m_Dimension.first < 0 ||
 		entity->GetPosition().second + entity->m_Sprite->m_Dimension.second < 0 ||
 		entity->GetPosition().first > screen.GetScreenWidth() ||
@@ -30,6 +31,8 @@ void Renderer::Draw(Screen& screen, Entity* entity) {
 	}
 	int spriteRow = 0;
 	unsigned long long onBit = 1;
+
+	// draw
 	for (int i = entity->GetPosition().second; i < entity->GetPosition().second + entity->m_Sprite->m_Dimension.second; i++, spriteRow++) {
 		onBit <<= (entity->m_Sprite->m_Dimension.first - 1);
 		for (int j = entity->GetPosition().first; j < entity->GetPosition().first + entity->m_Sprite->m_Dimension.first; j++) {				
@@ -48,6 +51,7 @@ void Renderer::Draw(Screen& screen, Entity* entity) {
 }
 
 void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite) {
+	// check if the sprite is out of bound
 	if (position.first > screen.GetScreenWidth() ||
 		position.second > screen.GetScreenHeight() ||
 		position.first + sprite->m_Dimension.first < 0 ||
@@ -56,6 +60,7 @@ void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite
 	}	
 	int spriteRow = 0;
 	unsigned long long onBit = 1;
+	// draw
 	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++, spriteRow++) {
 		onBit <<= (sprite->m_Dimension.first - 1);
 		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
@@ -73,6 +78,7 @@ void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite
 }
 
 void Renderer::DrawReverse(Screen& screen, std::pair<int, int> position, Sprite* sprite) {
+	// check if the sprite is out of bound
 	if (position.first > screen.GetScreenWidth() ||
 		position.second > screen.GetScreenHeight() ||
 		position.first + sprite->m_Dimension.first < 0 ||
@@ -81,6 +87,7 @@ void Renderer::DrawReverse(Screen& screen, std::pair<int, int> position, Sprite*
 	}
 	int spriteRow = 0;
 	unsigned long long onBit = 1;
+	// draw
 	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++, spriteRow++) {
 		onBit <<= (sprite->m_Dimension.first - 1);
 		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
@@ -108,4 +115,27 @@ void Renderer::ShowOutput(Screen& screen) {
 		buffer += '\n';
 	}
 	std::cout << buffer;
+}
+
+void Renderer::DrawFull(Screen& screen, std::pair<int, int> position, Sprite* sprite) {
+	// check if the sprite is out of bound
+	if (position.first > screen.GetScreenWidth() ||
+		position.second > screen.GetScreenHeight() ||
+		position.first + sprite->m_Dimension.first < 0 ||
+		position.second + sprite->m_Dimension.second < 0) {
+		return;
+	}
+
+	// draw
+	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++) {
+		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
+			if (i < 0 || j < 0 || i > screen.GetScreenHeight() - 1 || j > screen.GetScreenWidth() - 1) {
+				continue;
+			}
+
+			if (sprite->m_Image[i][j] != ' ') {
+				screen.SetData(i, j, sprite->m_Image[i][j]);
+			}
+		}		
+	}
 }
