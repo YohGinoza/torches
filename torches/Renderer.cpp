@@ -21,6 +21,7 @@ Renderer::~Renderer()
 Renderer* Renderer::GetInstance() {
 	return s_Instance;
 }
+
 void Renderer::Draw(Screen& screen, Entity* entity) {
 	// check if the sprite is out of bound
 	if (entity->GetPosition().first + entity->m_Sprite->m_Dimension.first < 0 ||
@@ -60,6 +61,13 @@ void Renderer::Draw(Screen& screen, std::pair<int, int> position, Sprite* sprite
 	}	
 	int spriteRow = 0;
 	unsigned long long onBit = 1;
+	
+	// check if sprite is not bit type
+	if (sprite->GetSpriteType() == 1) {
+		DrawFull(screen, position, sprite);
+		return;
+	}
+
 	// draw
 	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++, spriteRow++) {
 		onBit <<= (sprite->m_Dimension.first - 1);
@@ -125,17 +133,48 @@ void Renderer::DrawFull(Screen& screen, std::pair<int, int> position, Sprite* sp
 		position.second + sprite->m_Dimension.second < 0) {
 		return;
 	}
-
 	// draw
-	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++) {
-		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++) {
+	int spriteRow = 0;
+	int spriteCol = 0;
+	for (int i = position.second; i < position.second + sprite->m_Dimension.second; i++, spriteRow++) {
+		for (int j = position.first; j < position.first + sprite->m_Dimension.first; j++, spriteCol++) {
 			if (i < 0 || j < 0 || i > screen.GetScreenHeight() - 1 || j > screen.GetScreenWidth() - 1) {
 				continue;
 			}
 
-			if (sprite->m_Image[i][j] != ' ') {
-				screen.SetData(i, j, sprite->m_Image[i][j]);
+			//std::cout << j << " " << i << std::endl;
+			if (sprite->m_Image[spriteRow][spriteCol] != ' ') {
+				screen.SetData(i, j, sprite->m_Image[spriteRow][spriteCol]);
 			}
-		}		
+		}
+		spriteCol = 0;
 	}
+}
+
+void Renderer::DrawAnimation(Screen& screen, std::pair<int, int> position, SpriteAnimation* sprite) {
+	if (position.first > screen.GetScreenWidth() ||
+		position.second > screen.GetScreenHeight() ||
+		position.first + sprite->m_Dimension.first < 0 ||
+		position.second + sprite->m_Dimension.second < 0) {
+		return;
+	}
+	// draw
+	int spriteRow = 0;
+	int spriteCol = 0;
+	int offSetX = sprite->GetCurrentFrame().first * sprite->GetWidthPerFrame();
+	int offSetY = sprite->GetCurrentFrame().second * sprite->GetHeightPerFrame();
+	for (int i = position.second; i < position.second + sprite->GetHeightPerFrame(); i++, spriteRow++) {
+		for (int j = position.first; j < position.first + sprite->GetWidthPerFrame(); j++, spriteCol++) {			
+			if (offSetY + spriteRow < 0 || offSetX + spriteCol < 0 || offSetY + spriteRow > screen.GetScreenHeight() - 1 || offSetX + spriteCol > screen.GetScreenWidth() - 1) {
+				continue;
+			}
+			//std::cout << "r c" << spriteRow << " " << spriteCol << std::endl;
+			if (sprite->m_Image[offSetY + spriteRow][offSetX + spriteCol] != ' ') {
+				screen.SetData(i, j, sprite->m_Image[offSetY + spriteRow][offSetX + spriteCol]);
+			}			
+		}
+		spriteCol = 0;
+	}
+	//system("pause");
+	sprite->IncrementFrame();
 }

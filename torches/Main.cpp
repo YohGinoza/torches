@@ -13,12 +13,26 @@ int main()
 {	
 	std::cout << "About to print bg + monster" << std::endl;
 	Renderer r();
-	Screen* screen = new Screen(150, 60);
-	Sprite* bg = new Sprite("bg", "BitMapSprites/bg1.txt",1);
+	Screen* screen = new Screen(170, 60);
+	Sprite* bg = new Sprite("bg", "BitMapSprites/titleScreen.txt",1);
+	Sprite* bg_t = new Sprite("bg_torches", "BitMapSprites/title_torches.txt", 1);
 	Sprite* e = new Sprite("enemy", "BitMapSprites/pumpkin.txt");
-	Renderer::GetInstance()->DrawFull(*screen, std::make_pair(0, 0), bg);
-	int screenCenter = -(e->m_Dimension.first*0.5) + (screen->GetScreenWidth()*0.5);
-	Renderer::GetInstance()->Draw(*screen, std::make_pair(screenCenter, 0), e);
+	SpriteAnimation* f = new SpriteAnimation("fire", "BitMapSprites/flame.txt",4,3);
+	SpriteAnimation* f2 = new SpriteAnimation("fire2", "BitMapSprites/flame.txt", 4, 3);
+	Sprite* s = new Sprite("s", "BitMapSprites/flame.txt",1);
+	int screenCenter = -(e->m_Dimension.first*0.5) + (screen->GetScreenWidth()*0.5);	
+	Renderer::GetInstance()->ShowOutput(*screen);
+	
+	while (1) {
+		system("cls");
+		screen->ClearScreen();
+		Renderer::GetInstance()->DrawFull(*screen, std::make_pair((screen->GetScreenWidth()*0.5) - (bg->m_Dimension.first*0.5), 0), bg);
+		Renderer::GetInstance()->DrawFull(*screen, std::make_pair((screen->GetScreenWidth()*0.5) - (bg_t->m_Dimension.first*0.5), 40), bg_t);
+		Renderer::GetInstance()->DrawAnimation(*screen, std::make_pair(0, 40), f);
+		Renderer::GetInstance()->DrawAnimation(*screen, std::make_pair(screen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f2);
+		Renderer::GetInstance()->ShowOutput(*screen);		
+		//system("pause");
+	}
 	//srand(time(NULL));
 	//
 	//Game::Init();

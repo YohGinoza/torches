@@ -19,6 +19,7 @@ Sprite::Sprite(const std::string& name, const std::string& path, int spriteType)
 	}
 	else {
 		std::cout << "Successfully opened " << path << std::endl;
+		this->m_SpriteType = spriteType;
 		if (spriteType == SpriteType::Bit) {			
 			std::string buffer;
 			while (!dataFile.eof()) {
@@ -31,7 +32,7 @@ Sprite::Sprite(const std::string& name, const std::string& path, int spriteType)
 			}
 			this->m_Dimension = std::make_pair(tmp_width, this->m_ImageData.size());
 		}
-		else if (spriteType == SpriteType::Default) {
+		else if (spriteType == SpriteType::Default) {			
 			std::string buffer;
 			while (!dataFile.eof()) {
 				buffer.clear();
@@ -39,10 +40,9 @@ Sprite::Sprite(const std::string& name, const std::string& path, int spriteType)
 				if (buffer.size() > tmp_width) {
 					tmp_width = buffer.size();
 				}
-				this->m_ImageData.push_back(std::bitset<64>(buffer).to_ullong());
+				this->m_Image.push_back(buffer);
 			}
-			this->m_Dimension = std::make_pair(tmp_width, this->m_ImageData.size());
-			
+			this->m_Dimension = std::make_pair(tmp_width, this->m_Image.size());			
 		}
 		
 	}
@@ -80,6 +80,58 @@ char Sprite::GetBitOffChar() const {
 
 std::string Sprite::GetName() const {
 	return this->m_Name;
+}
+
+int Sprite::GetSpriteType() const {
+	return this->m_SpriteType;
+}
+
+SpriteAnimation::SpriteAnimation() {
+
+}
+
+SpriteAnimation::~SpriteAnimation() {
+
+}
+
+SpriteAnimation::SpriteAnimation(const std::string& name, const std::string& path, int xFrames, int yFrames)
+	:Sprite(name,path,1)
+{
+	this->m_xFrames = xFrames;
+	this->m_yFrames = yFrames;
+	this->m_FrameXCounter = 0;
+	this->m_FrameYCounter = 0;
+}
+
+void SpriteAnimation::IncrementFrame() {
+	this->m_FrameXCounter++;
+	if (this->m_FrameXCounter > this->m_xFrames - 1) {
+		this->m_FrameXCounter = 0;
+		this->m_FrameYCounter++;
+		if (this->m_FrameYCounter > this->m_yFrames - 1) {
+			this->m_FrameYCounter = 0;
+		}
+	}
+}
+
+int SpriteAnimation::GetTotalXFrames() const {
+	return this->m_xFrames;
+}
+
+int SpriteAnimation::GetTotalYFrames() const {
+	return this->m_yFrames;
+}
+
+std::pair<int,int> SpriteAnimation::GetCurrentFrame() const {
+	return std::make_pair(this->m_FrameXCounter,this->m_FrameYCounter);
+}
+
+int SpriteAnimation::GetWidthPerFrame() const {
+	return (this->m_Dimension.first / this->m_xFrames);
+}
+
+int SpriteAnimation::GetHeightPerFrame() const {	
+	return (this->m_Dimension.second / this->m_yFrames);
 }
 
 SpriteManager* SpriteManager::s_Instance = nullptr;
