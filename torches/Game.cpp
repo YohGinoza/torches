@@ -10,6 +10,7 @@
 #include "Time.h"
 #include "Renderer.h"
 #include "Animation.h"
+#include "Sound.h"
 
 class PhaseMaze;
 class GameUpdater;
@@ -264,7 +265,8 @@ namespace Game
 			gameScreen->ClearScreen();
 			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
 			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
-			
+			SoundManager::GetInstance()->playSound("Sound/Victory Fanfare.wav");
+
 			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youWin"));
 			Renderer::GetInstance()->ShowOutput(*gameScreen);
 		}
@@ -273,6 +275,7 @@ namespace Game
 			gameScreen->ClearScreen();
 			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
 			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
+			SoundManager::GetInstance()->playSound("Sound/bad_end.wav");
 
 			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youDied"));
 			Renderer::GetInstance()->ShowOutput(*gameScreen);
