@@ -15,11 +15,8 @@ public:
 	PhaseMaze();
 	~PhaseMaze();
 	virtual void OnUpdate(float dt, Screen& screen) override;
-
-	void DrawRoom(Screen& screen, int roomId);
-	void DrawMinimap(Screen& screen);
+	
 	static PhaseMaze* GetInstance();
-	bool MinimapOn() const; // return m_TriggerMinimap
 
 	void PlayerInput();
 	void CheckAround();
@@ -30,6 +27,7 @@ public:
 
 	void UpdateDetectRange();
 	void ClearDetectRange();
+	void DrawMinimap(Screen& screen);
 	void DrawMaze(Screen& screen);
 	void Draw_Debug();
 	void Draw_Minimap();

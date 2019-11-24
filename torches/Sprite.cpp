@@ -134,6 +134,11 @@ int SpriteAnimation::GetHeightPerFrame() const {
 	return (this->m_Dimension.second / this->m_yFrames);
 }
 
+void SpriteAnimation::ResetAnimation() {
+	this->m_FrameXCounter = 0;
+	this->m_FrameYCounter = 0;
+}
+
 SpriteManager* SpriteManager::s_Instance = nullptr;
 std::vector<Sprite*> SpriteManager::m_SpriteBucket;
 

@@ -35,6 +35,7 @@ public:
 	SpriteAnimation(const std::string& name, const std::string& path, int xFrames, int yFrames);	
 	~SpriteAnimation();
 	void IncrementFrame();
+	void ResetAnimation();
 	int GetTotalXFrames() const;
 	int GetTotalYFrames() const;
 	std::pair<int,int> GetCurrentFrame() const;

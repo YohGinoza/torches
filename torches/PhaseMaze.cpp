@@ -186,6 +186,64 @@ void PhaseMaze::DrawMaze(Screen& screen) {
 	}
 }
 
+void PhaseMaze::DrawMinimap(Screen& screen)
+{
+	for (int i = 0; i < MAP_HEIGHT; i++)
+	{
+		for (int y = 0; y < 3; y++)
+		{
+			for (int j = 0; j < MAP_WIDTH; j++)
+			{
+				for (int x = 0; x < 3; x++)
+				{
+					int screenX = 2 * j;
+					int screenY = 2 * i;
+					if (m_Rooms[i][j]->getTorches() || ((i == currRoomY) && (j == currRoomX)))
+					{
+						if ((i != 0 && y == 0 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_N)) ||
+							(i != MAP_HEIGHT - 1 && y == 2 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_S)))
+						{
+							screen.SetData(screenY, screenX, '|');
+							//std::cout << "| ";
+						}
+						else if ((j != 0 && x == 0 && y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_W)) ||
+							(j != MAP_WIDTH - 1 && x == 2 & y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_E)))
+						{
+							screen.SetData(screenY, screenX, '-');
+							//std::cout << "- ";
+						}
+						else if (x == 1 && y == 1)
+						{
+							if (((i == currRoomY) && (j == currRoomX))) {
+								screen.SetData(screenY, screenX, '@');
+								//std::cout << "@ ";
+							}
+							else if (m_Rooms[i][j]->getRoomType() == TYPE_TORCHES)
+							{
+								screen.SetData(screenY, screenX, 'T');
+								//std::cout << "T ";
+							}
+							else
+							{
+								screen.SetData(screenY, screenX, ' ');
+								//std::cout << "  ";
+							}
+						}
+						else {
+							screen.SetData(screenY, screenX, ' ');
+							//std::cout << "  ";
+						}
+					}
+					else {
+						screen.SetData(screenY, screenX, ' ');
+						//std::cout << "  ";
+					}
+				}
+			}
+			std::cout << std::endl;
+		}
+	}
+}
 
 PhaseMaze::~PhaseMaze()
 {
@@ -233,10 +291,11 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		UpdateDetectRange();
 
 		if (m_TriggerMinimap) {
-			Draw_Minimap();
+			DrawMinimap(screen);
+			//Draw_Minimap();
 		}
 		else {
-
+			DrawMaze(screen);
 			Draw_Debug();
 		}
 	}
