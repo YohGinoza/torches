@@ -23,7 +23,14 @@ void SoundManager::playSound(LPCSTR sound)
 {
 	if (!sound)
 		return;
-	PlaySound(sound, NULL,  SND_LOOP | SND_ASYNC); //playsound
+	PlaySound(sound, NULL,  SND_FILENAME| SND_ASYNC); //playsound
+}
+
+void SoundManager::playLoop(LPCSTR sound)
+{
+	if (!sound)
+		return;
+	PlaySound(sound, NULL, SND_LOOP | SND_ASYNC); //playsound
 }
 
 void SoundManager::stopAllSound()

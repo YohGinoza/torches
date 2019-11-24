@@ -9,6 +9,7 @@ private:
 public:
 	SoundManager();
 	~SoundManager();
+	void playLoop(LPCSTR);
 	void playSound(LPCSTR);
 	void stopAllSound();
 	static SoundManager* GetInstance();

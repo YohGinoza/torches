@@ -24,7 +24,7 @@ int main()
 	Sprite* s = new Sprite("s", "BitMapSprites/flame.txt",1);
 	int screenCenter = -(e->m_Dimension.first*0.5) + (screen->GetScreenWidth()*0.5);	
 	Renderer::GetInstance()->ShowOutput(*screen);
-	SoundManager::GetInstance()->playSound("Sound/Main_Screen.wav"); 
+	SoundManager::GetInstance()->playLoop("Sound/Main_Screen.wav"); 
 
 	while (1) {
 		InputBuffer::instance()->updateInput();
