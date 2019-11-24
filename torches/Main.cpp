@@ -13,7 +13,8 @@ int main()
 {	
 	std::cout << "About to print bg + monster" << std::endl;
 	Renderer r();
-	Screen* screen = new Screen(170, 60);
+	"?";
+	Screen* screen = new Screen(230, 60);
 	Sprite* bg = new Sprite("bg", "BitMapSprites/titleScreen.txt",1);
 	Sprite* bg_t = new Sprite("bg_torches", "BitMapSprites/title_torches.txt", 1);
 	Sprite* e = new Sprite("enemy", "BitMapSprites/pumpkin.txt");
