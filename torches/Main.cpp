@@ -40,6 +40,7 @@ int main()
 		//	break;
 		//}
 		//InputBuffer::instance()->clearArray();
+		break;
 	}
 	srand(time(NULL));
 	
