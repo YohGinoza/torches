@@ -5,6 +5,8 @@ class Time
 {
 	protected:
 		float deltaTime;
+		float currTime;
+		float oldTime;
 		static Time* s_Instance;
 	public:
 		Time();
