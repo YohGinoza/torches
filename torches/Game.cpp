@@ -142,6 +142,7 @@ namespace Game
 		
 		*CurrentState = GameState::PHASE_MAZE;
 		*NextState = GameState::PHASE_MAZE;
+		SoundManager::GetInstance()->playLoop("Sound/maze.wav");
 
 		GameUpdater<MazeUpdater> mazeUpdate;
 		gameUpdate = mazeUpdate.GetUpdate();
@@ -168,7 +169,7 @@ namespace Game
 				if (*NextState == GameState::PHASE_MAZE)
 				{
 					*CurrentState = GameState::PHASE_MAZE;
-
+					SoundManager::GetInstance()->playLoop("Sound/maze.wav");
 					GameUpdater<MazeUpdater> mazeUpdate;
 					gameUpdate = mazeUpdate.GetUpdate();
 				}
@@ -214,6 +215,7 @@ namespace Game
 				{
 					PhaseCombat::GetInstance()->InitCombat(randType, dt);
 					*CurrentState = GameState::PHASE_COMBAT;
+					SoundManager::GetInstance()->playLoop("Sound/battle.wav");
 					
 					GameUpdater<CombatUpdater> combatUpdate;
 					gameUpdate = combatUpdate.GetUpdate();
@@ -265,7 +267,7 @@ namespace Game
 			gameScreen->ClearScreen();
 			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
 			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
-			SoundManager::GetInstance()->playSound("Sound/Victory Fanfare.wav");
+			SoundManager::GetInstance()->playSound("Sound/youWin.wav");
 
 			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youWin"));
 			Renderer::GetInstance()->ShowOutput(*gameScreen);
@@ -275,7 +277,7 @@ namespace Game
 			gameScreen->ClearScreen();
 			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
 			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
-			SoundManager::GetInstance()->playSound("Sound/bad_end.wav");
+			SoundManager::GetInstance()->playSound("Sound/youDied.wav");
 
 			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youDied"));
 			Renderer::GetInstance()->ShowOutput(*gameScreen);
