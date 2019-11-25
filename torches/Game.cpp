@@ -193,7 +193,7 @@ namespace Game
 					PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);					
 					MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));					
 					PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
-					MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight()));
+					MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
 					Renderer::GetInstance()->ShowOutput(*MainScreen);
 				}
 				else if (*NextState == GameState::PHASE_ANIMATION)
@@ -227,7 +227,7 @@ namespace Game
 					PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);
 					MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
 					PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
-					MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight()));
+					MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
 					Renderer::GetInstance()->ShowOutput(*MainScreen);
 					
 					GameUpdater<CombatUpdater> combatUpdate;
@@ -269,7 +269,7 @@ namespace Game
 				PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);
 				MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
 				PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
-				MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight()));
+				MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
 				Renderer::GetInstance()->ShowOutput(*MainScreen);
 			}
 		}
@@ -286,7 +286,7 @@ namespace Game
 				MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
 				MiniMapScreen->ClearScreen();				
 				PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
-				MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight()));
+				MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
 				Renderer::GetInstance()->ShowOutput(*MainScreen);
 			}						
 		}

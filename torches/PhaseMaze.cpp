@@ -366,6 +366,8 @@ void PhaseMaze::CheckAround() {
 
 void PhaseMaze::UpdateDetectRange() 
 {
+	player_posX = player->GetPosition().first;
+	player_posY = player->GetPosition().second;
 	ClearDetectRange();
 
 	for (int i = player_posY - detectRange; i < player_posY + detectRange + 1; i++)
