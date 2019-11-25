@@ -7,6 +7,7 @@
 
 #define MON_PER_ROOM 7
 #define DEFAULT_DETECT_RANGE 2
+#define FIXED_OFFSET 8
 
 class PhaseMaze :
 	public Phase

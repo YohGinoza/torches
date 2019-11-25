@@ -1,0 +1,39 @@
+   ____                     _   _   _         
+  / ___|  _ __    ___    __| | (_) | |_   ___ 
+ | |     | '__|  / _ \  / _` | | | | __| / __|
+ | |___  | |    |  __/ | (_| | | | | |_  \__ \
+  \____| |_|     \___|  \__,_| |_|  \__| |___/
+
+6109642014 Natnaree Angklomkliew 
+6109642022 Eiyaphat Suntiwong    
+6109642030 Yoh      Ginoza       
+6109642048 Archavit Osathapan    
+6109642071 Puh-Zang Liu          
+
+                       Progammer
+		 Natnaree     Angklomkliew
+		 Eiyaphat     Suntiwong   
+		 Yoh          Ginoza      
+		 Archavit     Osathapan       
+		 Puh-Zang     Liu
+
+		      Game Designer
+		 Natnaree     Angklomkliew
+		 Eiyaphat     Suntiwong   
+		 Yoh          Ginoza      
+		 Archavit     Osathapan       
+		 Puh-Zang     Liu 
+
+		         Sound
+		 Natnaree     Angklomkliew
+		 Yoh          Ginoza
+		 
+		      Text Artist
+		 Yoh          Ginoza          
+		 Puh-Zang     Liu   
+		 
+		     Special Thanks
+                 Noppapadol   Poomarporn
+
+		         Course
+                 CDT280 Advanced Progamming

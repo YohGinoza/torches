@@ -33,3 +33,8 @@ bool Animation::IsEnded()const {
 void Animation::SetAnimationSpeed(int speed) {
 	this->m_UpdatingFrames = speed;
 }
+
+void Animation::ResetAnimation() {
+	this->m_FrameCounter = 0;
+	this->m_IsEnded = false;
+}

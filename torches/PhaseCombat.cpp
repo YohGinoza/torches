@@ -35,7 +35,7 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 			//if correct
 			//calculate damage
 			c_enemy->reduceHp(Player::GetInstance()->GetAttackDamage());
-			std::cout << c_enemy->m_SequenceKeeper.GetRange() << ", " << index << std::endl;
+			//std::cout << c_enemy->m_SequenceKeeper.GetRange() << ", " << index << std::endl;
 
 			//go to next sequence
 			index++;
@@ -62,10 +62,11 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 			delete c_enemy;
 		}
 	}
-	std::cout << "dt: " << dt << "Start: " << timeCounter << std::endl;
-		//delete enemy
+	//debug
+		//std::cout << "dt: " << dt << "Start: " << timeCounter << std::endl;
+	//delete enemy
 
-		//go back 
+	//go back 
 
 	//if finish sequence, go to maze phase
 	if (c_enemy->m_SequenceKeeper.GetRange() - 1 < index)
@@ -75,7 +76,7 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 		this->c_enemy->SetAliveStatus(false);;
 	}
 
-	DrawCombatPhase(screen);	
+	//DrawCombatPhase(screen);	
 }
 
 PhaseCombat* PhaseCombat::GetInstance()

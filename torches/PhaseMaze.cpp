@@ -99,76 +99,7 @@ PhaseMaze::PhaseMaze()
 	
 	map[player->GetPosition().second][player->GetPosition().first] = '@';
 }
-/*
-void PhaseMaze::Draw_Debug() 
-{
-	for (int i = 0; i < ROOM_HEIGHT; i++)
-	{
-		for (int j = 0; j < ROOM_WIDTH; j++) 
-		{
-			if (map_detect[i][j]) 
-			{
-				std::cout << map[i][j] << " ";
-			}
-			else 
-			{
-				std::cout << "  ";
-			}
-		}
 
-		std::cout << std::endl << std::endl;
-	}
-}
-void PhaseMaze::Draw_Minimap() 
-{
-	for (int i = 0; i < MAP_HEIGHT; i++)
-	{
-		for (int y = 0; y < 3; y++)
-		{
-			for (int j = 0; j < MAP_WIDTH; j++)
-			{
-				for (int x = 0; x < 3; x++)
-				{
-					if (m_Rooms[i][j]->getTorches() || ((i == currRoomY) && (j== currRoomX)))
-					{
-						if ((i != 0 && y == 0 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_N)) ||
-							(i != MAP_HEIGHT - 1 && y == 2 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_S)))
-						{
-							std::cout << "| ";
-						}
-						else if ((j != 0 && x == 0 && y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_W)) ||
-							(j != MAP_WIDTH - 1 && x == 2 & y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_E)))
-						{
-							std::cout << "- ";
-						}
-						else if (x == 1 && y == 1)
-						{
-							if(((i == currRoomY) && (j == currRoomX))) {
-								std::cout << "@ ";
-							}
-							else if (m_Rooms[i][j]->getRoomType() == TYPE_TORCHES)
-							{
-								std::cout << "T ";
-							}
-							else
-							{
-								std::cout << "  ";
-							}
-						}
-						else {
-							std::cout << "  ";
-						}
-					}
-					else {
-						std::cout << "  ";
-					}
-				}
-			}
-			std::cout << std::endl;
-		}
-	}
-}
-*/
 void PhaseMaze::DrawMaze(Screen& screen) {
 	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
@@ -191,7 +122,7 @@ void PhaseMaze::DrawMinimap(Screen& screen)
 	int screenX = 0;
 	int screenY = 0;
 
-	int FIXED_OFFSET = 8;
+	
 	for (int mapY = 0; mapY < MAP_HEIGHT; mapY++, screenY += FIXED_OFFSET)
 	{
 		screenX = 0;
@@ -227,7 +158,7 @@ void PhaseMaze::DrawMinimap(Screen& screen)
 				if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_E) {
 					screen.SetData(screenY, screenX + (FIXED_OFFSET*0.5), '-');
 				}
-			}			
+			}	
 		}		
 	}	
 }
@@ -243,13 +174,12 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 	player_posY = player->GetPosition().second;
 
 	if (!debug_draw) {
-		system("cls");
+		//system("cls");
 
 		UpdateDetectRange();
-		//Draw_Debug();
-		screen.ClearScreen();
-		DrawMaze(screen);
-		Renderer::GetInstance()->ShowOutput(screen);
+		//screen.ClearScreen();
+		//DrawMaze(screen);
+		//Renderer::GetInstance()->ShowOutput(screen);
 		debug_draw = true;
 	}
 
@@ -264,7 +194,7 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 
 	if (Game::getInput()->KeyPress() || UpdateDraw)
 	{
-		system("cls");
+		//system("cls");
 
 		UpdateDraw = false;
 
@@ -275,21 +205,21 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 
 		PlayerInput();
 
-		std::cout << player_posX << " " << player_posY << std::endl;
-		std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;
+		//std::cout << player_posX << " " << player_posY << std::endl;
+		//std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;
 
 		UpdateDetectRange();
 
 		if (m_TriggerMinimap) {
-			screen.ClearScreen();
-			DrawMinimap(screen);			
+			//screen.ClearScreen();
+			//DrawMinimap(screen);			
 		}
 		else {
-			screen.ClearScreen();
-			DrawMaze(screen);			
+			//screen.ClearScreen();
+			//DrawMaze(screen);			
 			//Draw_Debug();
 		}
-		Renderer::GetInstance()->ShowOutput(screen);
+		//Renderer::GetInstance()->ShowOutput(screen);
 	}
 
 
@@ -682,24 +612,24 @@ void PhaseMaze::SpawnMon()
 		{
 
 			bool randCheck = false;
-int randposX, randposY;
+			int randposX, randposY;
 
-while (!randCheck)
-{
-	randposX = rand() % ROOM_WIDTH;
-	randposY = rand() % ROOM_HEIGHT;
+			while (!randCheck)
+			{
+				randposX = rand() % ROOM_WIDTH;
+				randposY = rand() % ROOM_HEIGHT;
 
-	if (map[randposY][randposX] != '.') {
-		randCheck = false;
-	}
-	else
-	{
-		randCheck = true;
-		break;
-	}
-}
+				if (map[randposY][randposX] != '.') {
+					randCheck = false;
+				}
+				else
+				{
+					randCheck = true;
+					break;
+				}
+			}
 
-m_Rooms[currRoomY][currRoomX]->getMon().at(i)->SetPosition(randposX, randposY);
+			m_Rooms[currRoomY][currRoomX]->getMon().at(i)->SetPosition(randposX, randposY);
 		}
 	}
 }
@@ -767,8 +697,7 @@ void PhaseMaze::TestPrintMiniMap(Screen& screen)
 	//this->mapGen->PrintMap();
 	int screenX = 0;
 	int screenY = 0;
-
-	int FIXED_OFFSET = 8;
+	
 	for (int mapY = 0; mapY < MAP_HEIGHT; mapY++, screenY += FIXED_OFFSET)
 	{
 		screenX = 0;

@@ -119,7 +119,7 @@ void Renderer::ShowOutput(Screen& screen) {
 	std::string buffer;		
 	for (int i = 0; i < screen.GetScreenHeight(); i++) {
 		buffer += screen.GetScanline(i);
-		buffer += '|';
+		//buffer += '|';
 		buffer += '\n';
 	}
 	std::cout << buffer;
@@ -168,13 +168,12 @@ void Renderer::DrawAnimation(Screen& screen, std::pair<int, int> position, Sprit
 			if (offSetY + spriteRow < 0 || offSetX + spriteCol < 0 || offSetY + spriteRow > screen.GetScreenHeight() - 1 || offSetX + spriteCol > screen.GetScreenWidth() - 1) {
 				continue;
 			}
-			//std::cout << "r c" << spriteRow << " " << spriteCol << std::endl;
+
 			if (sprite->m_Image[offSetY + spriteRow][offSetX + spriteCol] != ' ') {
 				screen.SetData(i, j, sprite->m_Image[offSetY + spriteRow][offSetX + spriteCol]);
 			}			
 		}
 		spriteCol = 0;
 	}
-	//system("pause");
 	sprite->IncrementFrame();
 }

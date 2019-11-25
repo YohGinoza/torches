@@ -15,6 +15,9 @@
 class PhaseMaze;
 class GameUpdater;
 
+#define MAIN_SCREEN_WIDTH 230
+#define MAIN_SCREEN_HEIGHT 80
+
 namespace Game 
 {
 	typedef void(*GameUpdate)(float);
@@ -35,21 +38,22 @@ namespace Game
 
 	float dt = Time::GetInstance()->GetDeltaTime();
 
-	Screen* gameScreen = new Screen(230, 60);
+	Screen* MainScreen = new Screen(MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT);
+	Screen* MiniMapScreen = new Screen(MAP_WIDTH * FIXED_OFFSET, MAP_WIDTH * FIXED_OFFSET);
+	Screen* MazeScreen = new Screen(ROOM_WIDTH, ROOM_HEIGHT);
+	Screen* BattleScreen = new Screen(10 * SPRITE_SPECIAL_OFFSET, MAIN_SCREEN_HEIGHT);
+
 	int randType = 0;
-	Animation* animationNu = nullptr;
-	Animation* animationAlpha = nullptr;
-	Animation* animationMix = nullptr;
+
+	Animation* BattleIntro = new Animation();
+
 	bool playAnimation = false;
-	bool alpha_anim = false;
-	bool num_anim = false;
-	bool mix_anim = false;
 
 	Time t;
 
 	void MazeUpdate(float dt)
 	{
-		Maze->OnUpdate(dt, *gameScreen);
+		Maze->OnUpdate(dt, *MazeScreen);
 	}
 
 	class MazeUpdater
@@ -63,7 +67,7 @@ namespace Game
 
 	void CombatUpdate(float dt)
 	{
-		Combat->OnUpdate(Time::GetInstance()->GetDeltaTime(), *gameScreen);
+		Combat->OnUpdate(Time::GetInstance()->GetDeltaTime(), *BattleScreen);
 	}
 
 	class CombatUpdater
@@ -76,38 +80,13 @@ namespace Game
 	};
 
 	void AnimationUpdate(float dt) {
-		if (alpha_anim) {
-			if (!animationAlpha->IsEnded() && playAnimation) {
-				animationAlpha->Play(*gameScreen);
-				Renderer::GetInstance()->ShowOutput(*gameScreen);
-			}
-			if (animationAlpha->IsEnded()) {
-				Game::setState(Game::PHASE_COMBAT);
-				playAnimation = false;
-				alpha_anim = false;
-			}
+		if (!BattleIntro->IsEnded() && playAnimation) {
+			BattleIntro->Play(*MainScreen);			
 		}
-		else if (num_anim) {
-			if (!animationNu->IsEnded() && playAnimation) {
-				animationNu->Play(*gameScreen);
-				Renderer::GetInstance()->ShowOutput(*gameScreen);
-			}
-			if (animationNu->IsEnded()) {
-				Game::setState(Game::PHASE_COMBAT);
-				playAnimation = false;
-				num_anim = false;
-			}
-		}
-		else if (mix_anim) {
-			if (!animationMix->IsEnded() && playAnimation) {
-				animationMix->Play(*gameScreen);
-				Renderer::GetInstance()->ShowOutput(*gameScreen);
-			}
-			if (animationMix->IsEnded()) {
-				Game::setState(Game::PHASE_COMBAT);
-				playAnimation = false;
-				mix_anim = false;
-			}
+		if (BattleIntro->IsEnded()) {
+			Game::setState(Game::PHASE_COMBAT);
+			playAnimation = false;
+			BattleIntro->ResetAnimation();
 		}
 	}
 
@@ -134,6 +113,7 @@ namespace Game
 		SpriteManager::GetInstance()->PushBack(new Sprite("beastMix", "BitMapSprites/pumpkin.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youWin", "BitMapSprites/YouWin.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("credit", "BitMapSprites/credit.txt",1));
 		SpriteManager::GetInstance()->LoadInputSprites();
 
 		CurrentState = new int;
@@ -141,8 +121,7 @@ namespace Game
 		Exit_condition = new int;
 		
 		*CurrentState = GameState::PHASE_MAZE;
-		*NextState = GameState::PHASE_MAZE;
-		SoundManager::GetInstance()->playLoop("Sound/maze.wav");
+		*NextState = GameState::PHASE_MAZE;		
 
 		GameUpdater<MazeUpdater> mazeUpdate;
 		gameUpdate = mazeUpdate.GetUpdate();
@@ -154,124 +133,105 @@ namespace Game
 		Maze = PhaseMaze::GetInstance();
 		Combat = PhaseCombat::GetInstance();
 
-		//pls change this when we have dt
 		dt = Time::GetInstance()->GetDeltaTime();				
-		//PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
-		PhaseMaze::GetInstance()->TestPrintMiniMap(*gameScreen);
-		Renderer::GetInstance()->ShowOutput(*gameScreen);
-		system("pause");
+		//PhaseMaze::GetInstance()->TestPrintMiniMap(*MazeScreen);
+		//Renderer::GetInstance()->ShowOutput(*gameScreen);
 	}
 
 	void Title() 
 	{
-		/*Screen* screen = new Screen(230, 60);
-		Screen* screen_2 = new Screen(100, 50);*/
+		SoundManager::GetInstance()->playLoop("Sound/Main_Screen.wav");
 		Sprite* bg = new Sprite("bg", "BitMapSprites/titleScreen.txt", 1);
 		Sprite* bg_t = new Sprite("bg_torches", "BitMapSprites/title_torches.txt", 1);
-		Sprite* e = new Sprite("enemy", "BitMapSprites/pumpkin.txt");
-		SpriteAnimation* f = new SpriteAnimation("fire", "BitMapSprites/flame.txt", 4, 3);
-		SpriteAnimation* f2 = new SpriteAnimation("fire2", "BitMapSprites/flame.txt", 4, 3);
-		Sprite* s = new Sprite("s", "BitMapSprites/flame.txt", 1);
-		int screenCenter = -(e->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
+		SpriteAnimation* f = new SpriteAnimation("flame", "BitMapSprites/flame.txt", 4, 3);
 
-		Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg->m_Dimension.first*0.5), 0), bg);
-		Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg_t->m_Dimension.first*0.5), 40), bg_t);
-		Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(0, 40), f);
-		Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(gameScreen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f2);
-
-
-		/*for (int i = 0; i < screen_2->GetScreenHeight(); i++) {
-			for (int j = 0; j < screen_2->GetScreenWidth(); j++) {
-				screen_2->SetData(i, j, '=');
-			}
-		}*/
-
-		//system("pause");
 		while (1) {
 
 			input->updateInput();
 			system("cls");
-			gameScreen->ClearScreen();
-			Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg->m_Dimension.first*0.5), 0), bg);
-			Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg_t->m_Dimension.first*0.5), 40), bg_t);
-			Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(0, 40), f);
-			Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(gameScreen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f2);
-			Renderer::GetInstance()->ShowOutput(*gameScreen);
-			if (input->KeyPress()) {
-				//screen->CombineScreen(*screen_2, std::make_pair(0, 0));
-
-
-				//system("pause");
+			MainScreen->ClearScreen();
+			Renderer::GetInstance()->DrawFull(*MainScreen, std::make_pair((MainScreen->GetScreenWidth()*0.5) - (bg->m_Dimension.first*0.5), 0), bg);
+			Renderer::GetInstance()->DrawFull(*MainScreen, std::make_pair((MainScreen->GetScreenWidth()*0.5) - (bg_t->m_Dimension.first*0.5), 40), bg_t);
+			Renderer::GetInstance()->DrawAnimation(*MainScreen, std::make_pair(0, 40), f);
+			Renderer::GetInstance()->DrawAnimation(*MainScreen, std::make_pair(MainScreen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f);
+			Renderer::GetInstance()->ShowOutput(*MainScreen);
+			if (input->KeyPress()) {				
 				break;
 			}
-
 			input->clearArray();
 		}
+
+		SoundManager::GetInstance()->playLoop("Sound/maze.wav");
+		MainScreen->ClearScreen();
+
+		delete f;
+		delete bg;
+		delete bg_t;
 	}
 
 	void Loop()
-	{
+	{		
 		Time::GetInstance()->start = Time::GetInstance()->timer.now();
 		while (*CurrentState != GameState::QUIT)
 		{
 			if (*NextState != *CurrentState)
 			{
 				if (*NextState == GameState::PHASE_MAZE)
-				{
+				{					
 					*CurrentState = GameState::PHASE_MAZE;
 					SoundManager::GetInstance()->playLoop("Sound/maze.wav");
 					GameUpdater<MazeUpdater> mazeUpdate;
 					gameUpdate = mazeUpdate.GetUpdate();
+
+					MainScreen->ClearScreen();
+					MazeScreen->ClearScreen();
+					BattleScreen->ClearScreen();
+					system("cls");
+					MazeScreen->ClearScreen();
+					PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);					
+					MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
+					Renderer::GetInstance()->ShowOutput(*MainScreen);
 				}
 				else if (*NextState == GameState::PHASE_ANIMATION)
 				{
 					playAnimation = true;
-					randType = rand() % 3;
-					switch (randType) {
-					case 0:
-					{
-						if (animationNu != nullptr) {
-							delete animationNu;
-						}
-						animationNu = new Animation();
-						num_anim = true;
-					}
-					break;
-					case 1:
-					{
-						if (animationAlpha != nullptr) {
-							delete animationAlpha;
-						}
-						animationAlpha = new Animation();
-						alpha_anim = true;
-					}
-					break;
-					case 2:
-					{
-						if (animationMix != nullptr) {
-							delete animationMix;
-						}
-						animationMix = new Animation();
-						mix_anim = true;
-					}
-					break;
-					}
+					randType = rand() % 3;					
 					*CurrentState = GameState::PHASE_ANIMATION;
 
+					MainScreen->ClearScreen();
+					MazeScreen->ClearScreen();
+					BattleScreen->ClearScreen();
+										
 					GameUpdater<AnimationUpdater> animationUpdate;
-					gameUpdate = animationUpdate.GetUpdate();
+					gameUpdate = animationUpdate.GetUpdate();					
 				}
 				else if (*NextState == GameState::PHASE_COMBAT)
 				{
 					PhaseCombat::GetInstance()->InitCombat(randType, dt);
 					*CurrentState = GameState::PHASE_COMBAT;
 					SoundManager::GetInstance()->playLoop("Sound/battle.wav");
+
+					MainScreen->ClearScreen();
+					MazeScreen->ClearScreen();
+					BattleScreen->ClearScreen();
+
+					system("cls");					
+					MazeScreen->ClearScreen();
+					PhaseCombat::GetInstance()->DrawCombatPhase(*BattleScreen);
+					MainScreen->CombineScreen(*BattleScreen, std::make_pair(MiniMapScreen->GetScreenWidth(), 0));
+					PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);
+					MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
+					Renderer::GetInstance()->ShowOutput(*MainScreen);
 					
 					GameUpdater<CombatUpdater> combatUpdate;
-					gameUpdate = combatUpdate.GetUpdate();
+					gameUpdate = combatUpdate.GetUpdate();					
 				}
 				else if (*NextState == GameState::QUIT)
 				{
+					MainScreen->ClearScreen();
+					MazeScreen->ClearScreen();
+					BattleScreen->ClearScreen();
+
 					*CurrentState = GameState::QUIT;
 
 					break;
@@ -288,24 +248,36 @@ namespace Game
 
 	void Update() 
 	{
-		input->updateInput();
-
-		gameScreen->ClearScreen();
-
-		gameUpdate(Time::GetInstance()->GetDeltaTime());
-
-		//debug_input();
+		input->updateInput();										
+		
+		gameUpdate(Time::GetInstance()->GetDeltaTime());	
+		
 		if (*CurrentState == PHASE_COMBAT)
 		{
-			system("cls");
-			std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;
-			Renderer::GetInstance()->ShowOutput(*gameScreen);			
+			if (input->KeyPress()) {
+				system("cls");
+				MazeScreen->ClearScreen();
+				PhaseCombat::GetInstance()->DrawCombatPhase(*BattleScreen);				
+				MainScreen->CombineScreen(*BattleScreen, std::make_pair(MiniMapScreen->GetScreenWidth(), 0));
+				PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);
+				MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
+				Renderer::GetInstance()->ShowOutput(*MainScreen);
+			}
 		}
 		else if (*CurrentState == PHASE_ANIMATION) {
-
-			Renderer::GetInstance()->ShowOutput(*gameScreen);
+			system("cls");
+			Renderer::GetInstance()->ShowOutput(*MainScreen);
 		}
-
+		else if (*CurrentState == PHASE_MAZE) {			
+			if (input->KeyPress()) {
+				system("cls");
+				MazeScreen->ClearScreen();
+				PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);
+				MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));				
+				Renderer::GetInstance()->ShowOutput(*MainScreen);
+			}						
+		}
+		
 		input->clearArray();
 	}
 
@@ -314,23 +286,23 @@ namespace Game
 
 		if (*Exit_condition == EXIT_WIN) 
 		{
-			gameScreen->ClearScreen();
-			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
-			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
+			MainScreen->ClearScreen();
+			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.first*0.5) + (MainScreen->GetScreenWidth()*0.5);
+			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youWin")->m_Dimension.second*0.5) + (MainScreen->GetScreenHeight()*0.5);
 			SoundManager::GetInstance()->playSound("Sound/youWin.wav");
 
-			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youWin"));
-			Renderer::GetInstance()->ShowOutput(*gameScreen);
+			Renderer::GetInstance()->Draw(*MainScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youWin"));
+			Renderer::GetInstance()->ShowOutput(*MainScreen);
 		}
 		else if (*Exit_condition == EXIT_DIE) 
 		{
-			gameScreen->ClearScreen();
-			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
-			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.second*0.5) + (gameScreen->GetScreenHeight()*0.5);
+			MainScreen->ClearScreen();
+			int midscreenposX = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.first*0.5) + (MainScreen->GetScreenWidth()*0.5);
+			int midscreenposY = -(SpriteManager::GetInstance()->GetSprite("youDied")->m_Dimension.second*0.5) + (MainScreen->GetScreenHeight()*0.5);
 			SoundManager::GetInstance()->playSound("Sound/youDied.wav");
 
-			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youDied"));
-			Renderer::GetInstance()->ShowOutput(*gameScreen);
+			Renderer::GetInstance()->Draw(*MainScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youDied"));
+			Renderer::GetInstance()->ShowOutput(*MainScreen);
 		}
 	}
 
@@ -345,8 +317,10 @@ namespace Game
 		}
 
 		InputBuffer::instance()->destroy();
-		delete animationAlpha;
-		delete animationNu;
+		delete BattleIntro;
+		delete MainScreen;
+		delete MazeScreen;
+		//delete MiniMapScreen;		
 	}
 	
 	InputBuffer* getInput() 

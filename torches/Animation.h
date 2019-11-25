@@ -10,6 +10,7 @@ public:
 	void Play(Screen& screen);
 	bool IsEnded() const;
 	void SetAnimationSpeed(int speed);
+	void ResetAnimation();
 private:
 	bool m_IsEnded;
 	int m_FrameCounter;

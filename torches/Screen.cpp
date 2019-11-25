@@ -50,13 +50,15 @@ void Screen::CombineScreen(Screen& screen, std::pair<int,int> upperleftCorner) {
 		upperleftCorner.second + screen.GetScreenHeight() < 0) {
 		return;
 	}
-	for (int i = upperleftCorner.second; i < screen.GetScreenHeight() + upperleftCorner.second; i++) {
-		for (int j = upperleftCorner.second; j < screen.GetScreenWidth() + upperleftCorner.first; j++) {
+	int screenRow = 0;
+	int screenCol = 0;
+	for (int i = upperleftCorner.second; i < upperleftCorner.second + screen.GetScreenHeight(); i++, screenRow++) {
+		screenCol = 0;
+		for (int j = upperleftCorner.first; j < upperleftCorner.first + screen.GetScreenWidth(); j++, screenCol++) {
 			if (i > this->ScreenHeight || j > this->ScreenWidth || i < 0 ||	j < 0) {
 				continue;
 			}
-						
-			this->SetData(i, j, screen.GetScanline(i)[j]);
+			this->SetData(i, j, screen.GetScanline(screenRow)[screenCol]);
 		}
 	}
 }
