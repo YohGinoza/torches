@@ -191,6 +191,7 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 
 	CheckAround();
 	CheckTorches();
+	
 
 	if (Game::getInput()->KeyPress() || UpdateDraw)
 	{
@@ -204,95 +205,66 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		}
 
 		PlayerInput();
-
 		//std::cout << player_posX << " " << player_posY << std::endl;
-		//std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;
-
+		//std::cout << "PLAYER HP: " << Player::GetInstance()->GetHp() << std::endl;				
 		UpdateDetectRange();
-
-		if (m_TriggerMinimap) {
-			//screen.ClearScreen();
-			//DrawMinimap(screen);			
-		}
-		else {
-			//screen.ClearScreen();
-			//DrawMaze(screen);			
-			//Draw_Debug();
-		}
-		//Renderer::GetInstance()->ShowOutput(screen);
-	}
-
-
-
-	//DrawMaze(screen);
+	}	
 }
 
 void PhaseMaze::PlayerInput()
 {
-	if (!m_TriggerMinimap) {
-		if (Game::getInput()->getKey(KeyCode::KEY_A))
-		{
-			if (/*(player_posX > 1) && */(map[player_posY][player_posX - 1] == '.'))
-			{
-				map[player_posY][player_posX] = '.';
-
-				player->Translate(-1, 0);
-				player_posX -= 1;
-				map[player_posY][player_posX] = '@';
-			}
-		}
-		else if (Game::getInput()->getKey(KeyCode::KEY_D))
-		{
-			if (/*(player_posX < ROOM_WIDTH - 2) && */(map[player_posY][player_posX + 1] == '.'))
-			{
-				map[player_posY][player_posX] = '.';
-
-				player->Translate(1, 0);
-				player_posX += 1;
-				map[player_posY][player_posX] = '@';
-			}
-		}
-		else if (Game::getInput()->getKey(KeyCode::KEY_W))
-		{
-			if (/*(player_posY > 1) && */(map[player_posY - 1][player_posX] == '.'))
-			{
-				map[player_posY][player_posX] = '.';
-
-				player->Translate(0, -1);
-				player_posY -= 1;
-				map[player_posY][player_posX] = '@';
-			}
-		}
-		else if (Game::getInput()->getKey(KeyCode::KEY_S))
-		{
-			if (/*(player_posY < ROOM_HEIGHT - 2) && */(map[player_posY + 1][player_posX] == '.'))
-			{
-				map[player_posY][player_posX] = '.';
-
-				player->Translate(0, 1);
-				player_posY += 1;
-				map[player_posY][player_posX] = '@';
-			}
-		}
-		else if (Game::getInput()->getKey(KeyCode::KEY_T))
-		{
-			m_Rooms[currRoomY][currRoomX]->LitTorches(true);
-		}
-		else if (Game::getInput()->getKey(KeyCode::KEY_Y))
-		{
-			detectRange++;
-		}
-	}
-	
-	if (Game::getInput()->getKey(KeyCode::KEY_M)) 
+	if (Game::getInput()->getKey(KeyCode::KEY_A))
 	{
-		if (!m_TriggerMinimap) {
-			m_TriggerMinimap = true;
-		}
-		else {
-			m_TriggerMinimap = false;
+		if (/*(player_posX > 1) && */(map[player_posY][player_posX - 1] == '.'))
+		{
+			map[player_posY][player_posX] = '.';
+
+			player->Translate(-1, 0);
+			player_posX -= 1;
+			map[player_posY][player_posX] = '@';
 		}
 	}
+	else if (Game::getInput()->getKey(KeyCode::KEY_D))
+	{
+		if (/*(player_posX < ROOM_WIDTH - 2) && */(map[player_posY][player_posX + 1] == '.'))
+		{
+			map[player_posY][player_posX] = '.';
+
+			player->Translate(1, 0);
+			player_posX += 1;
+			map[player_posY][player_posX] = '@';
+		}
+	}
+	else if (Game::getInput()->getKey(KeyCode::KEY_W))
+	{
+		if (/*(player_posY > 1) && */(map[player_posY - 1][player_posX] == '.'))
+		{
+			map[player_posY][player_posX] = '.';
+
+			player->Translate(0, -1);
+			player_posY -= 1;
+			map[player_posY][player_posX] = '@';
+		}
+	}
+	else if (Game::getInput()->getKey(KeyCode::KEY_S))
+	{
+		if (/*(player_posY < ROOM_HEIGHT - 2) && */(map[player_posY + 1][player_posX] == '.'))
+		{
+			map[player_posY][player_posX] = '.';
+
+			player->Translate(0, 1);
+			player_posY += 1;
+			map[player_posY][player_posX] = '@';
+		}
+	}
+	else if (Game::getInput()->getKey(KeyCode::KEY_T))
+	{
+		m_Rooms[currRoomY][currRoomX]->LitTorches(true);
+	}
+	else if (Game::getInput()->getKey(KeyCode::KEY_Y))
+	{
+		detectRange++;
+	}		
 
 	if (player_posY == 0) 
 	{
@@ -304,7 +276,7 @@ void PhaseMaze::PlayerInput()
 
 		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomY -= 1;
-		resetRoom();
+		resetRoom();		
 	}
 	else if (player_posY == ROOM_HEIGHT - 1) 
 	{
@@ -316,7 +288,7 @@ void PhaseMaze::PlayerInput()
 
 		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomY += 1;
-		resetRoom();
+		resetRoom();		
 	}
 	else if (player_posX == 0) 
 	{
@@ -328,7 +300,7 @@ void PhaseMaze::PlayerInput()
 
 		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomX -= 1;
-		resetRoom();
+		resetRoom();		
 	}
 	else if (player_posX == ROOM_WIDTH - 1) 
 	{
@@ -340,9 +312,9 @@ void PhaseMaze::PlayerInput()
 
 		detectRange = DEFAULT_DETECT_RANGE;
 		currRoomX += 1;
-		resetRoom();
+		resetRoom();		
 	}
-
+	UpdateDetectRange();
 	
 	
 }
