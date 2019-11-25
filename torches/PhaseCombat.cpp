@@ -120,13 +120,19 @@ void PhaseCombat::InitCombat(int e_type, float dt)
 	{
 		c_enemy = new BeastNu();
 		c_enemy->GenerateSequence();
-		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu");
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu_" + (char)(rand() % 3));
 	}
-	else
+	else if (e_type == BeastType::BeastAl)
 	{
 		c_enemy = new BeastAlpha();
 		c_enemy->GenerateSequence();
-		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha");
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha_" + (char)(rand() % 3));
 	}	
+	else
+	{
+		c_enemy = new BeastHybrid();
+		c_enemy->GenerateSequence();
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastHybrid");
+	}
 }
 

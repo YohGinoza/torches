@@ -30,7 +30,6 @@ BeastAlpha::BeastAlpha()
 	GenerateSequence();
 }
 
-
 BeastAlpha::BeastAlpha(int hp, int atk) {
 	this->Hp = hp;
 	this->AttackDamage = atk;
@@ -58,6 +57,7 @@ void BeastAlpha::GenerateSequence() {
 	}
 }
 
+
 BeastNu::BeastNu()
 {
 	this->Hp = 10;
@@ -81,6 +81,49 @@ void BeastNu::GenerateSequence() {
 	for (int i = 0; i < m_SequenceKeeper.GetRange(); i++) {
 		int randNum = (rand() % 9) + 1;
 		m_SequenceKeeper.SetSequenceAt(i, randNum);
+	}
+
+}
+
+
+BeastHybrid::BeastHybrid()
+{
+	this->Hp = 10;
+	this->AttackDamage = 10;
+	this->isAlive = true;
+	GenerateSequence();
+}
+
+BeastHybrid::BeastHybrid(int hp, int atk) {
+	this->Hp = hp;
+	this->AttackDamage = atk;
+	this->isAlive = true;
+	GenerateSequence();
+}
+
+BeastHybrid::~BeastHybrid()
+{
+}
+
+void BeastHybrid::GenerateSequence() {
+	for (int i = 0; i < m_SequenceKeeper.GetRange(); i++) {
+		if (rand() % 2) {
+			int randNum = (rand() % 9) + 1;
+			m_SequenceKeeper.SetSequenceAt(i, randNum);
+		}
+		else {
+			int randChar = rand() % 4;
+			switch (randChar) {
+			case 0: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_UP);
+				break;
+			case 1: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_DOWN);
+				break;
+			case 2: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_LEFT);
+				break;
+			case 3: m_SequenceKeeper.SetSequenceAt(i, (int)KeyCode::KEY_RIGHT);
+				break;
+			}
+		}
 	}
 
 }

@@ -38,9 +38,11 @@ namespace Game
 	int randType = 0;
 	Animation* animationNu = nullptr;
 	Animation* animationAlpha = nullptr;
+	Animation* animationHybrid = nullptr;
 	bool playAnimation = false;
 	bool alpha_anim = false;
 	bool num_anim = false;
+	bool hybrid_anim = false;
 
 	Time t;
 
@@ -95,6 +97,17 @@ namespace Game
 				num_anim = false;
 			}
 		}
+		else if (hybrid_anim) {
+			if (!animationHybrid->IsEnded() && playAnimation) {
+				animationHybrid->Play(*gameScreen);
+				Renderer::GetInstance()->ShowOutput(*gameScreen);
+			}
+			if (animationHybrid->IsEnded()) {
+				Game::setState(Game::PHASE_COMBAT);
+				playAnimation = false;
+				hybrid_anim = false;
+			}
+		}
 	}
 
 	class AnimationUpdater {
@@ -115,8 +128,13 @@ namespace Game
 		Renderer r();
 		SpriteManager sm();
 
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha", "BitMapSprites/BeastAlpha.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastNu", "BitMapSprites/BeastNu.txt"));
+		for (int i = 0; i < 3; i++) {
+			std::string alphaPath; alphaPath += "BitMapSprites/BeastAlpha_"; alphaPath += (char)(i + '0'); alphaPath += ".txt";
+			SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_" + ((char)i + '0'), alphaPath));
+			std::string nuPath; nuPath += "BitMapSprites/BeastNu_"; nuPath += (char)(i + '0'); nuPath += ".txt";
+			SpriteManager::GetInstance()->PushBack(new Sprite("beastNu_" + ((char)i + '0'), nuPath));
+		}
+		
 		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youWin", "BitMapSprites/YouWin.txt"));
 		SpriteManager::GetInstance()->LoadInputSprites();
@@ -160,7 +178,7 @@ namespace Game
 				else if (*NextState == GameState::PHASE_ANIMATION)
 				{
 					playAnimation = true;
-					randType = rand() % 2;
+					randType = rand() % 3;
 					switch (randType) {
 					case 0:
 					{
@@ -178,6 +196,15 @@ namespace Game
 						}
 						animationAlpha = new Animation();
 						alpha_anim = true;
+					}
+					break;
+					case 2:
+					{
+						if (animationHybrid != nullptr) {
+							delete animationHybrid;
+						}
+						animationHybrid = new Animation();
+						hybrid_anim = true;
 					}
 					break;
 					}
@@ -265,6 +292,7 @@ namespace Game
 		InputBuffer::instance()->destroy();
 		delete animationAlpha;
 		delete animationNu;
+		delete animationHybrid;
 	}
 	
 	InputBuffer* getInput() 
