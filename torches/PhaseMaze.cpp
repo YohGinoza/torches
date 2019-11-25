@@ -1,5 +1,6 @@
 #include "PhaseMaze.h"
 #include "PhaseCombat.h"
+#include "Renderer.h"
 
 PhaseMaze* PhaseMaze::s_Instance = nullptr;
 
@@ -98,7 +99,7 @@ PhaseMaze::PhaseMaze()
 	
 	map[player->GetPosition().second][player->GetPosition().first] = '@';
 }
-
+/*
 void PhaseMaze::Draw_Debug() 
 {
 	for (int i = 0; i < ROOM_HEIGHT; i++)
@@ -118,7 +119,6 @@ void PhaseMaze::Draw_Debug()
 		std::cout << std::endl << std::endl;
 	}
 }
-
 void PhaseMaze::Draw_Minimap() 
 {
 	for (int i = 0; i < MAP_HEIGHT; i++)
@@ -168,7 +168,7 @@ void PhaseMaze::Draw_Minimap()
 		}
 	}
 }
-
+*/
 void PhaseMaze::DrawMaze(Screen& screen) {
 	for (int i = 0; i < ROOM_HEIGHT; i++)
 	{
@@ -188,61 +188,48 @@ void PhaseMaze::DrawMaze(Screen& screen) {
 
 void PhaseMaze::DrawMinimap(Screen& screen)
 {
-	for (int i = 0; i < MAP_HEIGHT; i++)
+	int screenX = 0;
+	int screenY = 0;
+
+	int FIXED_OFFSET = 8;
+	for (int mapY = 0; mapY < MAP_HEIGHT; mapY++, screenY += FIXED_OFFSET)
 	{
-		for (int y = 0; y < 3; y++)
+		screenX = 0;
+		for (int mapX = 0; mapX < MAP_WIDTH; mapX++, screenX += FIXED_OFFSET)
 		{
-			for (int j = 0; j < MAP_WIDTH; j++)
-			{
-				for (int x = 0; x < 3; x++)
-				{
-					int screenX = 2 * j;
-					int screenY = 2 * i;
-					if (m_Rooms[i][j]->getTorches() || ((i == currRoomY) && (j == currRoomX)))
-					{
-						if ((i != 0 && y == 0 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_N)) ||
-							(i != MAP_HEIGHT - 1 && y == 2 && x == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_S)))
-						{
-							screen.SetData(screenY, screenX, '|');
-							//std::cout << "| ";
-						}
-						else if ((j != 0 && x == 0 && y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_W)) ||
-							(j != MAP_WIDTH - 1 && x == 2 & y == 1 && (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(j, i))] & NODE_PATH_E)))
-						{
-							screen.SetData(screenY, screenX, '-');
-							//std::cout << "- ";
-						}
-						else if (x == 1 && y == 1)
-						{
-							if (((i == currRoomY) && (j == currRoomX))) {
-								screen.SetData(screenY, screenX, '@');
-								//std::cout << "@ ";
-							}
-							else if (m_Rooms[i][j]->getRoomType() == TYPE_TORCHES)
-							{
-								screen.SetData(screenY, screenX, 'T');
-								//std::cout << "T ";
-							}
-							else
-							{
-								screen.SetData(screenY, screenX, ' ');
-								//std::cout << "  ";
-							}
-						}
-						else {
-							screen.SetData(screenY, screenX, ' ');
-							//std::cout << "  ";
-						}
-					}
-					else {
-						screen.SetData(screenY, screenX, ' ');
-						//std::cout << "  ";
-					}
+			if (m_Rooms[mapY][mapX]->getTorches() || (currRoomX == mapX && currRoomY == mapY)) {
+
+				if ((currRoomX == mapX && currRoomY == mapY)) {
+					screen.SetData(screenY, screenX, '@');
 				}
-			}
-			std::cout << std::endl;
-		}
-	}
+				else {
+					if (m_Rooms[mapY][mapX]->getRoomType() == RoomType::TYPE_CHEST) {
+						screen.SetData(screenY, screenX, 'C');
+					}
+					else if (m_Rooms[mapY][mapX]->getRoomType() == RoomType::TYPE_TORCHES) {
+						screen.SetData(screenY, screenX, 'T');
+					}
+					else if (m_Rooms[mapY][mapX]->getRoomType() == RoomType::TYPE_EMPTY) {
+						screen.SetData(screenY, screenX, ' ');
+					}
+				}								
+
+
+				if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_N) {
+					screen.SetData(screenY - (FIXED_OFFSET*0.5), screenX, '|');
+				}
+				if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_S) {
+					screen.SetData(screenY + (FIXED_OFFSET*0.5), screenX, '|');
+				}
+				if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_W) {
+					screen.SetData(screenY, screenX - (FIXED_OFFSET*0.5), '-');
+				}
+				if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_E) {
+					screen.SetData(screenY, screenX + (FIXED_OFFSET*0.5), '-');
+				}
+			}			
+		}		
+	}	
 }
 
 PhaseMaze::~PhaseMaze()
@@ -259,7 +246,10 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		system("cls");
 
 		UpdateDetectRange();
-		Draw_Debug();
+		//Draw_Debug();
+		screen.ClearScreen();
+		DrawMaze(screen);
+		Renderer::GetInstance()->ShowOutput(screen);
 		debug_draw = true;
 	}
 
@@ -291,13 +281,15 @@ void PhaseMaze::OnUpdate(float dt, Screen& screen)
 		UpdateDetectRange();
 
 		if (m_TriggerMinimap) {
-			DrawMinimap(screen);
-			//Draw_Minimap();
+			screen.ClearScreen();
+			DrawMinimap(screen);			
 		}
 		else {
-			DrawMaze(screen);
-			Draw_Debug();
+			screen.ClearScreen();
+			DrawMaze(screen);			
+			//Draw_Debug();
 		}
+		Renderer::GetInstance()->ShowOutput(screen);
 	}
 
 
@@ -690,24 +682,24 @@ void PhaseMaze::SpawnMon()
 		{
 
 			bool randCheck = false;
-			int randposX, randposY;
+int randposX, randposY;
 
-			while (!randCheck)
-			{
-				randposX = rand() % ROOM_WIDTH;
-				randposY = rand() % ROOM_HEIGHT;
+while (!randCheck)
+{
+	randposX = rand() % ROOM_WIDTH;
+	randposY = rand() % ROOM_HEIGHT;
 
-				if (map[randposY][randposX] != '.') {
-					randCheck = false;
-				}
-				else
-				{
-					randCheck = true;
-					break;
-				}
-			}
+	if (map[randposY][randposX] != '.') {
+		randCheck = false;
+	}
+	else
+	{
+		randCheck = true;
+		break;
+	}
+}
 
-			m_Rooms[currRoomY][currRoomX]->getMon().at(i)->SetPosition(randposX, randposY);
+m_Rooms[currRoomY][currRoomX]->getMon().at(i)->SetPosition(randposX, randposY);
 		}
 	}
 }
@@ -719,7 +711,7 @@ void PhaseMaze::MoveMon()
 		{
 			GameObject* tmp = m_Rooms[currRoomY][currRoomX]->getMon().at(i);
 
-			if (tmp != nullptr) 
+			if (tmp != nullptr)
 			{
 
 				int randMove = rand() % 4;
@@ -768,4 +760,44 @@ void PhaseMaze::MoveMon()
 			}
 		}
 	}
+}
+
+void PhaseMaze::TestPrintMiniMap(Screen& screen)
+{
+	//this->mapGen->PrintMap();
+	int screenX = 0;
+	int screenY = 0;
+
+	int FIXED_OFFSET = 8;
+	for (int mapY = 0; mapY < MAP_HEIGHT; mapY++, screenY += FIXED_OFFSET)
+	{
+		screenX = 0;
+		for (int mapX = 0; mapX < MAP_WIDTH; mapX++, screenX += FIXED_OFFSET)
+		{
+
+			if (m_Rooms[mapY][mapX]->getRoomType() == RoomType::TYPE_CHEST) {
+				screen.SetData(screenY, screenX, 'C');
+			}
+			else if (m_Rooms[mapY][mapX]->getRoomType() == RoomType::TYPE_TORCHES) {
+				screen.SetData(screenY, screenX, 'T');
+			}
+			else if (m_Rooms[mapY][mapX]->getRoomType() == RoomType::TYPE_EMPTY) {
+				screen.SetData(screenY, screenX, 'N');
+			}			
+
+
+			if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_N){
+				screen.SetData(screenY - (FIXED_OFFSET*0.5), screenX, '|');
+			}
+			if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_S) {
+				screen.SetData(screenY + (FIXED_OFFSET*0.5), screenX, '|');
+			}
+			if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_W) {
+				screen.SetData(screenY, screenX - (FIXED_OFFSET*0.5), '-');
+			}
+			if (mapGen->getMapInfo()[mapGen->GetIndex(MapPosition(mapX, mapY))] & NODE_PATH_E) {
+				screen.SetData(screenY, screenX + (FIXED_OFFSET*0.5), '-');
+			}
+		}
+	}	
 }

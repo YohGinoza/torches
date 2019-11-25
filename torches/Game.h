@@ -22,11 +22,15 @@ namespace Game
 
 	void Init();
 
+	void Title();
+
 	void Update();
 	
 	void Loop();
 
 	void Exit();
+
+	void Credit();
 
 	void Destroy();
 

@@ -32,6 +32,8 @@ public:
 	void Draw_Debug();
 	void Draw_Minimap();
 
+	void TestPrintMiniMap(Screen& screen);
+
 	void resetRoom();
 private:
 	MapGenerator* mapGen;

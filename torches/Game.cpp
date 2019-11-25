@@ -35,7 +35,7 @@ namespace Game
 
 	float dt = Time::GetInstance()->GetDeltaTime();
 
-	Screen* gameScreen = new Screen(150, 45);
+	Screen* gameScreen = new Screen(230, 60);
 	int randType = 0;
 	Animation* animationNu = nullptr;
 	Animation* animationAlpha = nullptr;
@@ -157,6 +157,56 @@ namespace Game
 		//pls change this when we have dt
 		dt = Time::GetInstance()->GetDeltaTime();				
 		//PhaseCombat::GetInstance()->InitCombat(rand() % 2, dt);
+		PhaseMaze::GetInstance()->TestPrintMiniMap(*gameScreen);
+		Renderer::GetInstance()->ShowOutput(*gameScreen);
+		system("pause");
+	}
+
+	void Title() 
+	{
+		/*Screen* screen = new Screen(230, 60);
+		Screen* screen_2 = new Screen(100, 50);*/
+		Sprite* bg = new Sprite("bg", "BitMapSprites/titleScreen.txt", 1);
+		Sprite* bg_t = new Sprite("bg_torches", "BitMapSprites/title_torches.txt", 1);
+		Sprite* e = new Sprite("enemy", "BitMapSprites/pumpkin.txt");
+		SpriteAnimation* f = new SpriteAnimation("fire", "BitMapSprites/flame.txt", 4, 3);
+		SpriteAnimation* f2 = new SpriteAnimation("fire2", "BitMapSprites/flame.txt", 4, 3);
+		Sprite* s = new Sprite("s", "BitMapSprites/flame.txt", 1);
+		int screenCenter = -(e->m_Dimension.first*0.5) + (gameScreen->GetScreenWidth()*0.5);
+
+		Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg->m_Dimension.first*0.5), 0), bg);
+		Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg_t->m_Dimension.first*0.5), 40), bg_t);
+		Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(0, 40), f);
+		Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(gameScreen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f2);
+
+
+		/*for (int i = 0; i < screen_2->GetScreenHeight(); i++) {
+			for (int j = 0; j < screen_2->GetScreenWidth(); j++) {
+				screen_2->SetData(i, j, '=');
+			}
+		}*/
+
+		//system("pause");
+		while (1) {
+
+			input->updateInput();
+			system("cls");
+			gameScreen->ClearScreen();
+			Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg->m_Dimension.first*0.5), 0), bg);
+			Renderer::GetInstance()->DrawFull(*gameScreen, std::make_pair((gameScreen->GetScreenWidth()*0.5) - (bg_t->m_Dimension.first*0.5), 40), bg_t);
+			Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(0, 40), f);
+			Renderer::GetInstance()->DrawAnimation(*gameScreen, std::make_pair(gameScreen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f2);
+			Renderer::GetInstance()->ShowOutput(*gameScreen);
+			if (input->KeyPress()) {
+				//screen->CombineScreen(*screen_2, std::make_pair(0, 0));
+
+
+				//system("pause");
+				break;
+			}
+
+			input->clearArray();
+		}
 	}
 
 	void Loop()
@@ -282,6 +332,10 @@ namespace Game
 			Renderer::GetInstance()->Draw(*gameScreen, std::make_pair(midscreenposX, midscreenposY), SpriteManager::GetInstance()->GetSprite("youDied"));
 			Renderer::GetInstance()->ShowOutput(*gameScreen);
 		}
+	}
+
+	void Credit() {
+		//todo
 	}
 
 	void Destroy() 

@@ -3,8 +3,9 @@
 
 Animation::Animation()
 {
-	this->frameCounter = 0;
+	this->m_FrameCounter = 0;
 	this->m_IsEnded = false;
+	this->m_UpdatingFrames = 10;
 }
 
 Animation::~Animation()
@@ -12,13 +13,13 @@ Animation::~Animation()
 }
 
 void Animation::Play(Screen& screen) {	
-	if (this->frameCounter < screen.GetScreenWidth() && !m_IsEnded) {
+	if (this->m_FrameCounter < screen.GetScreenWidth() && !m_IsEnded) {
 		for (int i = 0; i < screen.GetScreenHeight(); i++) {
-			for (int j = 0; j < this->frameCounter; j++) {
+			for (int j = 0; j < this->m_FrameCounter; j++) {
 				screen.SetData(i, j, '#');
 			}
 		}
-		frameCounter++;
+		m_FrameCounter += m_UpdatingFrames;
 	}
 	else {
 		this->m_IsEnded = true;
@@ -27,4 +28,8 @@ void Animation::Play(Screen& screen) {
 
 bool Animation::IsEnded()const {
 	return this->m_IsEnded;
+}
+
+void Animation::SetAnimationSpeed(int speed) {
+	this->m_UpdatingFrames = speed;
 }

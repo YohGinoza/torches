@@ -9,8 +9,9 @@ public:
 	~Animation();
 	void Play(Screen& screen);
 	bool IsEnded() const;
+	void SetAnimationSpeed(int speed);
 private:
 	bool m_IsEnded;
-	int frameCounter;
-	int maxFrame;
+	int m_FrameCounter;
+	int m_UpdatingFrames;
 };
