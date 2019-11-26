@@ -42,7 +42,7 @@ namespace Game
 	Screen* MainScreen = new Screen(MAIN_SCREEN_WIDTH, MAIN_SCREEN_HEIGHT);
 	Screen* MiniMapScreen = new Screen(MAP_WIDTH * FIXED_OFFSET, MAP_WIDTH * FIXED_OFFSET);
 	Screen* MazeScreen = new Screen(ROOM_WIDTH, ROOM_HEIGHT);
-	Screen* BattleScreen = new Screen(10 * SPRITE_SPECIAL_OFFSET, MAIN_SCREEN_HEIGHT);
+	Screen* BattleScreen = new Screen(10 * SPRITE_SPECIAL_OFFSET, MAIN_SCREEN_HEIGHT - 30);
 
 	int randType = 0;
 
@@ -56,17 +56,19 @@ namespace Game
 		int MaxHeight = 3;
 		int playerHP = Player::GetInstance()->GetHp();
 
-		int HeightOffset = SpriteManager::GetInstance()->GetSprite("hpBar")->m_Dimension.second;
-		Renderer::GetInstance()->Draw(screen,std::make_pair(0,))		
+		int WidthOffset = SpriteManager::GetInstance()->GetSprite("hpBar")->m_Dimension.first;
+		int HeightOffset = screen.GetScreenHeight() - SpriteManager::GetInstance()->GetSprite("hpBar")->m_Dimension.second;
 
-
-		for (int i = screen.GetScreenHeight()- 1; i > screen.GetScreenHeight() - MaxHeight - 1; i--)
+		Renderer::GetInstance()->Draw(screen, std::make_pair(0, HeightOffset), SpriteManager::GetInstance()->GetSprite("hpBar"));
+		
+		
+		for (int i = HeightOffset + 4; i > HeightOffset + 1; i--)
 		{
-			for (int j = startPosX; j < startPosX + playerHP; j++)
+			for (int j = WidthOffset; j < WidthOffset + (playerHP); j++)
 			{
 				if (j < screen.GetScreenWidth())
 				{
-					screen.SetData(j, i,'=');
+					screen.SetData(i, j,'=');
 				}
 			}
 		}
@@ -244,6 +246,7 @@ namespace Game
 					MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));					
 					PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
 					MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
+					DrawHpBar(*MainScreen);
 					Renderer::GetInstance()->ShowOutput(*MainScreen);
 				}
 				else if (*NextState == GameState::PHASE_ANIMATION)
@@ -278,6 +281,7 @@ namespace Game
 					MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
 					PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
 					MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
+					DrawHpBar(*MainScreen);
 					Renderer::GetInstance()->ShowOutput(*MainScreen);
 					
 					GameUpdater<CombatUpdater> combatUpdate;
@@ -313,6 +317,7 @@ namespace Game
 		{
 			if (input->KeyPress()) {
 				system("cls");
+				MainScreen->ClearScreen();
 				MazeScreen->ClearScreen();
 				PhaseCombat::GetInstance()->DrawCombatPhase(*BattleScreen);				
 				MainScreen->CombineScreen(*BattleScreen, std::make_pair(MiniMapScreen->GetScreenWidth(), 0));
@@ -320,7 +325,8 @@ namespace Game
 				MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
 				PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
 				MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
-				Renderer::GetInstance()->ShowOutput(*MainScreen);
+				DrawHpBar(*MainScreen);
+				Renderer::GetInstance()->ShowOutput(*MainScreen);				
 			}
 		}
 		else if (*CurrentState == PHASE_ANIMATION) {
@@ -330,16 +336,20 @@ namespace Game
 		else if (*CurrentState == PHASE_MAZE) {			
 			PhaseMaze::GetInstance()->UpdateDetectRange();
 			if (input->KeyPress()) {
+				MainScreen->ClearScreen();
 				system("cls");
+				MainScreen->ClearScreen();
 				MazeScreen->ClearScreen();
 				PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);
 				MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));
 				MiniMapScreen->ClearScreen();				
 				PhaseMaze::GetInstance()->DrawMinimap(*MiniMapScreen);
 				MainScreen->CombineScreen(*MiniMapScreen, std::make_pair(0, MazeScreen->GetScreenHeight() + FIXED_OFFSET));
-				Renderer::GetInstance()->ShowOutput(*MainScreen);
+				DrawHpBar(*MainScreen);
+				Renderer::GetInstance()->ShowOutput(*MainScreen);					
 			}						
-		}
+		}	
+		
 		
 		input->clearArray();
 	}

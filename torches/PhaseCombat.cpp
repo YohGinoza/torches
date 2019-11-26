@@ -91,7 +91,7 @@ PhaseCombat* PhaseCombat::GetInstance()
 void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
 	if (this->c_enemy != nullptr && this->c_enemy->GetAliveStatus()) {
-		this->c_enemy->SetPosition((-this->c_enemy->m_Sprite->m_Dimension.first*0.5) + (screen.GetScreenWidth()*0.5), (screen.GetScreenHeight()*0.25));
+		this->c_enemy->SetPosition((-this->c_enemy->m_Sprite->m_Dimension.first*0.5) + (screen.GetScreenWidth()*0.5), (screen.GetScreenHeight()*0.1));
 		//Sprite* tmp = SpriteManager::GetInstance()->GetSprite("battle_bg");
 		//std::pair<int, int> bgCenter = std::make_pair<int, int>(tmp->m_Dimension.first*0.5, tmp->m_Dimension.second*0.5);
 		//Renderer::GetInstance()->DrawFull(screen, std::pair(), SpriteManager::GetInstance()->GetSprite("battle_bg"));
