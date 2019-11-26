@@ -1,8 +1,13 @@
 #pragma once
-#include <vector>
 #include "Phase.h"
-#include "Screen.h"
-#include "Room.h"
+#include "MapGenerator.h"
+
+#define ROOM_WIDTH 15
+#define ROOM_HEIGHT 15
+
+#define MON_PER_ROOM 7
+#define DEFAULT_DETECT_RANGE 2
+#define FIXED_OFFSET 8
 
 class PhaseMaze :
 	public Phase
@@ -10,16 +15,46 @@ class PhaseMaze :
 public:
 	PhaseMaze();
 	~PhaseMaze();
-	virtual void OnUpdate(float dt) override;
-	void DrawRoom(Screen& screen, int roomId);
-	void DrawMinimap(Screen& screen);
+	virtual void OnUpdate(float dt, Screen& screen) override;
+	
 	static PhaseMaze* GetInstance();
-	bool MinimapOn() const; // return m_TriggerMinimap
+
+	void PlayerInput();
+	void CheckAround();
+	void CheckTorches();
+
+	void SpawnMon();
+	void MoveMon();
+
+	void UpdateDetectRange();
+	void ClearDetectRange();
+	void DrawMinimap(Screen& screen);
+	void DrawMaze(Screen& screen);
+	void Draw_Debug();
+	void Draw_Minimap();
+
+	void TestPrintMiniMap(Screen& screen);
+
+	void resetRoom();
 private:
-	std::vector<Room*> m_Rooms;
+	MapGenerator* mapGen;
+	Room* m_Rooms[MAP_HEIGHT][MAP_WIDTH];
 	static PhaseMaze* s_Instance;
 	std::vector<int*> m_MapInfo;
 	std::vector<int*> m_RoomInfo;
-	bool m_TriggerMinimap;	// turn minimap on/off
+
+	Player* player;
+
+	int currRoomX, currRoomY;
+
+	int player_posX;
+	int player_posY;
+	char** map;
+	bool** map_detect;
+	bool debug_draw;
+	bool UpdateDraw;
+	bool endBattle;
+
+	int detectRange;
 };
 

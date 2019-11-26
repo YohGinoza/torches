@@ -1,8 +1,15 @@
 #pragma once
+#include <stdlib.h>
+
 #include "Entity.h"
 #include "SequenceKeeper.h"
 
-template<class T>
+enum BeastType {
+	BeastNum = 0,
+	BeastAl,
+	BeastM
+};
+
 class Monster :
 	public Entity
 {
@@ -10,28 +17,37 @@ public:
 	Monster();
 	Monster(int hp, int atk);	// set hp, atk, isAlive = true
 	~Monster();	
-	SequenceKeeper<T> m_SequenceKeeper;
+	SequenceKeeper m_SequenceKeeper;
 	virtual void GenerateSequence() = 0;	// randomize a new set of sequence
 };
 
-template <class T>
-Monster<T>::Monster()
+
+class BeastAlpha :
+	public Monster
 {
-}
+public:
+	BeastAlpha();
+	BeastAlpha(int hp, int atk);
+	~BeastAlpha();
+	virtual void GenerateSequence() override;	// randomize a new set of sequence : sequence is 'u' 'd' 'l' 'r'
+};
 
-template <class T>
-Monster<T>::~Monster()
+class BeastNu :
+	public Monster
 {
-}
+public:
+	BeastNu();
+	BeastNu(int hp, int atk);
+	~BeastNu();
+	virtual void GenerateSequence() override;	// randomize a new set of sequence : sequence is 1-9
+};
 
-template <class T>
-Monster<T>::Monster(int hp, int atk) {
-	Hp = hp;
-	AttackDamage = atk;
-	isAlive = true;
-}
-
-template <class T>
-void Monster<T>::GenerateSequence() {
-
-}
+class BeastMix :
+	public Monster
+{
+public:
+	BeastMix();
+	BeastMix(int hp, int atk);
+	~BeastMix();
+	virtual void GenerateSequence() override;
+};

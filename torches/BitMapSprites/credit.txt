@@ -1,0 +1,129 @@
+           ____                     _   _   _                   
+          / ___|  _ __    ___    __| | (_) | |_   ___           
+         | |     | '__|  / _ \  / _` | | | | __| / __|          
+         | |___  | |    |  __/ | (_| | | | | |_  \__ \          
+          \____| |_|     \___|  \__,_| |_|  \__| |___/          
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+               6109642014   Natnaree   Angklomkliew             
+               6109642022   Eiyaphat   Suntiwong                
+               6109642030   Yoh        Ginoza                   
+               6109642048   Archavit   Osathapan                
+               6109642071   Puh-Zang   Liu                      
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                           Progammers                           
+                     Natnaree     Angklomkliew                  
+                     Eiyaphat     Suntiwong                     
+                     Yoh          Ginoza                        
+                     Archavit     Osathapan                     
+                     Puh-Zang     Liu                           
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                          Game Designers                        
+                     Natnaree     Angklomkliew                  
+                     Eiyaphat     Suntiwong                     
+                     Yoh          Ginoza                        
+                     Archavit     Osathapan                     
+                     Puh-Zang     Liu                           
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                         Maze Progammers                        
+                     Natnaree     Angklomkliew                  
+                     Eiyaphat     Suntiwong                     
+                     Yoh          Ginoza                        
+                     Archavit     Osathapan                     
+                                                                
+                                                                
+                                                                
+                           Game Loop                            
+                     Eiyaphat     Suntiwong                     
+                                                                
+                                                                
+                                                                
+                          Combat Phase                          
+                     Natnaree     Angklomkliew                  
+                     Yoh          Ginoza                        
+                                                                
+                                                                
+                                                                
+                           Maze Phase                           
+                     Eiyaphat     Suntiwong                     
+                                                                
+                                                                
+                                                                
+                         Maze Generator                         
+                     Archavit     Osathapan                     
+                                                                
+                                                                
+                                                                
+                        Audio Programmer                        
+                     Natnaree     Angklomkliew                  
+                                                                
+                                                                
+                                                                
+                       Monster Programmer                       
+                     Puh-Zang     Liu                           
+                                                                
+                                                                
+                                                                
+                             Music                              
+        Title Screen   - Dark Souls III OST Main Theme          
+        Maze Phase     - The Piano Before Cynthia               
+        Combat Phase   - Mint Breath Kirby's Dream Land         
+        Defeat Screen  - Sad Violin                             
+        Victory SCreen - Giorno's Theme Il vento d'oro          
+        Credits        - Pokemon B2/W2 Battle! Iris Champion    
+                                                                
+                                                                
+                                                                
+                          Text Artist                           
+                     Yoh          Ginoza                        
+                     Puh-Zang     Liu                           
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                         Special Thanks                         
+                     Noppapadol   Poomarporn                    
+                     Guy          Sirithong                     
+                     Ratchanon    Prapassornpong                
+                                                                
+                                                                
+                                                                
+                                                                
+                             Course                             
+                    CDT280 Advanced Progamming                  
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+                                                                
+ _______  _______  ______    _______  __   __  _______  _______ 
+|       ||       ||    _ |  |       ||  | |  ||       ||       |
+|_     _||   _   ||   | ||  |       ||  |_|  ||    ___||  _____|
+  |   |  |  | |  ||   |_||_ |       ||       ||   |___ | |_____ 
+  |   |  |  |_|  ||    __  ||      _||       ||    ___||_____  |
+  |   |  |       ||   |  | ||     |_ |   _   ||   |___  _____| |
+  |___|  |_______||___|  |_||_______||__| |__||_______||_______|
+                                                                

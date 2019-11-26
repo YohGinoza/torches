@@ -1,10 +1,13 @@
 #include "InputReader.h"
+#include "Game.h"
 
 std::mutex mRead;
 
 void InputReader::operator()() {
 	mRead.lock();
+
 	char c;
+
 	do {
 		c = _getch();
 		if (c == '\r') {
@@ -13,7 +16,10 @@ void InputReader::operator()() {
 		else {
 			InputBuffer::instance()->push(c);
 		}
-	} while (c != '\033');
+
+	} while (Game::getState() != Game::GameState::QUIT);
+
 	InputBuffer::instance()->push(c);
 	mRead.unlock();
+
 }

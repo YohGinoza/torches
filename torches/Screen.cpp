@@ -42,3 +42,23 @@ void Screen::SetData(int row, int column, char c) {
 std::string Screen::GetScanline(int i) {
 	return this->ScreenWindow[i];
 }
+
+void Screen::CombineScreen(Screen& screen, std::pair<int,int> upperleftCorner) {
+	if (upperleftCorner.first > this->ScreenWidth ||
+		upperleftCorner.second > this->ScreenHeight ||
+		upperleftCorner.first + screen.GetScreenWidth() < 0 ||
+		upperleftCorner.second + screen.GetScreenHeight() < 0) {
+		return;
+	}
+	int screenRow = 0;
+	int screenCol = 0;
+	for (int i = upperleftCorner.second; i < upperleftCorner.second + screen.GetScreenHeight(); i++, screenRow++) {
+		screenCol = 0;
+		for (int j = upperleftCorner.first; j < upperleftCorner.first + screen.GetScreenWidth(); j++, screenCol++) {
+			if (i > this->ScreenHeight || j > this->ScreenWidth || i < 0 ||	j < 0) {
+				continue;
+			}
+			this->SetData(i, j, screen.GetScanline(screenRow)[screenCol]);
+		}
+	}
+}

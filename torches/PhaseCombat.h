@@ -1,7 +1,9 @@
 #pragma once
 #include "Phase.h"
 #include "Monster.h"
-#include "Screen.h"
+
+#define COMBAT_TIME_LIMIT 13
+#define SPRITE_SPECIAL_OFFSET 10
 
 class PhaseCombat :
 	public Phase
@@ -9,10 +11,14 @@ class PhaseCombat :
 public:
 	PhaseCombat();
 	~PhaseCombat();	
-	virtual void OnUpdate(float dt) override;
+	virtual void OnUpdate(float dt, Screen& screen) override;
 	static PhaseCombat* GetInstance();
-	void DrawSequence(Screen& screen); // draws monster's sequence on screen
+	void DrawCombatPhase(Screen& screen); // draws monster's sequence on screen
+	void InitCombat(int, float);
 private:
 	static PhaseCombat* s_Instance;
+	Monster* c_enemy;
+	int index;
+	float timeCounter = 0.0f;
 };
 

@@ -1,34 +1,31 @@
 #include "SequenceKeeper.h"
 #include <cstdlib>
 
-template <class T>
-SequenceKeeper<T>::SequenceKeeper()
+SequenceKeeper::SequenceKeeper()
 {
 	this->m_Range = (rand() % 8) + 3;
+	for (int i = 0; i < this->m_Range; i++) {
+		m_Sequence.push_back(0);
+	}
 }
 
-template <class T>
-SequenceKeeper<T>::SequenceKeeper(int range)
+SequenceKeeper::SequenceKeeper(int range)
 {
 	this->m_Range = range;
 }
 
-template <class T>
-SequenceKeeper<T>::~SequenceKeeper()
+SequenceKeeper::~SequenceKeeper()
 {
 }
 
-template <class T>
-std::vector<T>& SequenceKeeper<T>::GetSequence() const{
-	return m_Sequence;
+int SequenceKeeper::GetSequence(int index){
+	return m_Sequence.at(index);
 }
 
-template <class T>
-void SequenceKeeper<T>::SetSequenceAt(int index, T data) {
+void SequenceKeeper::SetSequenceAt(int index, int data) {
 	m_Sequence[index] = data;
 }
 
-template <class T>
-int SequenceKeeper<T>::GetRange() {
+int SequenceKeeper::GetRange() {
 	return this->m_Range;
 }
