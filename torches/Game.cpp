@@ -52,6 +52,26 @@ namespace Game
 
 	Time t;
 
+	void DrawHpBar(Screen& screen) {		
+		int MaxHeight = 3;
+		int playerHP = Player::GetInstance()->GetHp();
+
+		int HeightOffset = SpriteManager::GetInstance()->GetSprite("hpBar")->m_Dimension.second;
+		Renderer::GetInstance()->Draw(screen,std::make_pair(0,))		
+
+
+		for (int i = screen.GetScreenHeight()- 1; i > screen.GetScreenHeight() - MaxHeight - 1; i--)
+		{
+			for (int j = startPosX; j < startPosX + playerHP; j++)
+			{
+				if (j < screen.GetScreenWidth())
+				{
+					screen.SetData(j, i,'=');
+				}
+			}
+		}
+	}
+
 	void MazeUpdate(float dt)
 	{
 		Maze->OnUpdate(dt, *MazeScreen);
@@ -109,6 +129,15 @@ namespace Game
 		Renderer r();
 		SpriteManager sm();
 
+		
+		SpriteManager::GetInstance()->PushBack(new Sprite("BeastMix", "BitMapSprites/BeastM.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("youWin", "BitMapSprites/YouWin.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("credit", "BitMapSprites/credit.txt", 1));
+		SpriteManager::GetInstance()->PushBack(new Sprite("hpBar", "BitMapSprites/hp.txt"));
+		SpriteManager::GetInstance()->LoadInputSprites();
+		
+		// load beast alpha sprites
 		std::string beastType = "BeastAlpha_";
 		std::string dir = "BitMapSprites/";
 		for (int i = 0; i < SPRITES_PER_TYPE; i++) {
@@ -126,6 +155,7 @@ namespace Game
 		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_3", "BitMapSprites/BeastAlpha_3.txt"));
 		*/
 
+		// load beast number sprites
 		beastType = "BeastNu_";
 		for (int i = 0; i < SPRITES_PER_TYPE; i++) {
 			std::string name = beastType;
@@ -134,13 +164,7 @@ namespace Game
 			path += name;
 			path += ".txt";
 			SpriteManager::GetInstance()->PushBack(new Sprite(name, path));
-		}
-
-		SpriteManager::GetInstance()->PushBack(new Sprite("BeastMix", "BitMapSprites/BeastM.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("youWin", "BitMapSprites/YouWin.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("credit", "BitMapSprites/credit.txt",1));
-		SpriteManager::GetInstance()->LoadInputSprites();
+		}		
 
 		CurrentState = new int;
 		NextState = new int;
