@@ -17,7 +17,7 @@ void InputReader::operator()() {
 			InputBuffer::instance()->push(c);
 		}
 
-	} while (c != '\033');
+	} while (Game::getState() != Game::GameState::QUIT);
 
 	InputBuffer::instance()->push(c);
 	mRead.unlock();

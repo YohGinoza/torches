@@ -131,6 +131,7 @@ namespace Game
 		Renderer r();
 		SpriteManager sm();
 
+		BattleIntro->SetAnimationSpeed(50);
 		
 		SpriteManager::GetInstance()->PushBack(new Sprite("BeastMix", "BitMapSprites/BeastM.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
@@ -150,12 +151,6 @@ namespace Game
 			path += ".txt";
 			SpriteManager::GetInstance()->PushBack(new Sprite(name, path));
 		}
-		/*
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_0", "BitMapSprites/BeastAlpha_0.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_1", "BitMapSprites/BeastAlpha_1.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_2", "BitMapSprites/BeastAlpha_2.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_3", "BitMapSprites/BeastAlpha_3.txt"));
-		*/
 
 		// load beast number sprites
 		beastType = "BeastNu_";
@@ -185,9 +180,7 @@ namespace Game
 		Maze = PhaseMaze::GetInstance();
 		Combat = PhaseCombat::GetInstance();
 
-		dt = Time::GetInstance()->GetDeltaTime();				
-		//PhaseMaze::GetInstance()->TestPrintMiniMap(*MazeScreen);
-		//Renderer::GetInstance()->ShowOutput(*gameScreen);
+		dt = Time::GetInstance()->GetDeltaTime();
 	}
 
 	void Title() 
@@ -380,28 +373,37 @@ namespace Game
 		system("pause");
 	}
 
-	void Credit() {
+	void Credit() {	
+		SoundManager::GetInstance()->stopAllSound();
 		system("cls");
 		bool exit = false;
-		int heightOffset = MainScreen->GetScreenHeight() - 1;
+		int heightOffset = MainScreen->GetScreenHeight() + 1;
 		int widthOffset = (MainScreen->GetScreenWidth()*0.5) - (SpriteManager::GetInstance()->GetSprite("credit")->m_Dimension.first*0.5);
 		MainScreen->ClearScreen();
 		std::pair<int, int> pos = std::make_pair(widthOffset, heightOffset);
 		Sprite* creditRoll = SpriteManager::GetInstance()->GetSprite("credit");
 		float timer = 0;
 		float tick = 0.1f;
-		Time::GetInstance()->start = Time::GetInstance()->timer.now();
-		while (1) {							
+		Time::GetInstance()->start = Time::GetInstance()->timer.now();		
+		bool startPlayingBGM = false;
+		while (1) {
 			timer += Time::GetInstance()->GetDeltaTime();
-			std::cout << timer << std::endl;
-			if (timer >= tick) {
+			if (timer < 0) {
 				timer = 0;
-				pos.second -= 1;
+			}
+			if (timer >= tick) {					
+				timer = 0;	// reset timer
+				pos.second -= 1;	// move up
 				system("cls");
+				MainScreen->ClearScreen();
 				Renderer::GetInstance()->DrawFull(*MainScreen, pos, creditRoll);
 				Renderer::GetInstance()->ShowOutput(*MainScreen);
 				if (pos.second <= -(creditRoll->m_Dimension.second) - 5) {
 					break;
+				}
+				if (!startPlayingBGM) {
+					SoundManager::GetInstance()->playSound("Sound/endCredits.wav");
+					startPlayingBGM = true;
 				}
 			}			
 			Time::GetInstance()->end = Time::GetInstance()->timer.now();

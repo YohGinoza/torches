@@ -75,12 +75,8 @@ PhaseMaze::PhaseMaze()
 			setWintorches = true;
 
 			m_Rooms[randRoomY][randRoomX]->setWinningTorches();
-
-			std::cout << "Winning toches = " << randRoomX << " " << randRoomY << std::endl;
 		}
 	}
-
-	mapGen->PrintMap();
 
 	currRoomX = 0;
 	currRoomY = 0;
@@ -95,8 +91,6 @@ PhaseMaze::PhaseMaze()
 
 	resetRoom();
 
-	//std::cout << player->GetPosition().first << " " << player->GetPosition().second << std::endl;
-	
 	map[player->GetPosition().second][player->GetPosition().first] = '@';
 }
 
