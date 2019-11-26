@@ -16,7 +16,8 @@ class PhaseMaze;
 class GameUpdater;
 
 #define MAIN_SCREEN_WIDTH 230
-#define MAIN_SCREEN_HEIGHT 80
+#define MAIN_SCREEN_HEIGHT 90
+#define SPRITES_PER_TYPE 4
 
 namespace Game 
 {
@@ -108,9 +109,34 @@ namespace Game
 		Renderer r();
 		SpriteManager sm();
 
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha", "BitMapSprites/BeastAlpha.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastNu", "BitMapSprites/BeastNu.txt"));
-		SpriteManager::GetInstance()->PushBack(new Sprite("beastMix", "BitMapSprites/pumpkin.txt"));
+		std::string beastType = "BeastAlpha_";
+		std::string dir = "BitMapSprites/";
+		for (int i = 0; i < SPRITES_PER_TYPE; i++) {
+			std::string name = beastType;
+			name += std::to_string(i);
+			std::string path = dir;
+			path += name;
+			path += ".txt";
+			SpriteManager::GetInstance()->PushBack(new Sprite(name, path));
+		}
+		/*
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_0", "BitMapSprites/BeastAlpha_0.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_1", "BitMapSprites/BeastAlpha_1.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_2", "BitMapSprites/BeastAlpha_2.txt"));
+		SpriteManager::GetInstance()->PushBack(new Sprite("beastAlpha_3", "BitMapSprites/BeastAlpha_3.txt"));
+		*/
+
+		beastType = "BeastNu_";
+		for (int i = 0; i < SPRITES_PER_TYPE; i++) {
+			std::string name = beastType;
+			name += std::to_string(i);
+			std::string path = dir;
+			path += name;
+			path += ".txt";
+			SpriteManager::GetInstance()->PushBack(new Sprite(name, path));
+		}
+
+		SpriteManager::GetInstance()->PushBack(new Sprite("BeastMix", "BitMapSprites/BeastM.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youDied", "BitMapSprites/YouDied.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("youWin", "BitMapSprites/YouWin.txt"));
 		SpriteManager::GetInstance()->PushBack(new Sprite("credit", "BitMapSprites/credit.txt",1));

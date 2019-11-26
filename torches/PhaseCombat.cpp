@@ -91,7 +91,10 @@ PhaseCombat* PhaseCombat::GetInstance()
 void PhaseCombat::DrawCombatPhase(Screen& screen) // draws monster's sequence on screen
 {
 	if (this->c_enemy != nullptr && this->c_enemy->GetAliveStatus()) {
-		this->c_enemy->SetPosition((-this->c_enemy->m_Sprite->m_Dimension.first*0.5) + (screen.GetScreenWidth()*0.5), 0);
+		this->c_enemy->SetPosition((-this->c_enemy->m_Sprite->m_Dimension.first*0.5) + (screen.GetScreenWidth()*0.5), (screen.GetScreenHeight()*0.25));
+		//Sprite* tmp = SpriteManager::GetInstance()->GetSprite("battle_bg");
+		//std::pair<int, int> bgCenter = std::make_pair<int, int>(tmp->m_Dimension.first*0.5, tmp->m_Dimension.second*0.5);
+		//Renderer::GetInstance()->DrawFull(screen, std::pair(), SpriteManager::GetInstance()->GetSprite("battle_bg"));
 		Renderer::GetInstance()->Draw(screen, this->c_enemy);
 		int translateToCenter = -SPRITE_SPECIAL_OFFSET * this->c_enemy->m_SequenceKeeper.GetRange() * 0.5f;
 		int firstOffsetX = translateToCenter + (screen.GetScreenWidth() * 0.5f);
@@ -113,27 +116,25 @@ void PhaseCombat::InitCombat(int e_type, float dt)
 {
 	timeCounter = 0.0f;
 	index = 0;
+	int randSpriteNum = rand() % 4;
 
-	if (this->c_enemy != nullptr && !this->c_enemy->GetAliveStatus()) {
-		//delete this->c_enemy;
-	}
 	if (e_type == BeastType::BeastNum)
 	{
 		c_enemy = new BeastNu();
 		c_enemy->GenerateSequence();
-		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastNu");
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("BeastNu_" + '0');
 	}
 	else if(e_type == BeastType::BeastAl)
 	{
 		c_enemy = new BeastAlpha();
 		c_enemy->GenerateSequence();
-		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastAlpha");
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("BeastAlpha_" + '0');
 	}
 	else if (e_type == BeastType::BeastM)
 	{
 		c_enemy = new BeastMix(); 
 		c_enemy->GenerateSequence();
-		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("beastMix");
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("BeastMix");
 	}
 }
 

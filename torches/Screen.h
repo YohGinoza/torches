@@ -8,7 +8,6 @@ class Screen
 public:
 	Screen(int width, int height);
 	~Screen();
-	//void Effect_Interlace();
 	int GetScreenWidth()const;
 	int GetScreenHeight()const;	
 	void ClearScreen();
