@@ -386,24 +386,21 @@ namespace Game
 		int heightOffset = MainScreen->GetScreenHeight() - 1;
 		int widthOffset = (MainScreen->GetScreenWidth()*0.5) - (SpriteManager::GetInstance()->GetSprite("credit")->m_Dimension.first*0.5);
 		MainScreen->ClearScreen();
-		std::pair<int, int> startPosition = std::make_pair(widthOffset, heightOffset);
-		Entity* creditRoll = new Entity(SpriteManager::GetInstance()->GetSprite("credit"), startPosition);
+		std::pair<int, int> pos = std::make_pair(widthOffset, heightOffset);
+		Sprite* creditRoll = SpriteManager::GetInstance()->GetSprite("credit");
 		float timer = 0;
 		float tick = 0.1f;
 		Time::GetInstance()->start = Time::GetInstance()->timer.now();
 		while (1) {							
 			timer += Time::GetInstance()->GetDeltaTime();
 			std::cout << timer << std::endl;
-			std::cout << "e pos: " << creditRoll->GetPosition().first << " " << creditRoll->GetPosition().second << std::endl;
-			system("pause");
 			if (timer >= tick) {
-				std::cout << "one loop" << std::endl;
 				timer = 0;
-				creditRoll->Translate(0, -1);
+				pos.second -= 1;
 				system("cls");
-				Renderer::GetInstance()->Draw(*MainScreen,creditRoll);				
+				Renderer::GetInstance()->DrawFull(*MainScreen, pos, creditRoll);
 				Renderer::GetInstance()->ShowOutput(*MainScreen);
-				if (creditRoll->GetPosition().second <= -(creditRoll->m_Sprite->m_Dimension.second) - 5) {
+				if (pos.second <= -(creditRoll->m_Dimension.second) - 5) {
 					break;
 				}
 			}			
