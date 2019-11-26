@@ -122,13 +122,13 @@ void PhaseCombat::InitCombat(int e_type, float dt)
 	{
 		c_enemy = new BeastNu();
 		c_enemy->GenerateSequence();
-		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("BeastNu_" + '0');
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("BeastNu_" + std::to_string(randSpriteNum));
 	}
 	else if(e_type == BeastType::BeastAl)
 	{
 		c_enemy = new BeastAlpha();
 		c_enemy->GenerateSequence();
-		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("BeastAlpha_" + '0');
+		c_enemy->m_Sprite = SpriteManager::GetInstance()->GetSprite("BeastAlpha_" + std::to_string(randSpriteNum));
 	}
 	else if (e_type == BeastType::BeastM)
 	{
