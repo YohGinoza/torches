@@ -25,6 +25,7 @@ void InputBuffer::push(char c) {
 char InputBuffer::pull() {
 	// std::cout << "Pulling." << std::endl;
 	if (!buffer.empty()) {
+
 		char tmp = instance()->buffer.front();
 		buffer.pop_front();
 

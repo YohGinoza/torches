@@ -60,6 +60,7 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 		Game::setState(Game::PHASE_MAZE);
 		if (this->c_enemy != nullptr) {
 			delete c_enemy;
+			c_enemy = nullptr;
 		}
 	}
 	//debug
@@ -73,7 +74,7 @@ void PhaseCombat::OnUpdate(float dt, Screen& screen)
 	{
 		//calculate remaining sequence damage
 		Game::setState(Game::PHASE_MAZE);
-		this->c_enemy->SetAliveStatus(false);;
+		this->c_enemy->SetAliveStatus(false);
 	}
 
 	//DrawCombatPhase(screen);	
