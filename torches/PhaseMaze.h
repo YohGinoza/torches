@@ -30,8 +30,6 @@ public:
 	void ClearDetectRange();
 	void DrawMinimap(Screen& screen);
 	void DrawMaze(Screen& screen);
-	void Draw_Debug();
-	void Draw_Minimap();
 
 	void TestPrintMiniMap(Screen& screen);
 
