@@ -192,13 +192,12 @@ namespace Game
 
 		while (1) {
 
-			input->updateInput();
-			system("cls");
+			input->updateInput();			
 			MainScreen->ClearScreen();
 			Renderer::GetInstance()->DrawFull(*MainScreen, std::make_pair((MainScreen->GetScreenWidth()*0.5) - (bg->m_Dimension.first*0.5), 0), bg);
 			Renderer::GetInstance()->DrawFull(*MainScreen, std::make_pair((MainScreen->GetScreenWidth()*0.5) - (bg_t->m_Dimension.first*0.5), 40), bg_t);
 			Renderer::GetInstance()->DrawAnimation(*MainScreen, std::make_pair(0, 40), f);
-			Renderer::GetInstance()->DrawAnimation(*MainScreen, std::make_pair(MainScreen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f);
+			Renderer::GetInstance()->DrawAnimation(*MainScreen, std::make_pair(MainScreen->GetScreenWidth() - f->GetWidthPerFrame(), 40), f);			
 			Renderer::GetInstance()->ShowOutput(*MainScreen);
 			if (input->KeyPress()) {				
 				break;
@@ -232,8 +231,7 @@ namespace Game
 					MazeScreen->ClearScreen();
 					BattleScreen->ClearScreen();
 					MiniMapScreen->ClearScreen();
-
-					system("cls");
+					
 					MazeScreen->ClearScreen();
 					PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);					
 					MainScreen->CombineScreen(*MazeScreen, std::make_pair(0, 0));					
@@ -265,8 +263,7 @@ namespace Game
 					MazeScreen->ClearScreen();
 					BattleScreen->ClearScreen();
 					MiniMapScreen->ClearScreen();
-
-					system("cls");					
+					
 					MazeScreen->ClearScreen();
 					PhaseCombat::GetInstance()->DrawCombatPhase(*BattleScreen);
 					MainScreen->CombineScreen(*BattleScreen, std::make_pair(MiniMapScreen->GetScreenWidth(), 0));
@@ -308,8 +305,7 @@ namespace Game
 		
 		if (*CurrentState == PHASE_COMBAT)
 		{
-			if (input->KeyPress()) {
-				system("cls");
+			if (input->KeyPress()) {				
 				MainScreen->ClearScreen();
 				MazeScreen->ClearScreen();
 				PhaseCombat::GetInstance()->DrawCombatPhase(*BattleScreen);				
@@ -322,15 +318,13 @@ namespace Game
 				Renderer::GetInstance()->ShowOutput(*MainScreen);				
 			}
 		}
-		else if (*CurrentState == PHASE_ANIMATION) {
-			system("cls");
+		else if (*CurrentState == PHASE_ANIMATION) {			
 			Renderer::GetInstance()->ShowOutput(*MainScreen);
 		}
 		else if (*CurrentState == PHASE_MAZE) {			
 			PhaseMaze::GetInstance()->UpdateDetectRange();
 			if (input->KeyPress()) {
 				MainScreen->ClearScreen();
-				system("cls");
 				MainScreen->ClearScreen();
 				MazeScreen->ClearScreen();
 				PhaseMaze::GetInstance()->DrawMaze(*MazeScreen);
@@ -393,10 +387,10 @@ namespace Game
 			}
 			if (timer >= tick) {					
 				timer = 0;	// reset timer
-				pos.second -= 1;	// move up
-				system("cls");
+				pos.second -= 1;	// move up				
 				MainScreen->ClearScreen();
 				Renderer::GetInstance()->DrawFull(*MainScreen, pos, creditRoll);
+				system("cls");
 				Renderer::GetInstance()->ShowOutput(*MainScreen);
 				if (pos.second <= -(creditRoll->m_Dimension.second) - 5) {
 					break;
@@ -442,60 +436,4 @@ namespace Game
 	void setExit(int exit) {
 		*Exit_condition = exit;
 	}
-
-	void debug_input() {
-
-		if (input->getKey(KEY_W))
-		{
-			std::cout << "W\n";
-		}
-
-		if (input->getKey(KEY_A))
-		{
-			std::cout << "A\n";
-		}
-
-		if (input->getKey(KEY_S))
-		{
-			std::cout << "S\n";
-		}
-
-		if (input->getKey(KEY_D))
-		{
-			std::cout << "D\n";
-		}
-
-		if (input->getKey(KEY_1))
-		{
-			std::cout << "1\n";
-		}
-
-		if (input->getKey(KEY_LEFT))
-		{
-			std::cout << "LEFT\n";
-		}
-
-		if (input->getKey(KEY_RIGHT))
-		{
-			std::cout << "RIGHT\n";
-		}
-
-		if (input->getKey(KEY_UP))
-		{
-			std::cout << "UP\n";
-		}
-
-		if (input->getKey(KEY_DOWN)) {
-			std::cout << "DOWN\n";
-		}
-
-		if (input->getKey(KEY_ESC)) {
-			std::cout << "ESC\n";
-		}
-
-		if (input->KeyPress()) {
-			std::cout << "yay\n";
-		}
-	}
-
 }

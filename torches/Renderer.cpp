@@ -122,6 +122,7 @@ void Renderer::ShowOutput(Screen& screen) {
 		//buffer += '|';
 		buffer += '\n';
 	}
+	system("cls");
 	std::cout << buffer;
 }
 
